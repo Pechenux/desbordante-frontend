@@ -43,3 +43,7 @@ p {
 small {
   @include paragraph-small;
 }
+
+main {
+  margin-top: $header-heigth;
+}

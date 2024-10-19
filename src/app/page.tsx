@@ -1,5 +1,5 @@
-// import styles from './page.module.css';
+import styles from './page.module.scss';
 
 export default function Home() {
-  return <div>hello world</div>;
+  return <div className={styles.longItem}>hello world</div>;
 }

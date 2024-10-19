@@ -1,22 +1,23 @@
 import type { Metadata } from 'next';
 import { Palanquin, Roboto } from 'next/font/google';
 
-import { Providers } from '@/components/meta/Providers';
+import { Header } from '@/components/common/layout';
+import { Providers } from '@/components/meta';
 
-import './globalStyles/globals.scss';
+import './layoutStyles/globals.scss';
 
 // fonts
 const palanquin = Palanquin({
-  subsets: ['latin'],
   weight: ['400', '500', '700'],
-  variable: '--font-palanquin',
+  subsets: ['latin'],
   display: 'swap',
+  variable: '--font-palanquin',
 });
 const roboto = Roboto({
-  subsets: ['latin', 'cyrillic'],
   weight: ['400', '500', '700'],
-  variable: '--font-roboto',
+  subsets: ['latin', 'cyrillic'],
   display: 'swap',
+  variable: '--font-roboto',
 });
 
 // metadata (<meta> tags)
@@ -50,7 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${palanquin.variable} ${roboto.variable}`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

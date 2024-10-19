@@ -1,0 +1,27 @@
+@import "common";
+
+.container {
+  display: flex;
+  gap: 32px;
+}
+
+.linkContainer {
+  @include heading-6;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 6px;
+  white-space: nowrap;
+  font-weight: 500;
+  border-bottom: 4px solid transparent;
+
+  &.withUnderline {
+    border: solid 1px black;
+  }
+}
+
+.link {
+  color: $black;
+  text-decoration: none;
+}

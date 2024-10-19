@@ -17,6 +17,7 @@ NB! Я разрабатываю в VSCode, так что тут будет ин�
 6. CSS Modules
 7. CSS Variable Autocomplete
 8. Conventional Commits
+9. SCSS IntelliSense
 
 #### Установка зависимостей
 1. Установите [nvm](https://github.com/nvm-sh/nvm) или [nvm-windows](https://github.com/coreybutler/nvm-windows)
