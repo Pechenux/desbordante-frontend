@@ -51,6 +51,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${palanquin.variable} ${roboto.variable}`}>
+        {/* solves firefox flash of unstyles content */}
+        <script>0</script>
         <Providers>
           <Header />
           <main>{children}</main>

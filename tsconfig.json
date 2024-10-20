@@ -18,7 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@public/*": ["./public/*"],
+      "@/*": ["./src/*"],
     },
     "noUncheckedIndexedAccess": true
   },

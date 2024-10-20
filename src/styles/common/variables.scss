@@ -30,13 +30,15 @@ $secondary-2: rgba(118, 0, 209, 0.1);
 $primary-gradient-0: linear-gradient(53.13deg, #8200d1 9.04%, #534ac2 89.96%);
 $primary-gradient-1: linear-gradient(53.13deg, #6a00ab 9.04%, #433b9c 89.96%);
 
-$primary-shadow-0: 0 75px 92px rgba(0, 0, 0, 0.12),
+$primary-shadow-0:
+  0 75px 92px rgba(0, 0, 0, 0.12),
   0 31.3332px 38.4354px rgba(0, 0, 0, 0.0862625),
   0 16.7522px 20.5494px rgba(0, 0, 0, 0.0715329),
   0 9.39116px 11.5198px rgba(0, 0, 0, 0.06),
   0 4.98758px 6.11809px rgba(0, 0, 0, 0.0484671),
   0 2.07544px 2.54588px rgba(0, 0, 0, 0.0337375);
-$primary-shadow-1: 0 0 8px $info,
+$primary-shadow-1:
+  0 0 8px $info,
   0 75px 92px rgba(0, 0, 0, 0.12),
   0 31.3332px 38.4354px rgba(0, 0, 0, 0.0862625),
   0 16.7522px 20.5494px rgba(0, 0, 0, 0.0715329),
@@ -44,9 +46,11 @@ $primary-shadow-1: 0 0 8px $info,
   0 4.98758px 6.11809px rgba(0, 0, 0, 0.0484671),
   0 2.07544px 2.54588px rgba(0, 0, 0, 0.0337375);
 
-$primary-complementary-gradient: linear-gradient(53.13deg,
-    #7600d1 9.04%,
-    #00c1a4 89.96%);
+$primary-complementary-gradient: linear-gradient(
+  53.13deg,
+  #7600d1 9.04%,
+  #00c1a4 89.96%
+);
 
 /* Opacity variants */
 $black-75: rgba($black, 0.75);

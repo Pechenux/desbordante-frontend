@@ -32,7 +32,6 @@ export default [
       prettier,
       '@tanstack/query': pluginQuery,
     },
-
     languageOptions: {
       globals: {
         ...globals.browser,

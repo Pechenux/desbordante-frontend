@@ -1,1 +1,2 @@
+pnpm lint $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
 pnpm dlx commitlint --edit 

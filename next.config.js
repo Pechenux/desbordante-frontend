@@ -14,7 +14,9 @@ const nextConfig = {
     includePaths: [path.join(__dirname, './src/styles')],
   },
   webpack: (config, { dev, webpack }) => {
-    config.plugins.push(new StylelintPlugin());
+    if (!dev) {
+      config.plugins.push(new StylelintPlugin());
+    }
 
     config.module.rules.push(
       {

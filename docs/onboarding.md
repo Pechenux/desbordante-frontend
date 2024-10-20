@@ -8,6 +8,14 @@ NB! Я разрабатываю в VSCode, так что тут будет ин�
 3. SCSS Formatter
 4. Stylelint
 
+После чего добавить в settings.json в VSCode:
+
+```json
+"eslint.useFlatConfig": true,
+"stylelint.config": null,
+"stylelint.validate": ["css", "scss"]
+```
+
 Рекомендованные расширения:
 1. Twoslash Query Comments
 2. Pretty TypeScript Errors
