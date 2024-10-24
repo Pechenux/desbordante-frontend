@@ -1,0 +1,68 @@
+@import "common";
+
+.container {
+  display: flex;
+  gap: 32px;
+}
+
+.brandContainer {
+  margin-right: 32px;
+  display: inline-block;
+  text-align: center;
+}
+
+.link {
+  color: $black;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.brand {
+  @include heading-5;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 16px;
+}
+
+.linkContainer {
+  @include heading-6;
+  position: relative;
+  padding: 8px 6px;
+  white-space: nowrap;
+  font-weight: 500;
+  border-bottom: 4px solid transparent;
+  display: inline-block;
+  text-align: center;
+
+  &::before {
+    display: block;
+    content: attr(title);
+    font-weight: 700;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -4px 0;
+    height: 4px;
+    background: $primary-0;
+    border-radius: 100vmax;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  &.selected {
+    font-weight: 700;
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
