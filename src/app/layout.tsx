@@ -4,7 +4,7 @@ import { Palanquin, Roboto } from 'next/font/google';
 import { Header } from '@/components/common/layout';
 import { Providers } from '@/components/meta';
 
-import './layoutStyles/globals.scss';
+import './globals.scss';
 
 // fonts
 const palanquin = Palanquin({

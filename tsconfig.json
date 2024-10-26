@@ -23,6 +23,6 @@
     },
     "noUncheckedIndexedAccess": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/create-task/page.tsx", "scripts/tsconfig.json", "scripts/generateApiTypes.mts"],
   "exclude": ["node_modules"]
 }

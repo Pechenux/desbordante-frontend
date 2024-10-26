@@ -47,7 +47,6 @@ export default [
         },
       },
     },
-
     rules: {
       'import/order': [
         'error',
