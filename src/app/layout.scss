@@ -45,5 +45,7 @@ small {
 }
 
 main {
-  margin-top: $header-heigth;
+  position: relative;
+  height: 100%;
+  padding: $header-heigth 0 0;
 }

@@ -2,11 +2,9 @@
 
 .header {
   position: fixed;
-  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: $header-heigth;
   width: 100vw;
   padding: 24px 64px;
   z-index: 1000;
