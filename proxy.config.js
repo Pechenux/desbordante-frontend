@@ -8,12 +8,12 @@ module.exports = async () => {
 
   if (serverProtocol && serverIP && serverPort) {
     const serverURL = `${serverProtocol}://${serverIP}:${serverPort}`;
-    const serverGraphQLEndpoint = `${serverURL}/graphql`;
-    const serverProxyURL = '/api/backend';
+    const serverRESTAPIEndpoint = `${serverURL}/api`;
+    const serverProxyURL = '/api';
 
     proxies.push({
       source: `${serverProxyURL}/:path*`,
-      destination: `${serverGraphQLEndpoint}/:path*`,
+      destination: `${serverRESTAPIEndpoint}/:path*`,
     });
   } else {
     disabledProxies.push('server');
