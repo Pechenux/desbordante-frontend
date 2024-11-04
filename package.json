@@ -1,6 +1,7 @@
 {
   "name": "desbordante-frontend",
   "version": "0.1.0",
+  "private": true,
   "scripts": {
     "codegen": "tsx ./scripts/generateApiTypes.mts",
     "dev": "next dev",
@@ -9,7 +10,9 @@
     "start": "next start",
     "serve": "pnpm run build && pnpm run start",
     "typecheck": "tsc -p ./tsconfig.json --noEmit",
-    "lint": "eslint ./src",
+    "lint:typescript": "eslint",
+    "lint:styles": "stylelint",
+    "lint": "pnpm run lint:typescript --fix ./src ; pnpm run lint:styles --fix ./src",
     "test:e2e": "playwright test",
     "test:e2e:manual": "playwright test --ui",
     "test:unit": "jest",
