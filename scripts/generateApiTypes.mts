@@ -22,7 +22,6 @@ const NULL = ts.factory.createLiteralTypeNode(ts.factory.createNull());
 const ast = await openapiTS(new URL(schemaURL), {
   // Если поле в схеме называется File и имеет бинарный тип, заменяем его тип с строки на файл
   transform(schemaObject) {
-    console.log(schemaObject);
     if (
       schemaObject.title === 'File' &&
       schemaObject.type === 'string' &&
