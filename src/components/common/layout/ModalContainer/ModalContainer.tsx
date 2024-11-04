@@ -12,7 +12,7 @@ import {
 } from '@floating-ui/react';
 import cn from 'classnames';
 import { FC, useContext } from 'react';
-import Icon from '@/components/common/uikit/Icon';
+import { Icon } from '@/components/common/uikit/Icon';
 import { ModalRootContext } from '@/components/meta';
 import { WithChildren } from '@/types/withChildren';
 import styles from './ModalContainer.module.scss';
@@ -24,7 +24,7 @@ export type ModalProps = WithChildren & {
   isOpen?: boolean;
 };
 
-const ModalContainer: FC<ModalProps> = ({
+export const ModalContainer: FC<ModalProps> = ({
   className,
   title,
   children,
@@ -93,5 +93,3 @@ const ModalContainer: FC<ModalProps> = ({
     </>
   );
 };
-
-export default ModalContainer;

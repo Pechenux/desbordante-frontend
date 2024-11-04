@@ -4,7 +4,7 @@ type IconConfig = typeof icons;
 export type IconName = keyof IconConfig;
 type IconProps<TName extends IconName> = Parameters<IconConfig[TName]>[0];
 
-const Icon = <TName extends IconName>(
+export const Icon = <TName extends IconName>(
   props: { name: TName } & IconProps<TName>,
 ) => {
   if (!icons[props.name]) {
@@ -12,5 +12,3 @@ const Icon = <TName extends IconName>(
   }
   return icons[props.name]({ ...props, role: 'img' });
 };
-
-export default Icon;

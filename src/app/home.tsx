@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import HomeBackground from '@/assets/backgrounds/home.svg?component';
-import ModalContainer from '@/components/common/layout/ModalContainer';
+import { ModalContainer } from '@/components/common/layout/ModalContainer';
 import Button from '@/components/common/uikit/Button';
 import styles from './home.module.scss';
 

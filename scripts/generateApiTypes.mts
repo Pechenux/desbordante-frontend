@@ -19,6 +19,8 @@ const FILE = ts.factory.createTypeReferenceNode(
 );
 const NULL = ts.factory.createLiteralTypeNode(ts.factory.createNull());
 
+const algorithms = new Set<string>();
+
 const ast = await openapiTS(new URL(schemaURL), {
   // Если поле в схеме называется File и имеет бинарный тип, заменяем его тип с строки на файл
   transform(schemaObject) {
@@ -31,8 +33,64 @@ const ast = await openapiTS(new URL(schemaURL), {
         ? ts.factory.createUnionTypeNode([FILE, NULL])
         : FILE;
     }
+
+    if (
+      schemaObject.type === 'object' &&
+      schemaObject.properties &&
+      'algo_name' in schemaObject.properties &&
+      'enum' in schemaObject.properties.algo_name &&
+      schemaObject.properties.algo_name.enum &&
+      '0' in schemaObject.properties.algo_name.enum &&
+      typeof schemaObject.properties.algo_name.enum[0] === 'string'
+    ) {
+      algorithms.add(schemaObject.properties.algo_name.enum[0]);
+    }
   },
+  exportType: true,
+  enum: true,
+  rootTypes: true,
 });
+
+const algorithmsList = Array.from(algorithms.values()).sort();
+
+ast.push(
+  ts.factory.createTypeAliasDeclaration(
+    [ts.factory.createToken(ts.SyntaxKind.ExportKeyword)],
+    ts.factory.createIdentifier('Algorithms'),
+    undefined,
+    ts.factory.createUnionTypeNode(
+      algorithmsList.map((algo) =>
+        ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(algo)),
+      ),
+    ),
+  ),
+  ts.factory.createVariableStatement(
+    [ts.factory.createToken(ts.SyntaxKind.ExportKeyword)],
+    ts.factory.createVariableDeclarationList(
+      [
+        ts.factory.createVariableDeclaration(
+          ts.factory.createIdentifier('AlgorithmList'),
+          undefined,
+          ts.factory.createTypeReferenceNode(
+            ts.factory.createIdentifier('Array'),
+            [
+              ts.factory.createTypeReferenceNode(
+                ts.factory.createIdentifier('Algorithms'),
+                undefined,
+              ),
+            ],
+          ),
+          ts.factory.createArrayLiteralExpression(
+            algorithmsList.map((algo) => ts.factory.createStringLiteral(algo)),
+            false,
+          ),
+        ),
+      ],
+      ts.NodeFlags.Const,
+    ),
+  ),
+);
+
 // Отключаем еслинт в сгенерированном файле
 const disableESLint = '/* eslint-disable -- GENERATED FILE, DO NOT EDIT */\n';
 const contents = disableESLint + astToString(ast);

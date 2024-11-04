@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Button from '@/components/common/uikit/Button';
-import ModalContainer from './ModalContainer';
+import { ModalContainer } from './ModalContainer';
 
 export const TestModal: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
