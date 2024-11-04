@@ -5,6 +5,12 @@ $header-heigth: 100px;
 $font-display: var(--font-palanquin);
 $font-content: var(--font-roboto);
 
+/* Z-Indices */
+
+$z-inedx-main: 0;
+$z-inedx-header: 1000;
+$z-inedx-modal: 1001;
+
 /* Shades */
 $black: #251e29;
 $white: #ffffff;
