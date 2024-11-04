@@ -2,7 +2,8 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent, memo, useCallback, useState } from 'react';
-import { createMutationFn } from '@/api/fetchFunctions';
+import { bodyToFormData, createMutationFn } from '@/api/fetchFunctions';
+import { DatasetCard } from '@/components/choose-file/DatasetCard';
 
 const ChoosePrimitive = () => {
   const mutator = useMutation({
@@ -30,13 +31,7 @@ const ChoosePrimitive = () => {
         separator: ',',
         header: [0],
       },
-      bodySerializer(body) {
-        const fd = new FormData();
-        fd.append('file', body.file);
-        fd.append('separator', body.separator);
-        fd.append('header', body.header.join(','));
-        return fd;
-      },
+      bodySerializer: bodyToFormData,
     });
   }, [file, mutator]);
 
@@ -44,6 +39,34 @@ const ChoosePrimitive = () => {
     <div>
       <input type="file" onChange={handleChange} />
       <button onClick={handleClick}>press me</button>
+      <DatasetCard
+        dataset={{
+          fileID: '1',
+          originalFileName: 'asd',
+          rowsCount: 0,
+          createdAt: '0',
+          numberOfUses: 0,
+          isBuiltIn: true,
+          supportedPrimitives: ['fun'],
+        }}
+        fileID="1"
+        primitive="fun"
+        onClick={() => null}
+      />
+      <DatasetCard
+        dataset={{
+          fileID: '2',
+          originalFileName: 'asd',
+          rowsCount: 0,
+          createdAt: '0',
+          numberOfUses: 0,
+          isBuiltIn: false,
+          supportedPrimitives: ['fun'],
+        }}
+        fileID="1"
+        primitive="fun"
+        onClick={() => null}
+      />
     </div>
   );
 };
