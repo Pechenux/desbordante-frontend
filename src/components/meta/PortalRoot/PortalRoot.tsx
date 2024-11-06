@@ -1,8 +1,8 @@
 'use client';
 
 import { ReactNode, useRef } from 'react';
-import { ModalRootContext } from './ModalRootContext';
-import styles from './ModalRoot.module.scss';
+import { PortalRootContext } from './PortalRootContext';
+import styles from './PortalRoot.module.scss';
 
 export const ModalRoot = ({
   children,
@@ -12,9 +12,9 @@ export const ModalRoot = ({
   const modalRootRef = useRef<HTMLDivElement>(null);
 
   return (
-    <ModalRootContext.Provider value={modalRootRef}>
+    <PortalRootContext.Provider value={modalRootRef}>
       {children}
       <div ref={modalRootRef} className={styles.modalRoot} />
-    </ModalRootContext.Provider>
+    </PortalRootContext.Provider>
   );
 };
