@@ -1,2 +1,2 @@
 export * from './Providers';
-export * from './ModalRoot';
+export * from './PortalRoot';

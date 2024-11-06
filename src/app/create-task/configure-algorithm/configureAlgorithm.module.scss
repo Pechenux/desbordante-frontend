@@ -1,0 +1,25 @@
+@import "common";
+
+$container-width: 466px;
+
+.notEmpty {
+  color: $black;
+}
+
+.description {
+  margin-top: 16px;
+}
+
+.title {
+  margin-bottom: 24px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.container {
+  margin: auto;
+  flex-direction: column;
+  gap: 24px;
+  display: flex;
+  width: $container-width;
+}

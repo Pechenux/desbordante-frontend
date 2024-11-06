@@ -13,7 +13,7 @@ import {
 import cn from 'classnames';
 import { FC, useContext } from 'react';
 import { Icon } from '@/components/common/uikit/Icon';
-import { ModalRootContext } from '@/components/meta';
+import { PortalRootContext } from '@/components/meta';
 import { WithChildren } from '@/types/withChildren';
 import styles from './ModalContainer.module.scss';
 
@@ -31,7 +31,7 @@ export const ModalContainer: FC<ModalProps> = ({
   onClose,
   isOpen = true,
 }) => {
-  const modalRootRef = useContext(ModalRootContext);
+  const portalRootRef = useContext(PortalRootContext);
 
   const { refs, context } = useFloating({
     open: isOpen,
@@ -62,7 +62,7 @@ export const ModalContainer: FC<ModalProps> = ({
   return (
     <>
       {isOpen && (
-        <FloatingPortal root={modalRootRef}>
+        <FloatingPortal root={portalRootRef}>
           <FloatingOverlay
             style={stylesOverlay}
             className={styles.dialogOverlay}
