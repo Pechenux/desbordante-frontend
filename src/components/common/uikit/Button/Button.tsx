@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, ButtonHTMLAttributes, ReactNode } from 'react';
+import { FC, ButtonHTMLAttributes, ReactNode, memo } from 'react';
 import styles from './Button.module.scss';
 
 type ButtonVariant =
@@ -16,7 +16,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
 }
 
-const Button: FC<Props> = ({
+const ButtonComponent: FC<Props> = ({
   onClick,
   disabled = false,
   variant = 'primary',
@@ -49,4 +49,4 @@ const Button: FC<Props> = ({
   );
 };
 
-export default Button;
+export const Button = memo(ButtonComponent);

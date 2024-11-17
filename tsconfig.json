@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,6 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "allowUmdGlobalAccess": true,
     "incremental": true,
     "plugins": [
       {
@@ -18,11 +23,27 @@
       }
     ],
     "paths": {
-      "@public/*": ["./public/*"],
-      "@/*": ["./src/*"],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
     },
     "noUncheckedIndexedAccess": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/create-task/page.tsx", "scripts/tsconfig.json", "scripts/generateApiTypes.mts"],
-  "exclude": ["node_modules", "scripts", "**/*.test.tsx"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/create-task/page.tsx",
+    "scripts/tsconfig.json",
+    "scripts/generateApiTypes.mts"
+  ],
+  "exclude": [
+    "node_modules",
+    "scripts",
+    "**/*.test.tsx"
+  ]
 }
