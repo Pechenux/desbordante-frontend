@@ -6,7 +6,7 @@ import {
 } from '@/components/common/layout/ModalContainer';
 import WizardLayout from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
-import Button from '@/components/common/uikit/Button';
+import { Button } from '@/components/common/uikit/Button';
 import { DatasetCard } from '../DatasetCard';
 import styles from './ChooseFileModal.module.scss';
 

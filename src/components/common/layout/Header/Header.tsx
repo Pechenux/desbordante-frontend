@@ -12,7 +12,7 @@ const HeaderComponent = () => {
 
   useEffect(() => {
     const checkScroll = () => {
-      setHeaderBackground(window.scrollY > 100);
+      setHeaderBackground(window.scrollY > 64);
     };
 
     window.addEventListener('scroll', checkScroll);
