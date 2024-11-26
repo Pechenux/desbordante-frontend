@@ -4,7 +4,7 @@ import { memo, useState } from 'react';
 import ChooseFileModal from '@/components/choose-file/ChooseFileModal';
 import WizardLayout from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
-import Button from '@/components/common/uikit/Button';
+import { Button } from '@/components/common/uikit/Button';
 import { File } from '@/components/common/uikit/Inputs';
 import styles from './configureAlgorithm.module.scss';
 

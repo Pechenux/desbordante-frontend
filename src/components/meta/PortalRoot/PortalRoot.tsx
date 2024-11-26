@@ -4,17 +4,17 @@ import { ReactNode, useRef } from 'react';
 import { PortalRootContext } from './PortalRootContext';
 import styles from './PortalRoot.module.scss';
 
-export const ModalRoot = ({
+export const PortalRoot = ({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  const modalRootRef = useRef<HTMLDivElement>(null);
+  const portalRootRef = useRef<HTMLDivElement>(null);
 
   return (
-    <PortalRootContext.Provider value={modalRootRef}>
+    <PortalRootContext.Provider value={portalRootRef}>
       {children}
-      <div ref={modalRootRef} className={styles.modalRoot} />
+      <div ref={portalRootRef} className={styles.portalRoot} />
     </PortalRootContext.Provider>
   );
 };
