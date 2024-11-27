@@ -53,6 +53,7 @@ const ast = await openapiTS(new URL(schemaURL), {
 
 const algorithmsList = Array.from(algorithms.values()).sort();
 
+// Генерирует юнион тип с алгоритмами и массив с элеменами юнион типа
 ast.push(
   ts.factory.createTypeAliasDeclaration(
     [ts.factory.createToken(ts.SyntaxKind.ExportKeyword)],
