@@ -25,8 +25,7 @@ const HeaderComponent = () => {
 
   return (
     <header
-      // className={cn(styles.header, headerBackground && styles.background)}
-      className={styles.header}
+      className={cn(styles.header, headerBackground && styles.headerBackground)}
     >
       <NavBar />
       <UserLogin />
