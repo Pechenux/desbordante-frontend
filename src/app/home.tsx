@@ -71,7 +71,6 @@ export default function Home() {
           </video>
         </div>
       </div>
-      <div style={{ height: '2000px' }}>asd</div>
     </div>
   );
 }
