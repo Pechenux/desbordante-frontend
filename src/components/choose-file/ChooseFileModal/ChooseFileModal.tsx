@@ -7,6 +7,7 @@ import {
 import WizardLayout from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { DatasetCard } from '../DatasetCard';
 import styles from './ChooseFileModal.module.scss';
 
@@ -20,11 +21,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
     {
       dataset: {
@@ -34,11 +33,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
     {
       dataset: {
@@ -48,11 +45,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
     {
       dataset: {
@@ -62,11 +57,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
     {
       dataset: {
@@ -76,11 +69,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
     {
       dataset: {
@@ -90,11 +81,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
   ];
 
@@ -107,11 +96,9 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         createdAt: '0',
         numberOfUses: 0,
         isBuiltIn: true,
-        supportedPrimitives: ['fun'],
+        supportedPrimitives: [PrimitiveType.FD],
       },
-      fileID: '1',
-      primitive: 'fun',
-      onClick: () => null,
+      primitive: PrimitiveType.FD,
     },
   ];
 
@@ -140,9 +127,7 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
           <DatasetCard
             key={dts.dataset.fileID}
             dataset={dts.dataset}
-            fileID={dts.fileID}
             primitive={dts.primitive}
-            onClick={dts.onClick}
           />
         ))}
       </div>
@@ -155,9 +140,7 @@ const ChooseFileModal: FC<ModalProps> = ({ isOpen, onClose }) => {
           <DatasetCard
             key={dts.dataset.fileID}
             dataset={dts.dataset}
-            fileID={dts.fileID}
             primitive={dts.primitive}
-            onClick={dts.onClick}
           />
         ))}
       </div>

@@ -32,4 +32,19 @@
 .description {
   @include paragraph-small;
   color: $black-75;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+.buttonShow {
+  @include paragraph-small;
+  width: fit-content;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  color: $primary-0;
 }
