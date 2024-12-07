@@ -1,3 +1,3 @@
 export type WithClassname = {
-  className: string;
+  className?: string;
 };

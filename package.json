@@ -16,6 +16,7 @@
     "test:e2e": "playwright test",
     "test:e2e:manual": "playwright test --ui",
     "test:unit": "jest",
+    "clean": "rm -rf .next",
     "prepare": "husky"
   },
   "dependencies": {
