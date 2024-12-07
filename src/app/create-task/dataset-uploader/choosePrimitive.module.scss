@@ -1,0 +1,46 @@
+@import "common";
+
+$gap: 16px;
+$cardWidth: 400px;
+$pagePadding: 10vw;
+
+.container {
+  display: grid;
+  gap: $gap;
+
+  @media (min-width: calc(2 * $pagePadding + 2 * $cardWidth + $gap)) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: calc(2 * $pagePadding + 3 * $cardWidth + 2 * $gap)) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.pageName {
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.pageDescription {
+  button {
+    margin: 0 0 0 16px;
+  }
+}
+
+.search {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 96px;
+  align-items: flex-end;
+
+  button {
+    height: 60px;
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
