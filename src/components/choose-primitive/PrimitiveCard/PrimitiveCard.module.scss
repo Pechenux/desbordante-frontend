@@ -48,3 +48,8 @@
   text-decoration: underline;
   color: $primary-0;
 }
+
+.fullDescription {
+  @include paragraph;
+  color: $black;
+}

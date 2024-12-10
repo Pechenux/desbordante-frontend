@@ -39,7 +39,12 @@ export const PrimitiveCard: FC<PrimitiveCardProps> = ({
         </div>
         <div>
           <div className={styles.description}>{description}</div>
-          <button className={styles.buttonShow}>Show more</button>
+          <button
+            className={styles.buttonShow}
+            onClick={() => setOpenDescription(true)}
+          >
+            Show more
+          </button>
         </div>
 
         <div className={styles.flex}></div>
@@ -48,6 +53,7 @@ export const PrimitiveCard: FC<PrimitiveCardProps> = ({
         isOpen={isOpenDescription}
         onClose={() => setOpenDescription(false)}
         title={label}
+        className={styles.fullDescription}
       >
         {description}
       </ModalContainer>
