@@ -10,7 +10,7 @@ interface Props extends PropsWithChildren {
   hasBackground?: boolean;
 }
 
-const WizardLayout: FC<Props> = ({
+export const WizardLayout: FC<Props> = ({
   header,
   footer,
   className,
@@ -28,5 +28,3 @@ const WizardLayout: FC<Props> = ({
     </div>
   );
 };
-
-export default WizardLayout;

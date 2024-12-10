@@ -1,1 +1,1 @@
-export { default } from './PrimitiveCard';
+export * from './PrimitiveCard';

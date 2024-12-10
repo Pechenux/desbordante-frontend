@@ -1,31 +1,37 @@
 'use client';
 
-import { memo, useState } from 'react';
-import ChooseFileModal from '@/components/choose-file/ChooseFileModal';
-import WizardLayout from '@/components/common/layout/WizardLayout';
+import { useAtom } from 'jotai';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { ChooseDatasetModal } from '@/components/choose-file/ChooseDatasetModal';
+import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
-import { File } from '@/components/common/uikit/Inputs';
+import { SelectDataset } from '@/components/common/uikit/Inputs';
+import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
 import styles from './configureAlgorithm.module.scss';
 
-const ChoosePrimitive = () => {
+const ConfigurePrimitive = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [choosenFile] = useAtom<choosenFileType>(choosenFileAtom);
 
-  const onClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false);
-  };
-  const handleFileClick = () => {
+  }, []);
+  const handleFileClick = useCallback(() => {
     setIsOpen(true);
-  };
+  }, []);
 
-  const header = (
-    <>
-      <h2 className={styles.title}>Configure Algorithm</h2>
-      <h6 className={styles.description}>Select algorithm parameters</h6>
-    </>
+  const header = useMemo(
+    () => (
+      <>
+        <h2 className={styles.title}>Configure Algorithm</h2>
+        <h6 className={styles.description}>Select algorithm parameters</h6>
+      </>
+    ),
+    [],
   );
-  const footer = (
-    <>
+  const footer = useMemo(
+    () => (
       <Button
         disabled={false}
         variant="primary"
@@ -34,23 +40,25 @@ const ChoosePrimitive = () => {
       >
         Analyze
       </Button>
-    </>
+    ),
+    [],
   );
 
   return (
     <WizardLayout header={header} footer={footer}>
       <div className={styles.container}>
-        <File
+        <SelectDataset
           placeholder="Choose file..."
           label="File"
           tooltip="tooltip"
           onClick={handleFileClick}
           readOnly
+          value={choosenFile.label}
         />
-        <ChooseFileModal isOpen={isOpen} onClose={onClose} />
+        <ChooseDatasetModal isOpen={isOpen} onClose={handleClose} />
       </div>
     </WizardLayout>
   );
 };
 
-export default memo(ChoosePrimitive);
+export default memo(ConfigurePrimitive);

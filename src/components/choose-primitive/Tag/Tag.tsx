@@ -5,8 +5,6 @@ interface TagProps {
   tagName: string;
 }
 
-const Tag: FC<TagProps> = ({ tagName }) => {
+export const Tag: FC<TagProps> = ({ tagName }) => {
   return <div className={styles.tagContainer}>{'# ' + tagName}</div>;
 };
-
-export default Tag;

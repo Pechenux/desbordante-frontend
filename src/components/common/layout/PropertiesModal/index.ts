@@ -1,1 +1,1 @@
-export { default } from './PropertiesModal';
+export * from './PropertiesModal';

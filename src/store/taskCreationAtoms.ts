@@ -3,4 +3,11 @@ import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 
 export const choosenPrimitiveAtom = atom<PrimitiveType>(PrimitiveType.AR);
 
-export const choosenFileAtom = atom<string>('');
+export interface choosenFileType {
+  fileId: string;
+  label: string;
+}
+export const choosenFileAtom = atom<choosenFileType>({
+  fileId: '0',
+  label: '',
+} as choosenFileType);

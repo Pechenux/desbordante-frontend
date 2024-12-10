@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { Icon } from '@/components/common/uikit';
 import { InputPropsBase } from '@/components/common/uikit/Inputs';
-import Tooltip from '@/components/common/uikit/Tooltip';
+import { Tooltip } from '@/components/common/uikit/Tooltip';
 import colors from '@/constants/colors';
 import styles from './Search.module.scss';
 
@@ -18,9 +18,9 @@ type Props = InputPropsBase &
     onClick?: () => void;
   };
 
-const Search: ForwardRefRenderFunction<HTMLInputElement, Props> = (
+const SearchComponent: ForwardRefRenderFunction<HTMLInputElement, Props> = (
   { id, label, className, error, tooltip, placeholder, onClick, ...props },
-  //ref,
+  ref,
 ) => {
   const uniqueId = useId();
   const inputId = id || uniqueId;
@@ -38,7 +38,7 @@ const Search: ForwardRefRenderFunction<HTMLInputElement, Props> = (
         {tooltip && <Tooltip>{tooltip}</Tooltip>}
       </div>
       <label className={styles.inputContainer} onClick={onClick}>
-        <input type="text" placeholder={placeholder} {...props} />
+        <input type="text" placeholder={placeholder} {...props} ref={ref} />
         <Icon name="search" color={colors.black[75]} />
       </label>
 
@@ -47,4 +47,4 @@ const Search: ForwardRefRenderFunction<HTMLInputElement, Props> = (
   );
 };
 
-export default forwardRef(Search);
+export const Search = forwardRef(SearchComponent);

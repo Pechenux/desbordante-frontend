@@ -1,2 +1,2 @@
-export { default } from './MultiSelect';
-export { default as ControlledSelect } from './ControlledMultiSelect';
+export * from './MultiSelect';
+export * from './ControlledMultiSelect';

@@ -7,7 +7,7 @@ import { Icon } from '@/components/common/uikit';
 // import '@formatjs/intl-numberformat/polyfill';
 // import '@formatjs/intl-numberformat/locale-data/en';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { choosenFileAtom } from '@/store/taskCreationAtoms';
+import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
 import styles from './DatasetCard.module.scss';
 
 interface BaseCardProps extends PropsWithChildren {
@@ -74,7 +74,8 @@ interface DatasetCardProps {
 
 export const DatasetCard: FC<DatasetCardProps> = ({ dataset, primitive }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [choosenFile, setChoosenFile] = useAtom<string>(choosenFileAtom);
+  const [choosenFile, setChoosenFile] =
+    useAtom<choosenFileType>(choosenFileAtom);
 
   const descriptionList = getFileDescription(dataset);
   const fileName = dataset.originalFileName;
@@ -89,8 +90,16 @@ export const DatasetCard: FC<DatasetCardProps> = ({ dataset, primitive }) => {
 
   return (
     <BaseCard
-      isSelected={dataset.fileID === choosenFile}
-      onClick={isDisabled ? undefined : () => setChoosenFile(dataset.fileID)}
+      isSelected={dataset.fileID === choosenFile.fileId}
+      onClick={
+        isDisabled
+          ? undefined
+          : () =>
+              setChoosenFile({
+                fileId: dataset.fileID,
+                label: dataset.originalFileName,
+              })
+      }
       isDisabled={isDisabled}
     >
       <div className={styles.cardTitle}>

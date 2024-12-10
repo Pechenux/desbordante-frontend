@@ -1,31 +1,26 @@
 import classNames from 'classnames';
-import { useAtom } from 'jotai';
-import { FC, PropsWithChildren, useState } from 'react';
+import { FC, PropsWithChildren, ReactNode, useState } from 'react';
 import { ModalContainer } from '@/components/common/layout';
-import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import primitiveInfo from '@/constants/primitivesInfo/primitivesInfo';
-import { choosenPrimitiveAtom } from '@/store/taskCreationAtoms';
-import Tag from '../Tag/Tag';
+import { TagType } from '@/constants/primitivesInfo/primitivesTags';
+import { Tag } from '../Tag';
 import styles from './PrimitiveCard.module.scss';
 
 interface PrimitiveCardProps extends PropsWithChildren {
-  primitive: PrimitiveType;
-  //description1: string;
-  //primitiveName: string;
-  //tags1: string[];
+  isSelected: boolean;
+  label: string;
+  tags: TagType[];
+  description: ReactNode;
+  onClick: () => void;
 }
 
-const PrimitiveCard: FC<PrimitiveCardProps> = ({ primitive }) => {
+export const PrimitiveCard: FC<PrimitiveCardProps> = ({
+  isSelected,
+  label,
+  tags,
+  description,
+  onClick,
+}) => {
   const [isOpenDescription, setOpenDescription] = useState<boolean>(false);
-  const [choosenPrimitive, setChoosenPrimitive] =
-    useAtom<PrimitiveType>(choosenPrimitiveAtom);
-
-  const isSelected = primitive === choosenPrimitive;
-  const { label, description, tags } = primitiveInfo[primitive] || {
-    label: 'Loading',
-    description: 'Loading',
-    tags: ['Loading'],
-  };
 
   return (
     <>
@@ -34,7 +29,7 @@ const PrimitiveCard: FC<PrimitiveCardProps> = ({ primitive }) => {
           styles.cardContainer,
           isSelected && styles.selected,
         )}
-        onClick={() => setChoosenPrimitive(primitive)}
+        onClick={onClick}
       >
         <div className={styles.title}>{label}</div>
         <div className={styles.tagsContainer}>
@@ -42,11 +37,6 @@ const PrimitiveCard: FC<PrimitiveCardProps> = ({ primitive }) => {
             <Tag key={tag} tagName={tag} />
           ))}
         </div>
-
-        {/* <CollapsableView
-          title="123"
-          onClick={() => setOpenDescription(true)}
-        ></CollapsableView> */}
         <div>
           <div className={styles.description}>{description}</div>
           <button className={styles.buttonShow}>Show more</button>
@@ -64,5 +54,3 @@ const PrimitiveCard: FC<PrimitiveCardProps> = ({ primitive }) => {
     </>
   );
 };
-
-export default PrimitiveCard;

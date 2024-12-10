@@ -1,6 +1,5 @@
 // import Checkbox from './Checkbox';
 // import DateTime from './DateTime';
-// import MultiSelect from './MultiSelect';
 // import NumberInput from './NumberInput';
 // import NumberRange from './NumberRange';
 // import NumberSlider from './NumberSlider';
@@ -8,7 +7,9 @@
 // import Select from './Select';
 // import Text from './Text';
 // import TextArea from './TextArea';
-import File from './File';
+import { MultiSelect } from './MultiSelect';
+import { Search } from './Search';
+import { SelectDataset } from './SelectDataset';
 
 export interface InputPropsBase {
   error?: string;
@@ -16,7 +17,8 @@ export interface InputPropsBase {
 }
 
 export {
-  File,
+  SelectDataset,
+  Search,
   // Text,
   // TextArea,
   // Checkbox,
@@ -25,6 +27,6 @@ export {
   // NumberSlider,
   // NumberInput,
   // NumberRange,
-  // MultiSelect,
+  MultiSelect,
   // DateTime,
 };

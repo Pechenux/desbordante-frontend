@@ -8,9 +8,9 @@ import {
 } from 'react';
 import { Icon } from '@/components/common/uikit';
 import { InputPropsBase } from '@/components/common/uikit/Inputs';
-import Tooltip from '@/components/common/uikit/Tooltip';
+import { Tooltip } from '@/components/common/uikit/Tooltip';
 import colors from '@/constants/colors';
-import styles from './File.module.scss';
+import styles from './SelectDataset.module.scss';
 
 type Props = InputPropsBase &
   HTMLProps<HTMLInputElement> & {
@@ -18,9 +18,12 @@ type Props = InputPropsBase &
     onClick?: () => void;
   };
 
-const File: ForwardRefRenderFunction<HTMLInputElement, Props> = (
+const SelectDatasetComponent: ForwardRefRenderFunction<
+  HTMLInputElement,
+  Props
+> = (
   { id, label, className, error, tooltip, placeholder, onClick, ...props },
-  //ref,
+  ref,
 ) => {
   const uniqueId = useId();
   const inputId = id || uniqueId;
@@ -38,7 +41,13 @@ const File: ForwardRefRenderFunction<HTMLInputElement, Props> = (
         {tooltip && <Tooltip>{tooltip}</Tooltip>}
       </div>
       <label className={styles.inputContainer} onClick={onClick}>
-        <input type="text" value={''} placeholder={placeholder} {...props} />
+        <input
+          type="text"
+          value={''}
+          placeholder={placeholder}
+          {...props}
+          ref={ref}
+        />
         <Icon name="file" color={colors.black[75]} />
       </label>
 
@@ -47,4 +56,4 @@ const File: ForwardRefRenderFunction<HTMLInputElement, Props> = (
   );
 };
 
-export default forwardRef(File);
+export const SelectDataset = forwardRef(SelectDatasetComponent);

@@ -8,7 +8,7 @@ import {
 } from 'react';
 import ReactSelect, { Props as ReactSelectProps } from 'react-select';
 import { InputPropsBase } from '@/components/common/uikit/Inputs';
-import Tooltip from '@/components/common/uikit/Tooltip';
+import { Tooltip } from '@/components/common/uikit/Tooltip';
 import { PortalRootContext } from '@/components/meta';
 import customComponents, { colorStyles } from './customComponents';
 import styles from './MultiSelect.module.scss';
@@ -27,10 +27,10 @@ export type MultiSelectProps<TValue = string> = InputPropsBase &
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type RefElement = any;
 
-const MultiSelect: ForwardRefRenderFunction<RefElement, MultiSelectProps> = (
-  { label, error, tooltip, className, id, components, ...props },
-  ref,
-) => {
+const MultiSelectComponent: ForwardRefRenderFunction<
+  RefElement,
+  MultiSelectProps
+> = ({ label, error, tooltip, className, id, components, ...props }, ref) => {
   const portalRootRef = useContext(PortalRootContext);
   return (
     <div
@@ -66,6 +66,8 @@ const MultiSelect: ForwardRefRenderFunction<RefElement, MultiSelectProps> = (
   );
 };
 
-export default forwardRef(MultiSelect) as <TValue = string>(
+export const MultiSelect = forwardRef(MultiSelectComponent) as <
+  TValue = string,
+>(
   props: MultiSelectProps<TValue> & { ref?: ForwardedRef<RefElement> },
-) => ReturnType<typeof MultiSelect>;
+) => ReturnType<typeof MultiSelectComponent>;

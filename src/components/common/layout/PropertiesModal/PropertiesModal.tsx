@@ -7,13 +7,13 @@ import { Button } from '@/components/common/uikit/Button';
 import { WithChildren } from '@/types/withChildren';
 import styles from './PropertiesModal.module.scss';
 
-type Props = ModalProps &
+type PropertiesModalProps = ModalProps &
   WithChildren & {
     name: string;
     onApply: () => void;
   };
 
-const PropertiesModal: FC<Props> = ({
+export const PropertiesModal: FC<PropertiesModalProps> = ({
   isOpen,
   name,
   onClose,
@@ -33,5 +33,3 @@ const PropertiesModal: FC<Props> = ({
     </ModalContainer>
   );
 };
-
-export default PropertiesModal;

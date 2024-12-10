@@ -15,12 +15,12 @@ import { WithChildren } from '@/types/withChildren';
 
 import styles from './Tooltip.module.scss';
 
-type Props = WithChildren & {
+type TolltipProps = WithChildren & {
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
 };
 
-const Tooltip: FC<Props> = ({ position = 'top', children }) => {
+export const Tooltip: FC<TolltipProps> = ({ position = 'top', children }) => {
   const [isHovered, setIsHovered] = useState(false);
   const portalRootRef = useContext(PortalRootContext);
 
@@ -69,5 +69,3 @@ const Tooltip: FC<Props> = ({ position = 'top', children }) => {
     </>
   );
 };
-
-export default Tooltip;

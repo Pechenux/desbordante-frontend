@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { Option } from './MultiSelect';
-import MultiSelect, { MultiSelectProps } from './MultiSelect';
+import { MultiSelect, MultiSelectProps } from './MultiSelect';
 
 type ControlRules<T extends FieldValues> = ComponentProps<
   typeof Controller<T>
@@ -26,7 +26,7 @@ const getSelectOptions: <TValue = string>(
   return options?.filter(({ value }) => values.includes(value));
 };
 
-const ControlledMultiSelect = <T extends FieldValues, TValue = string>({
+export const ControlledMultiSelect = <T extends FieldValues, TValue = string>({
   controlName,
   control,
   rules,
@@ -46,5 +46,3 @@ const ControlledMultiSelect = <T extends FieldValues, TValue = string>({
     )}
   />
 );
-
-export default ControlledMultiSelect;
