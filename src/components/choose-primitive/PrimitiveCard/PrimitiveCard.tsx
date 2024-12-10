@@ -21,15 +21,6 @@ export const PrimitiveCard: FC<PrimitiveCardProps> = ({
   onClick,
 }) => {
   const [isOpenDescription, setOpenDescription] = useState<boolean>(false);
-  const [choosenPrimitive, setChoosenPrimitive] =
-    useAtom<PrimitiveType>(choosenPrimitiveAtom);
-
-  const isSelected = primitive === choosenPrimitive;
-  const { label, description, tags } = primitiveInfo[primitive] || {
-    label: 'Loading',
-    description: 'Loading',
-    tags: ['Loading'],
-  };
 
   return (
     <>
