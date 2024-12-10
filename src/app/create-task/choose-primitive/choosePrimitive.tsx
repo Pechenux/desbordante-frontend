@@ -1,72 +1,111 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
-import { ChangeEvent, memo, useCallback, useState } from 'react';
-import { bodyToFormData, createMutationFn } from '@/api/fetchFunctions';
-import { DatasetCard } from '@/components/choose-file/DatasetCard';
+import { useAtom } from 'jotai';
+import { memo, useMemo, useState } from 'react';
+import { PrimitiveCard } from '@/components/choose-primitive/PrimitiveCard/PrimitiveCard';
+import { PropertiesModal } from '@/components/common/layout/PropertiesModal';
+import { WizardLayout } from '@/components/common/layout/WizardLayout';
+import { Button } from '@/components/common/uikit/Button';
+import { Icon } from '@/components/common/uikit/Icon';
+import { Search } from '@/components/common/uikit/Inputs';
+import { MultiSelect } from '@/components/common/uikit/Inputs/MultiSelect';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import primitiveInfo from '@/constants/primitivesInfo/primitivesInfo';
+import { choosenPrimitiveAtom } from '@/store/taskCreationAtoms';
+import styles from './choosePrimitive.module.scss';
+
+const options = [
+  { label: '# tag_1', value: 1 },
+  { label: '# tag_2', value: 2 },
+  { label: '# tag_3', value: 3 },
+];
 
 const ChoosePrimitive = () => {
-  const mutator = useMutation({
-    mutationFn: createMutationFn('/api/file/csv'),
-  });
+  const [isOpenFilterModal, setOpenFilterModal] = useState<boolean>(false);
+  const [choosenPrimitive, setChoosenPrimitive] =
+    useAtom<PrimitiveType>(choosenPrimitiveAtom);
+  const onClose = () => setOpenFilterModal(false);
 
-  const [file, setFile] = useState<File | undefined>(undefined);
-
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files !== null) {
-      setFile(e.target.files[0]);
-    }
-  }, []);
-
-  const handleClick = useCallback(async () => {
-    console.log(file);
-
-    if (!file) {
-      return;
-    }
-
-    mutator.mutate({
-      body: {
-        file: file,
-        separator: ',',
-        header: [0],
-      },
-      bodySerializer: bodyToFormData,
-    });
-  }, [file, mutator]);
+  const header = useMemo(
+    () => (
+      <>
+        <h2 className={styles.pageName}>Select a Feature</h2>
+        <h6 className={styles.pageDescription}>
+          We are working on new features and properties{' '}
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              window.open(
+                'https://github.com/Mstrutov/Desbordante/issues/new',
+                '_blank',
+                'noreferrer',
+              )
+            }
+          >
+            Request a Feature
+          </Button>
+        </h6>
+      </>
+    ),
+    [],
+  );
+  const footer = useMemo(
+    () => (
+      <>
+        <Button
+          disabled={false}
+          variant="primary"
+          icon={<Icon name="settings" />}
+          onClick={() => null}
+        >
+          Configure algorithm
+        </Button>
+      </>
+    ),
+    [],
+  );
 
   return (
     <div>
-      <input type="file" onChange={handleChange} />
-      <button onClick={handleClick}>press me</button>
-      <DatasetCard
-        dataset={{
-          fileID: '1',
-          originalFileName: 'asd',
-          rowsCount: 0,
-          createdAt: '0',
-          numberOfUses: 0,
-          isBuiltIn: true,
-          supportedPrimitives: ['fun'],
-        }}
-        fileID="1"
-        primitive="fun"
-        onClick={() => null}
-      />
-      <DatasetCard
-        dataset={{
-          fileID: '2',
-          originalFileName: 'asd',
-          rowsCount: 0,
-          createdAt: '0',
-          numberOfUses: 0,
-          isBuiltIn: false,
-          supportedPrimitives: ['fun'],
-        }}
-        fileID="1"
-        primitive="fun"
-        onClick={() => null}
-      />
+      <WizardLayout footer={footer} header={header}>
+        <div className={styles.search}>
+          <Search label="Search" placeholder="Search..." />
+          <Button
+            variant="primary"
+            size="md"
+            icon={<Icon name="filter" />}
+            onClick={() => setOpenFilterModal(true)}
+          >
+            Filters
+          </Button>
+          <PropertiesModal
+            name="Filters"
+            onApply={onClose}
+            onClose={onClose}
+            isOpen={isOpenFilterModal}
+          >
+            <MultiSelect label="Tags" options={options} />
+          </PropertiesModal>
+        </div>
+
+        <div className={styles.container}>
+          {Object.entries(primitiveInfo).map(([primitiveCode]) => (
+            <PrimitiveCard
+              key={primitiveCode}
+              isSelected={choosenPrimitive === primitiveCode}
+              onClick={() =>
+                setChoosenPrimitive(primitiveCode as PrimitiveType)
+              }
+              {...(primitiveInfo[primitiveCode as PrimitiveType] || {
+                label: 'Loading',
+                description: 'Loading',
+                tags: [],
+              })}
+            />
+          ))}
+        </div>
+      </WizardLayout>
     </div>
   );
 };

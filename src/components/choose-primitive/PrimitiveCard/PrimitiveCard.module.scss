@@ -1,0 +1,50 @@
+@import "common";
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 400px;
+  background-color: $white-25;
+  border: 1px solid $black-25;
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.tagsContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.cardContainer:hover {
+  background-color: $primary-02;
+}
+
+.selected {
+  border-color: $primary;
+  background-color: $primary-05;
+}
+
+.title {
+  @include paragraph;
+}
+
+.description {
+  @include paragraph-small;
+  color: $black-75;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+.buttonShow {
+  @include paragraph-small;
+  width: fit-content;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  color: $primary-0;
+}

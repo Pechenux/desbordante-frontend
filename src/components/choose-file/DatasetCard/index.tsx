@@ -1,3 +1,1 @@
-import { DatasetCard } from './DatasetCard';
-
-export { DatasetCard };
+export * from './DatasetCard';

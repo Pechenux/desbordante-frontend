@@ -1,2 +1,1 @@
-export { ModalContainer } from './ModalContainer';
-export type { ModalProps } from './ModalContainer';
+export * from './ModalContainer';

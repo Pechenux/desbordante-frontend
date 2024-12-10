@@ -1,0 +1,33 @@
+@import "common";
+
+.description {
+  margin-top: 16px;
+}
+
+.title {
+  margin-bottom: 24px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.modal {
+  width: 1080px;
+  padding: 0;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.content {
+  align-items: stretch;
+  width: 100%;
+
+  &.reversed {
+    flex-direction: column-reverse;
+  }
+}
