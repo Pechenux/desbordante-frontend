@@ -4,7 +4,7 @@ import { WithChildren } from '@/types/withChildren';
 import { Tooltip } from '../Tooltip';
 import styles from './FormField.module.scss';
 
-export type FormFieldProps = WithChildren & {
+export type FormFieldParams = {
   label?: string;
   tooltip?: string;
   id?: string;
@@ -12,7 +12,13 @@ export type FormFieldProps = WithChildren & {
   disabled?: boolean;
 };
 
-// FIXME add docs
+type FormFieldProps = WithChildren & FormFieldParams;
+
+/**
+ * Component that adds label, tooltip and error text to the any input passed inside
+ * @param Props Check FormFieldProps
+ * @returns Wrapped input
+ */
 export const FormField: FC<FormFieldProps> = ({
   label,
   tooltip,
@@ -27,18 +33,18 @@ export const FormField: FC<FormFieldProps> = ({
         [styles.disabled!]: disabled,
       })}
     >
-      <div className={styles.labelContainer}>
-        {label && (
-          <label htmlFor={id} className={styles.label}>
-            {label}
-          </label>
-        )}
-        {tooltip && <Tooltip>{tooltip}</Tooltip>}
-      </div>
+      {(label || tooltip) && (
+        <div className={styles.labelContainer}>
+          {label && (
+            <label htmlFor={id} className={styles.label}>
+              {label}
+            </label>
+          )}
+          {tooltip && <Tooltip>{tooltip}</Tooltip>}
+        </div>
+      )}
       <div className={styles.inputContainer}>{children}</div>
-      <div className={styles.errorContainer}>
-        {error && <p className={styles.error}>{error}</p>}
-      </div>
+      {error && <p className={styles.error}>{error}</p>}
     </div>
   );
 };

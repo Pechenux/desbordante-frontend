@@ -6,7 +6,10 @@ import { ChooseDatasetModal } from '@/components/choose-file/ChooseDatasetModal'
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
+import { FormField } from '@/components/common/uikit/FormField/FormField';
 import { SelectDataset } from '@/components/common/uikit/Inputs';
+import { badgePrimary } from '@/components/common/uikit/Inputs/Select/components/OptionBadge';
+import { Select } from '@/components/common/uikit/Inputs/Select/Select';
 import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
 import styles from './configureAlgorithm.module.scss';
 
@@ -56,6 +59,31 @@ const ConfigurePrimitive = () => {
           value={choosenFile.label}
         />
         <ChooseDatasetModal isOpen={isOpen} onClose={handleClose} />
+        <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
+          <Select
+            onChange={(newValue) => console.log(newValue)}
+            options={[
+              {
+                label: 'asdasd',
+                value: 'asdasd',
+                badges: [{ label: 'asdasd' }],
+              },
+            ]}
+          />
+        </FormField>
+        <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
+          <Select
+            options={[
+              {
+                label: 'asdasd',
+                value: 'asdasd',
+                badges: [{ label: 'dsadsa', style: badgePrimary }],
+              },
+            ]}
+            isMulti
+            error
+          />
+        </FormField>
       </div>
     </WizardLayout>
   );

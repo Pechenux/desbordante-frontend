@@ -7,26 +7,11 @@
 // import Select from './Select';
 // import Text from './Text';
 // import TextArea from './TextArea';
-import { MultiSelect } from './MultiSelect';
-import { Search } from './Search';
-import { SelectDataset } from './SelectDataset';
+export * from './MultiSelect';
+export * from './Search';
+export * from './SelectDataset';
 
 export interface InputPropsBase {
   error?: string;
   label?: string;
 }
-
-export {
-  SelectDataset,
-  Search,
-  // Text,
-  // TextArea,
-  // Checkbox,
-  // Select,
-  // Radio,
-  // NumberSlider,
-  // NumberInput,
-  // NumberRange,
-  MultiSelect,
-  // DateTime,
-};
