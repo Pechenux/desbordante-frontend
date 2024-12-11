@@ -112,7 +112,7 @@ export const Select = function <
             }
           >
             <ReactSelectComponents.Option {...props}>
-              {props.children}
+              <div className={styles.optionText}>{props.children}</div>
               {props.data.badges?.map((elem, i) => (
                 <OptionBadge key={'badge' + elem.label + i} style={elem.style}>
                   {elem.label}

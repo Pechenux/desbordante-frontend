@@ -47,6 +47,18 @@ const ConfigurePrimitive = () => {
     [],
   );
 
+  const test = useMemo(
+    () =>
+      Array(30)
+        .fill(1)
+        .map((_, i) => ({
+          label: `${i} ${'asd'.repeat(i)}`,
+          value: `${i}`,
+          badges: [{ label: 'dsadsa', style: badgePrimary }],
+        })),
+    [],
+  );
+
   return (
     <WizardLayout header={header} footer={footer}>
       <div className={styles.container}>
@@ -72,17 +84,7 @@ const ConfigurePrimitive = () => {
           />
         </FormField>
         <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
-          <Select
-            options={[
-              {
-                label: 'asdasd',
-                value: 'asdasd',
-                badges: [{ label: 'dsadsa', style: badgePrimary }],
-              },
-            ]}
-            isMulti
-            error
-          />
+          <Select options={test} isMulti error />
         </FormField>
       </div>
     </WizardLayout>
