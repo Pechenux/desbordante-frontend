@@ -4,10 +4,9 @@
 // import NumberRange from './NumberRange';
 // import NumberSlider from './NumberSlider';
 // import Radio from './Radio';
-// import Select from './Select';
+export * from './Select';
 // import Text from './Text';
 // import TextArea from './TextArea';
-export * from './MultiSelect';
 export * from './Search';
 export * from './SelectDataset';
 

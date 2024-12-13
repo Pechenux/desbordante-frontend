@@ -45,6 +45,12 @@ export const Select = function <
       {...props}
       // set base class name
       className={cn(props.className, styles.selectContainer)}
+      // reset inner styles
+      styles={{
+        option: () => ({}),
+        valueContainer: (styles) => ({ ...styles, padding: 0 }),
+        indicatorSeparator: (styles) => ({ ...styles, margin: 0 }),
+      }}
       // set classnames for inner components
       classNames={{
         control: ({ isFocused }) =>

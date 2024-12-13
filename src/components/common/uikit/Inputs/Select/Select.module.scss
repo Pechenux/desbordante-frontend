@@ -120,43 +120,43 @@
       display: none;
     }
   }
+}
 
-  .optionContainer {
-    margin: 0;
-    padding: 0;
+.optionContainer {
+  margin: 0;
+  padding: 0;
+}
+
+.option {
+  @include paragraph;
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+
+  &.once {
+    justify-content: space-between;
   }
 
-  .option {
-    @include paragraph;
-    padding: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px;
+  &.focused {
+    color: $black;
+    background: $primary-02;
+  }
 
-    &.once {
-      justify-content: space-between;
-    }
+  &.selected {
+    color: $black;
+    background: $primary-10;
+  }
 
-    &.focused {
-      color: $black;
-      background: $primary-02;
-    }
+  .optionText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-    &.selected {
-      color: $black;
-      background: $primary-10;
-    }
-
-    .optionText {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .noOptionsMessage {
-      color: $black-50;
-      text-align: center;
-    }
+  .noOptionsMessage {
+    color: $black-50;
+    text-align: center;
   }
 }
