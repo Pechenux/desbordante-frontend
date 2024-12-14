@@ -1,11 +1,14 @@
 import cn from 'classnames';
 import ReactSelect, {
-  Props as ReactSelectProps,
   components as ReactSelectComponents,
+  Props as ReactSelectProps,
 } from 'react-select';
+import { WithError } from '@/types/withError';
 import { Icon } from '../../Icon';
 import { OptionBadge } from './components/OptionBadge';
 import styles from './Select.module.scss';
+
+export { badgePrimary, badgeSecondary } from './components/OptionBadge';
 
 /**
  * Option badge type
@@ -28,10 +31,9 @@ export type SelectProps<
   IsMulti extends boolean = false,
 > = Omit<
   ReactSelectProps<Option<TValue>, IsMulti>,
-  'components' | 'classNames'
-> & {
-  error?: boolean;
-};
+  'styles' | 'components' | 'classNames'
+> &
+  WithError;
 
 /**
  * Custom select with brand styling
@@ -39,7 +41,7 @@ export type SelectProps<
 export const Select = function <
   TValue = string,
   IsMulti extends boolean = false,
->(props: SelectProps<TValue, IsMulti>) {
+>({ error, ...props }: SelectProps<TValue, IsMulti>) {
   return (
     <ReactSelect
       {...props}
@@ -55,7 +57,7 @@ export const Select = function <
       classNames={{
         control: ({ isFocused }) =>
           cn(styles.control, {
-            [styles.error!]: props.error,
+            [styles.error!]: Boolean(error),
             [styles.focused!]: isFocused,
           }),
         valueContainer: ({ isMulti }) =>

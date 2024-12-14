@@ -8,8 +8,7 @@ import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { FormField } from '@/components/common/uikit/FormField/FormField';
 import { SelectDataset } from '@/components/common/uikit/Inputs';
-import { badgePrimary } from '@/components/common/uikit/Inputs/Select/components/OptionBadge';
-import { Select } from '@/components/common/uikit/Inputs/Select/Select';
+import { Select, badgePrimary, Text } from '@/components/common/uikit/Inputs';
 import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
 import styles from './configureAlgorithm.module.scss';
 
@@ -85,6 +84,9 @@ const ConfigurePrimitive = () => {
         </FormField>
         <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
           <Select options={test} isMulti error />
+        </FormField>
+        <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
+          <Text error />
         </FormField>
       </div>
     </WizardLayout>

@@ -1,12 +1,12 @@
-// import Checkbox from './Checkbox';
-// import DateTime from './DateTime';
-// import NumberInput from './NumberInput';
-// import NumberRange from './NumberRange';
-// import NumberSlider from './NumberSlider';
-// import Radio from './Radio';
+// export * from './Checkbox';
+// export * from './DateTime';
+// export * from './NumberInput';
+// export * from './NumberRange';
+// export * from './NumberSlider';
+// export * from './Radio';
 export * from './Select';
-// import Text from './Text';
-// import TextArea from './TextArea';
+export * from './Text';
+// export * from './TextArea';
 export * from './Search';
 export * from './SelectDataset';
 
