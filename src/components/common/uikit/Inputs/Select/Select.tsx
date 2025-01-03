@@ -1,8 +1,10 @@
 import cn from 'classnames';
+import { useContext } from 'react';
 import ReactSelect, {
   components as ReactSelectComponents,
   Props as ReactSelectProps,
 } from 'react-select';
+import { PortalRootContext } from '@/components/meta';
 import { WithError } from '@/types/withError';
 import { Icon } from '../../Icon';
 import { OptionBadge } from './components/OptionBadge';
@@ -41,9 +43,12 @@ export type SelectProps<
 export const Select = function <
   TValue = string,
   IsMulti extends boolean = false,
->({ error, ...props }: SelectProps<TValue, IsMulti>) {
+>({ error, menuPortalTarget, ...props }: SelectProps<TValue, IsMulti>) {
+  const portalRootRef = useContext(PortalRootContext);
+
   return (
     <ReactSelect
+      menuPortalTarget={menuPortalTarget ?? portalRootRef?.current}
       {...props}
       // set base class name
       className={cn(props.className, styles.selectContainer)}

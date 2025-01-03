@@ -6,18 +6,25 @@ import {
 } from 'react-hook-form';
 import { FormField, FormFieldParams } from '../FormField';
 
+export type ControlledFormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = {
+  /** Props for react-hook-form controller */
+  controllerProps: ControllerProps<TFieldValues, TName>;
+  /** Props for form field */
+  formFieldProps?: Omit<FormFieldParams, 'error'>;
+};
+
 /**
  * FormField controlled by react-hook-form controller
- * @param props react-hook-form controller props and formfield specific props
- * @returns JSX.Element
  */
 export const ControlledFormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(props: {
-  controllerProps: ControllerProps<TFieldValues, TName>;
-  formFieldProps?: Omit<FormFieldParams, 'error'>;
-}) => {
+>(
+  props: ControlledFormFieldProps<TFieldValues, TName>,
+) => {
   const { render, ...controllerProps } = props.controllerProps;
   return (
     <Controller

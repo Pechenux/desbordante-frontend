@@ -38,7 +38,7 @@
 
   .multiValue {
     padding: 3px 8px;
-    background: rgba(118, 0, 209, 0.1);
+    background: $secondary-2;
     border-radius: 4px;
     margin: 2px;
 
@@ -71,12 +71,8 @@
       color: $primary-1;
 
       &:hover {
-        background: rgba(
-          118,
-          0,
-          209,
-          0.1
-        ); // from multivalue background, looks cool
+        background: $secondary-2;
+        // from multivalue background, looks cool
         color: $primary-1;
       }
     }

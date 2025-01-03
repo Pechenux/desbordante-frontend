@@ -43,39 +43,10 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
 
   const range = value.length === 2;
 
-  if (value.length < 1 || value.length > 2) {
-    throw new Error('Value incorrect');
-  }
-
-  if (step && step <= 0) {
-    throw new Error('Step incorrect');
-  }
-
-  if (step && digits < Math.log10(1 / step)) {
-    throw new Error('Numbers after dot incorrect');
-  }
-
   let firstRawValue = value[0] ?? defaultNum;
   let secondRawValue = value[1] ?? defaultNum;
   if (range && firstRawValue < secondRawValue) {
     [firstRawValue, secondRawValue] = [secondRawValue, firstRawValue];
-  }
-
-  if (min && max && min > max) {
-    throw new Error('Incorrect boundaries');
-  }
-
-  if (
-    (min && defaultNum < min) ||
-    (max && defaultNum > max) ||
-    (!includingMin && defaultNum === min) ||
-    (!includingMax && defaultNum === max)
-  ) {
-    throw new Error('Default number is outside boundaries');
-  }
-
-  if (slider && (min === undefined || max === undefined)) {
-    throw new Error('Choose boundaries when showing slider');
   }
 
   const [firstValue, setFirstValue] = useState(firstRawValue);
@@ -181,6 +152,35 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
       prepareValue,
     ],
   );
+
+  if (value.length < 1 || value.length > 2) {
+    throw new Error('Value incorrect');
+  }
+
+  if (step && step <= 0) {
+    throw new Error('Step incorrect');
+  }
+
+  if (step && digits < Math.log10(1 / step)) {
+    throw new Error('Numbers after dot incorrect');
+  }
+
+  if (min && max && min > max) {
+    throw new Error('Incorrect boundaries');
+  }
+
+  if (
+    (min && defaultNum < min) ||
+    (max && defaultNum > max) ||
+    (!includingMin && defaultNum === min) ||
+    (!includingMax && defaultNum === max)
+  ) {
+    throw new Error('Default number is outside boundaries');
+  }
+
+  if (slider && (min === undefined || max === undefined)) {
+    throw new Error('Choose boundaries when showing slider');
+  }
 
   return (
     <div className={styles.inputContainer}>
