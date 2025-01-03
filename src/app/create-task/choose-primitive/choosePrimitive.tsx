@@ -1,14 +1,15 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import { memo, useMemo, useState } from 'react';
+import { memo, useContext, useMemo, useState } from 'react';
 import { PrimitiveCard } from '@/components/choose-primitive/PrimitiveCard/PrimitiveCard';
 import { PropertiesModal } from '@/components/common/layout/PropertiesModal';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
+import { FormField } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { Icon } from '@/components/common/uikit/Icon';
-import { Search } from '@/components/common/uikit/Inputs';
-import { MultiSelect } from '@/components/common/uikit/Inputs/MultiSelect';
+import { Search, Select } from '@/components/common/uikit/Inputs';
+import { PortalRootContext } from '@/components/meta';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import primitiveInfo from '@/constants/primitivesInfo/primitivesInfo';
 import { choosenPrimitiveAtom } from '@/store/taskCreationAtoms';
@@ -18,6 +19,11 @@ const options = [
   { label: '# tag_1', value: 1 },
   { label: '# tag_2', value: 2 },
   { label: '# tag_3', value: 3 },
+  { label: '# tag_4', value: 4 },
+  { label: '# tag_5', value: 5 },
+  { label: '# tag_6', value: 6 },
+  { label: '# tag_7', value: 7 },
+  { label: '# tag_8', value: 8 },
 ];
 
 const ChoosePrimitive = () => {
@@ -25,6 +31,7 @@ const ChoosePrimitive = () => {
   const [choosenPrimitive, setChoosenPrimitive] =
     useAtom<PrimitiveType>(choosenPrimitiveAtom);
   const onClose = () => setOpenFilterModal(false);
+  const portalRootRef = useContext(PortalRootContext);
 
   const header = useMemo(
     () => (
@@ -85,7 +92,14 @@ const ChoosePrimitive = () => {
             onClose={onClose}
             isOpen={isOpenFilterModal}
           >
-            <MultiSelect label="Tags" options={options} />
+            <FormField label="Tags">
+              <Select
+                options={options}
+                isMulti
+                menuPosition="fixed"
+                menuPortalTarget={portalRootRef?.current}
+              />
+            </FormField>
           </PropertiesModal>
         </div>
 

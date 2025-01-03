@@ -1,0 +1,32 @@
+@import "common";
+
+.fieldContainer {
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  margin: 0 0 8px;
+}
+
+.label {
+  @include paragraph;
+  display: block;
+  margin: 0 8px 0 0;
+  color: $black;
+  white-space: nowrap;
+}
+
+.inputContainer {
+  width: 100%;
+  background: $white-25;
+}
+
+.error {
+  @include paragraph-small;
+  margin: 8px 0 0;
+  color: $error;
+}

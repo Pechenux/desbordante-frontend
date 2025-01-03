@@ -11,7 +11,13 @@ export const OptionBadge: FC<OptionBadgeProps> = ({
   className,
   ...props
 }: OptionBadgeProps) => (
-  <div className={cn(className, styles.wrapper, style)} {...props}>
+  <div
+    className={cn(className, styles.wrapper, style ?? styles.primary)}
+    {...props}
+  >
     {props.children}
   </div>
 );
+
+export const badgePrimary = styles.primary;
+export const badgeSecondary = styles.secondary;
