@@ -1,11 +1,12 @@
 import cn from 'classnames';
 import { FC, HTMLProps, useId } from 'react';
+import { WithClassname } from '@/types/withClassname';
 import { WithError } from '@/types/withError';
 import styles from './Text.module.scss';
 
-export type TextProps = HTMLProps<HTMLInputElement> & WithError;
+export type TextProps = HTMLProps<HTMLInputElement> & WithClassname & WithError;
 
-export const Text: FC<TextProps> = ({ id, error, ...props }) => {
+export const Text: FC<TextProps> = ({ id, error, className, ...props }) => {
   const uniqueId = useId();
   const inputId = id || uniqueId;
 
@@ -13,7 +14,9 @@ export const Text: FC<TextProps> = ({ id, error, ...props }) => {
     <input
       {...props}
       id={inputId}
-      className={cn(styles.textInput, { [styles.error!]: Boolean(error) })}
+      className={cn(className, styles.textInput, {
+        [styles.error!]: Boolean(error),
+      })}
     />
   );
 };

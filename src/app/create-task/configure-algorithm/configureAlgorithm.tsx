@@ -9,6 +9,7 @@ import { Button } from '@/components/common/uikit/Button';
 import { FormField } from '@/components/common/uikit/FormField/FormField';
 import { SelectDataset } from '@/components/common/uikit/Inputs';
 import { Select, badgePrimary, Text } from '@/components/common/uikit/Inputs';
+import { NumberInput } from '@/components/common/uikit/Inputs/NumberInput/NumberInput';
 import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
 import styles from './configureAlgorithm.module.scss';
 
@@ -87,6 +88,46 @@ const ConfigurePrimitive = () => {
         </FormField>
         <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
           <Text error />
+        </FormField>
+        <FormField label="normal" tooltip="test">
+          <NumberInput value={[0]} onChange={() => {}} />
+        </FormField>
+        <FormField label="slider" tooltip="test">
+          <NumberInput
+            slider
+            boundaries={{
+              min: -1,
+              max: 1,
+              step: 1,
+              includingMax: true,
+              includingMin: true,
+            }}
+            value={[0]}
+            onChange={() => {}}
+          />
+        </FormField>
+        <FormField label="range" tooltip="test">
+          <NumberInput value={[0, 0]} onChange={() => {}} />
+        </FormField>
+        <FormField label="range slider" tooltip="test">
+          <NumberInput
+            slider
+            boundaries={{ min: -1, max: 1 }}
+            value={[0, 0]}
+            onChange={() => {}}
+          />
+        </FormField>
+        <FormField label="error" tooltip="test">
+          <NumberInput error value={[0]} onChange={() => {}} />
+        </FormField>
+        <FormField label="everything" tooltip="test">
+          <NumberInput
+            slider
+            error
+            boundaries={{ min: -1, max: 1 }}
+            value={[0, 0]}
+            onChange={() => {}}
+          />
         </FormField>
       </div>
     </WizardLayout>

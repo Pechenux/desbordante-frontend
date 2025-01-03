@@ -34,6 +34,7 @@
     "next-i18next": "^15.3.1",
     "openapi-fetch": "^0.13.0",
     "punycode": "^2.3.1",
+    "rc-slider": "^11.1.8",
     "react": "^18",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
@@ -81,5 +82,5 @@
     "tsx": "^4.19.1",
     "typescript": "^5.5.0"
   },
-  "packageManager": "pnpm@9.12.0+sha1.87cb0f58b64bfb9103677375d7e99e12a3ddbf23"
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
 }

@@ -1,8 +1,6 @@
 // export * from './Checkbox';
 // export * from './DateTime';
-// export * from './NumberInput';
-// export * from './NumberRange';
-// export * from './NumberSlider';
+export * from './NumberInput';
 // export * from './Radio';
 export * from './Select';
 export * from './Text';
