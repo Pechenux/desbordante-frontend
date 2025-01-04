@@ -1,0 +1,91 @@
+@import "common";
+
+.checkboxContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  @include paragraph;
+  color: $black;
+  flex-grow: 1;
+}
+
+.checkboxInput {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin: 0 16px 0 0;
+  background: $white-25;
+  border: 1px solid $black-50;
+  border-radius: 4px;
+  flex-grow: 0;
+
+  &.simple {
+    width: 8px;
+    height: 8px;
+    border: none;
+  }
+
+  &:checked {
+    border: 1px solid $primary-0;
+    background: $primary-0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: $white;
+      clip-path: polygon(
+        38.5% 66.8%,
+        77.3% 17.5%,
+        87% 25%,
+        39.3% 83%,
+        14.3% 61.3%,
+        22.3% 52.5%
+      );
+    }
+
+    &.simple {
+      border: none;
+      background: url("../../../../../assets/icons/check.svg");
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  &:hover:not(:disabled) {
+    border: 1px solid $primary-0;
+
+    &.simple {
+      border: none;
+    }
+  }
+
+  &.checkboxError {
+    border: 1px solid $error;
+
+    &:hover {
+      border: 2px solid $error;
+    }
+
+    &:checked {
+      background: $error;
+      border: 2px solid $error;
+    }
+  }
+}
+
+.checkboxGroupContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

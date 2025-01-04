@@ -1,4 +1,5 @@
 // export * from './Checkbox';
+export * from './CheckboxGroup';
 // export * from './DateTime';
 export * from './NumberInput';
 // export * from './Radio';

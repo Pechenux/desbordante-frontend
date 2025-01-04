@@ -7,7 +7,7 @@ import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { FormField } from '@/components/common/uikit/FormField/FormField';
-import { SelectDataset } from '@/components/common/uikit/Inputs';
+import { CheckboxGroup, SelectDataset } from '@/components/common/uikit/Inputs';
 import { Select, badgePrimary, Text } from '@/components/common/uikit/Inputs';
 import { NumberInput } from '@/components/common/uikit/Inputs/NumberInput/NumberInput';
 import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
@@ -58,6 +58,8 @@ const ConfigurePrimitive = () => {
         })),
     [],
   );
+
+  const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
 
   return (
     <WizardLayout header={header} footer={footer}>
@@ -127,6 +129,29 @@ const ConfigurePrimitive = () => {
             boundaries={{ min: -1, max: 1 }}
             value={[0, 0]}
             onChange={() => {}}
+          />
+        </FormField>
+        <FormField label="checkbox group">
+          <CheckboxGroup
+            options={[
+              { label: '1', value: '1' },
+              { label: '2', value: '2' },
+              { label: '3', value: '3' },
+            ]}
+            values={checkboxValue}
+            onChange={setCheckboxValue}
+          />
+        </FormField>
+        <FormField label="checkbox group">
+          <CheckboxGroup
+            options={[
+              { label: '1', value: '1' },
+              { label: '2', value: '2' },
+              { label: '3', value: '3' },
+            ]}
+            values={checkboxValue}
+            onChange={setCheckboxValue}
+            error
           />
         </FormField>
       </div>
