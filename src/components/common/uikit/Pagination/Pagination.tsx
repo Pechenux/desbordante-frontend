@@ -1,9 +1,12 @@
+'use client';
+
 import * as React from 'react';
 import { FC } from 'react';
 import ReactPaginate from 'react-paginate';
 
+import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
-import { Icon } from '../Icon';
+
 import styles from './Pagination.module.scss';
 
 type PaginationProps = {

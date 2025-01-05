@@ -1,3 +1,5 @@
+'use client';
+
 import classNames from 'classnames';
 import _ from 'lodash';
 import { FC, ReactElement, useState } from 'react';

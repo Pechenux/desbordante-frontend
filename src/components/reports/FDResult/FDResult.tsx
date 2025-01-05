@@ -2,7 +2,6 @@
 
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
-import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import {
   Button,
   FormField,
@@ -17,9 +16,9 @@ import {
   DependencyList,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import styles from './page.module.scss';
+import styles from './FDResult.module.scss';
 
-export default function FDResult() {
+export const FDResult = () => {
   //const [infoVisible, setInfoVisible] = useState(true);
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
@@ -261,21 +260,9 @@ export default function FDResult() {
       ],
     },
   ];
-  const tabs = [
-    {
-      label: 'Primitive list',
-      pathname: '/reports/dependencies',
-      icon: <Icon name="listDropDown" />,
-    },
-    {
-      label: 'Dataset snippet',
-      pathname: '/reports/snippet',
-      icon: <Icon name="datatable" />,
-    },
-  ];
 
   return (
-    <ReportsLayout tabs={tabs}>
+    <>
       <NextSeo title="Discovered functional dependencies" />
       {isOrderingShown && (
         <OrderingWindow
@@ -336,6 +323,6 @@ export default function FDResult() {
           count={Math.ceil((recordsCount || 10) / 10)}
         />
       </div>
-    </ReportsLayout>
+    </>
   );
-}
+};

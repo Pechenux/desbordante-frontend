@@ -1,3 +1,5 @@
+'use client';
+
 import cn from 'classnames';
 import { useCallback, useContext, useMemo } from 'react';
 import ReactSelect, {

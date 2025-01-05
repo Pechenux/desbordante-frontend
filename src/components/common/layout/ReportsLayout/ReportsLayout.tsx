@@ -1,44 +1,41 @@
+'use client';
+
 import classNames from 'classnames';
-//import { useRouter } from 'next/router';
-import React, { FC, PropsWithChildren, ReactNode, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
+import NotFound from '@/app/not-found';
 import { Icon } from '../../uikit';
 import styles from './ReportsLayout.module.scss';
 
 interface TabType {
+  name: string;
   label: string;
-  pathname: string;
   icon: ReactNode;
+  content: ReactNode;
+  pageClass?: string;
+  containerClass?: string;
 }
 
 interface Props extends PropsWithChildren {
-  pageClass?: string;
-  containerClass?: string;
   tabs: TabType[];
+  currentTab: string;
 }
 
-export const ReportsLayout: FC<Props> = ({
-  pageClass,
-  containerClass,
-  tabs,
-  children,
-}) => {
-  //const router = useRouter();
-  const [selectedPathname, setPathname] = useState<string>(
-    '/reports/dependencies',
-  );
+export const ReportsLayout: FC<Props> = ({ tabs, currentTab }) => {
+  const router = useRouter();
+  const page = tabs.filter((tab) => tab.name === currentTab)[0];
+  if (!page) return NotFound();
 
   return (
-    <div className={classNames(styles.page, pageClass)}>
+    <div className={classNames(styles.page, page.pageClass)}>
       <Icon name="backgroundCreateTask" className={styles.background} />
       <div className={styles.menu}>
         <ul>
-          {tabs.map(({ icon, label, pathname }) => (
+          {tabs.map(({ icon, label, name }) => (
             <li
-              key={pathname}
-              className={classNames(
-                selectedPathname === pathname && styles.active,
-              )}
-              onClick={() => setPathname(pathname)}
+              key={name}
+              className={classNames(currentTab === name && styles.active)}
+              onClick={() => router.push(name)}
             >
               {icon}
               <p>{label}</p>
@@ -46,8 +43,8 @@ export const ReportsLayout: FC<Props> = ({
           ))}
         </ul>
       </div>
-      <div className={classNames(styles.content, containerClass)}>
-        {children}
+      <div className={classNames(styles.content, page.containerClass)}>
+        {page.content}
       </div>
     </div>
   );
