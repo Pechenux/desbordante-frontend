@@ -7,7 +7,7 @@ import {
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
-import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
 import { DatasetCard } from '../DatasetCard';
 import styles from './ChooseDatasetModal.module.scss';
 
@@ -21,9 +21,9 @@ const builtinDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
   {
     dataset: {
@@ -33,9 +33,9 @@ const builtinDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
   {
     dataset: {
@@ -45,9 +45,9 @@ const builtinDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
   {
     dataset: {
@@ -57,9 +57,9 @@ const builtinDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
   {
     dataset: {
@@ -69,9 +69,9 @@ const builtinDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
   {
     dataset: {
@@ -81,9 +81,9 @@ const builtinDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
 ];
 // заглушка
@@ -96,9 +96,9 @@ const userDatasets = [
       createdAt: '0',
       numberOfUses: 0,
       isBuiltIn: true,
-      supportedPrimitives: [PrimitiveType.FD],
+      supportedPrimitives: [MainPrimitives.FD],
     },
-    primitive: PrimitiveType.FD,
+    primitive: MainPrimitives.FD,
   },
 ];
 

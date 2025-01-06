@@ -6,7 +6,7 @@ import { ModalContainer } from '@/components/common/layout';
 import { Icon } from '@/components/common/uikit';
 // import '@formatjs/intl-numberformat/polyfill';
 // import '@formatjs/intl-numberformat/locale-data/en';
-import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
 import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
 import styles from './DatasetCard.module.scss';
 
@@ -25,7 +25,7 @@ export type Dataset = {
   createdAt: string;
   numberOfUses: number;
   isBuiltIn: boolean;
-  supportedPrimitives: PrimitiveType[];
+  supportedPrimitives: MainPrimitives[];
 };
 
 const getFileDescription = (file: Dataset) => {
@@ -69,7 +69,7 @@ const BaseCard: FC<BaseCardProps> = ({
 
 interface DatasetCardProps {
   dataset: Dataset;
-  primitive: PrimitiveType; // TODO: remove
+  primitive: MainPrimitives; // TODO: remove
 }
 
 export const DatasetCard: FC<DatasetCardProps> = ({ dataset, primitive }) => {

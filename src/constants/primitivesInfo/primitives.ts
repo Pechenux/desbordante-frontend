@@ -1,4 +1,4 @@
-export enum PrimitiveType {
+export enum MainPrimitives {
   AR = 'AR',
   CFD = 'CFD',
   FD = 'FD',

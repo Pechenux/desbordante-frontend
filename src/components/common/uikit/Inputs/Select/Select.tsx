@@ -1,9 +1,13 @@
 import cn from 'classnames';
-import { useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import ReactSelect, {
   components as ReactSelectComponents,
   Props as ReactSelectProps,
+  PropsValue,
+  SingleValue,
+  OnChangeValue,
 } from 'react-select';
+import { z } from 'zod';
 import { PortalRootContext } from '@/components/meta';
 import { WithError } from '@/types/withError';
 import { Icon } from '../../Icon';
@@ -28,14 +32,28 @@ export type Option<TValue = string> = {
   badges?: Badge[];
 };
 
-export type SelectProps<
-  TValue = string,
-  IsMulti extends boolean = false,
-> = Omit<
+export type SelectProps<TValue = string, IsMulti extends boolean = false> = {
+  value?: OnChangeValue<TValue, IsMulti>;
+  onChange?: (newValue: OnChangeValue<TValue, IsMulti>) => void;
+} & Omit<
   ReactSelectProps<Option<TValue>, IsMulti>,
-  'styles' | 'components' | 'classNames'
+  'styles' | 'components' | 'classNames' | 'value' | 'onChange'
 > &
   WithError;
+
+const optionParser = z.object({
+  label: z.string(),
+  value: z.any(),
+  badges: z.optional(
+    z.object({ label: z.string(), style: z.optional(z.string()) }).array(),
+  ),
+});
+
+const isSingleOption = function <TValue = string>(
+  value: PropsValue<Option<TValue>>,
+): value is SingleValue<Option<TValue>> {
+  return optionParser.safeParse(value).success;
+};
 
 /**
  * Custom select with brand styling
@@ -43,13 +61,63 @@ export type SelectProps<
 export const Select = function <
   TValue = string,
   IsMulti extends boolean = false,
->({ error, menuPortalTarget, ...props }: SelectProps<TValue, IsMulti>) {
+>({
+  value,
+  onChange,
+  error,
+  menuPortalTarget,
+  ...props
+}: SelectProps<TValue, IsMulti>) {
   const portalRootRef = useContext(PortalRootContext);
+
+  const flatOptions = useMemo(
+    () =>
+      props.options?.flatMap((optionOrGroup) =>
+        'options' in optionOrGroup ? optionOrGroup.options : optionOrGroup,
+      ),
+    [props.options],
+  );
+
+  const getOption = useCallback(
+    (value?: PropsValue<TValue>): PropsValue<Option<TValue>> | undefined => {
+      if (Array.isArray(value)) {
+        return flatOptions?.filter((option) => value.includes(option.value));
+      } else {
+        return flatOptions?.find((option) => option.value === value);
+      }
+    },
+    [flatOptions],
+  );
+
+  // Dirty hack to make things work
+  const handleChange = useCallback(
+    (newOptionValue: OnChangeValue<Option<TValue>, IsMulti>) => {
+      if (!onChange) return;
+
+      if (props.isMulti && isSingleOption(newOptionValue)) {
+        onChange(
+          (newOptionValue?.value ?? null) as OnChangeValue<TValue, IsMulti>,
+        );
+      }
+
+      if (!props.isMulti && !isSingleOption(newOptionValue)) {
+        onChange(
+          newOptionValue.map((option) => option.value) as OnChangeValue<
+            TValue,
+            IsMulti
+          >,
+        );
+      }
+    },
+    [onChange, props.isMulti],
+  );
 
   return (
     <ReactSelect
       menuPortalTarget={menuPortalTarget ?? portalRootRef?.current}
       {...props}
+      value={getOption(value)}
+      onChange={handleChange}
       // set base class name
       className={cn(props.className, styles.selectContainer)}
       // reset inner styles

@@ -10,13 +10,20 @@ import { Button } from '@/components/common/uikit/Button';
 import { Icon } from '@/components/common/uikit/Icon';
 import { Search, Select } from '@/components/common/uikit/Inputs';
 import { PortalRootContext } from '@/components/meta';
-import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import primitiveInfo from '@/constants/primitivesInfo/primitivesInfo';
+import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { primitiveInfo } from '@/constants/primitivesInfo/primitivesInfo';
 import { choosenPrimitiveAtom } from '@/store/taskCreationAtoms';
+import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './choosePrimitive.module.scss';
 
 const options = [
-  { label: '# tag_1', value: 1 },
+  {
+    label: '# tag_1',
+    options: [
+      { label: '# tag_11', value: 1 },
+      { label: '# tag_12', value: 1 },
+    ],
+  },
   { label: '# tag_2', value: 2 },
   { label: '# tag_3', value: 3 },
   { label: '# tag_4', value: 4 },
@@ -29,9 +36,10 @@ const options = [
 const ChoosePrimitive = () => {
   const [isOpenFilterModal, setOpenFilterModal] = useState<boolean>(false);
   const [choosenPrimitive, setChoosenPrimitive] =
-    useAtom<PrimitiveType>(choosenPrimitiveAtom);
+    useAtom<MainPrimitives>(choosenPrimitiveAtom);
   const onClose = () => setOpenFilterModal(false);
   const portalRootRef = useContext(PortalRootContext);
+  const { setQueryParams } = useQueryParams();
 
   const header = useMemo(
     () => (
@@ -64,13 +72,18 @@ const ChoosePrimitive = () => {
           disabled={false}
           variant="primary"
           icon={<Icon name="settings" />}
-          onClick={() => null}
+          onClick={() =>
+            setQueryParams({
+              newPathname: '/create-task/configure-algorithm',
+              params: { primitive: choosenPrimitive },
+            })
+          }
         >
           Configure algorithm
         </Button>
       </>
     ),
-    [],
+    [choosenPrimitive, setQueryParams],
   );
 
   return (
@@ -109,9 +122,9 @@ const ChoosePrimitive = () => {
               key={primitiveCode}
               isSelected={choosenPrimitive === primitiveCode}
               onClick={() =>
-                setChoosenPrimitive(primitiveCode as PrimitiveType)
+                setChoosenPrimitive(primitiveCode as MainPrimitives)
               }
-              {...(primitiveInfo[primitiveCode as PrimitiveType] || {
+              {...(primitiveInfo[primitiveCode as MainPrimitives] || {
                 label: 'Loading',
                 description: 'Loading',
                 tags: [],
