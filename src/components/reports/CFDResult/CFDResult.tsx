@@ -16,9 +16,10 @@ import {
   DependencyList,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import styles from './FDResult.module.scss';
+import styles from './CFDResult.module.scss';
 
-export const FDResult = () => {
+export const CFDResult = () => {
+  const [infoVisible, setInfoVisible] = useState(true);
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
@@ -262,13 +263,13 @@ export const FDResult = () => {
 
   return (
     <>
-      <NextSeo title="Discovered functional dependencies" />
+      <NextSeo title="Discovered conditional functional dependencies" />
       {isOrderingShown && (
         <OrderingWindow
           {...{
             isOrderingShown,
             setIsOrderingShown,
-            primitive: PrimitiveType.FD,
+            primitive: PrimitiveType.CFD,
           }}
         />
       )}
@@ -305,12 +306,20 @@ export const FDResult = () => {
           >
             Ordering
           </Button>
+          <Button
+            variant="secondary"
+            size="md"
+            icon={<Icon name="eye" />}
+            onClick={() => setInfoVisible((e) => !e)}
+          >
+            Visibility
+          </Button>
           {/*<DownloadResult filter={filter} disabled={!deps.length} />*/}
         </div>
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps }} />
+        <DependencyList {...{ deps, infoVisible }} />
       </div>
 
       <div className={styles.pagination}>

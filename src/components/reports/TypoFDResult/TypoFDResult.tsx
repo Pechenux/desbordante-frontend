@@ -9,16 +9,15 @@ import {
   Pagination,
   Text,
 } from '@/components/common/uikit';
-// import DownloadResult from '@components/DownloadResult';
 import {
   FilteringWindow,
   OrderingWindow,
   DependencyList,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import styles from './FDResult.module.scss';
+import styles from './TypoFDResult.module.scss';
 
-export const FDResult = () => {
+export const TypoFDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
@@ -262,13 +261,13 @@ export const FDResult = () => {
 
   return (
     <>
-      <NextSeo title="Discovered functional dependencies" />
+      <NextSeo title="Discovered ???" />
       {isOrderingShown && (
         <OrderingWindow
           {...{
             isOrderingShown,
             setIsOrderingShown,
-            primitive: PrimitiveType.FD,
+            primitive: PrimitiveType.TypoFD,
           }}
         />
       )}
@@ -305,7 +304,6 @@ export const FDResult = () => {
           >
             Ordering
           </Button>
-          {/*<DownloadResult filter={filter} disabled={!deps.length} />*/}
         </div>
       </div>
 
