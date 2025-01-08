@@ -10,12 +10,25 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 //   MFDForm,
 //   TypoFDForm,
 // } from '@/components/configure-algorithm/forms';
+import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
 import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
-import { FormComponent, FormData } from '@/types/form';
+import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './configureAlgorithm.module.scss';
 
-const forms: Partial<Record<MainPrimitives, FormComponent>> = {
+const forms: Partial<
+  Record<
+    MainPrimitives,
+    {
+      formComponent: FormComponent;
+      datasetInputs: { label: string; inputName: string }[];
+    }
+  >
+> = {
+  FD: {
+    formComponent: FDForm,
+    datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
+  },
   // FD: FDForm,
   // AR: ARForm,
   // CFD: CFDForm,
@@ -26,29 +39,13 @@ const forms: Partial<Record<MainPrimitives, FormComponent>> = {
 const ConfigurePrimitive = () => {
   const router = useRouter();
   const { queryParams } = useQueryParams<{ primitive: MainPrimitives }>();
-  // const {
-  //   primitive: { value: primitiveValue },
-  //   fileID,
-  //   config,
-  // } = useTaskUrlParams();
-
   const primitiveValue = queryParams.primitive;
-  const fileID = '';
-  const config: FormData = { algorithmName: '' };
 
   if (primitiveValue === undefined) {
     router.push('/create-task/choose-primitive');
   }
 
-  if (fileID === undefined) {
-    router.push('/create-task/choose-file');
-  }
-
-  if (
-    primitiveValue === undefined ||
-    fileID === undefined ||
-    !forms[primitiveValue]
-  ) {
+  if (primitiveValue === undefined || !forms[primitiveValue]) {
     return (
       <div className={styles.filler}>
         <h6>
@@ -60,10 +57,8 @@ const ConfigurePrimitive = () => {
 
   return (
     <FormLayout
-      fileID={fileID}
-      primitive={primitiveValue}
-      FormComponent={forms[primitiveValue]}
-      startValues={config as FormData}
+      FormComponent={forms[primitiveValue].formComponent}
+      datasetInputs={forms[primitiveValue].datasetInputs}
     />
   );
 };

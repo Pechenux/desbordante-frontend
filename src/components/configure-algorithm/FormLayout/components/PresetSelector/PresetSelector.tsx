@@ -12,7 +12,8 @@
 // import { OptionWithBadges } from 'types/multiSelect';
 
 // type PresetSelectorProps = {
-//   fileID: string;
+//   fileIDs?: string[];
+//   isLoading: boolean;
 //   isCustom: boolean;
 //   formReset: (preset: FieldValues) => void;
 //   formTrigger: () => void;
@@ -22,8 +23,9 @@
 // const CUSTOM_PRESET_INDEX = -1;
 // export { CUSTOM_PRESET_INDEX };
 
-// const PresetSelector = ({
-//   fileID,
+// export const PresetSelector = ({
+//   fileIDs,
+//   isLoading = false,
 //   isCustom,
 //   formReset,
 //   formTrigger,
@@ -34,19 +36,6 @@
 //   const presetNameWatch = useWatch({
 //     control,
 //     name: 'presetIndex',
-//   });
-
-//   const { loading: isLoading, data: fileNameData } = useQuery<
-//     getFileName,
-//     getFileNameVariables
-//   >(GET_FILE_NAME, {
-//     variables: { fileID },
-//     onError: (error) => {
-//       showError(
-//         error.message,
-//         "Can't fetch file information. Please try later.",
-//       );
-//     },
 //   });
 
 //   const defaultPreset = useMemo(
@@ -151,5 +140,3 @@
 //     />
 //   );
 // };
-
-// export default PresetSelector;

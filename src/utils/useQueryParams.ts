@@ -1,26 +1,34 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
 
 export function useQueryParams<T = object>() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const queryParams = searchParams as unknown as Partial<T>;
+  const queryParams = useMemo(
+    () => Object.fromEntries(searchParams.entries()) as unknown as Partial<T>,
+    [searchParams],
+  );
   const urlSearchParams = new URLSearchParams(searchParams);
 
   function setQueryParams({
     newPathname,
     params,
+    erase = true,
   }: {
     newPathname?: string;
     params: Partial<T>;
+    erase?: boolean;
   }) {
+    const currentQueryParams = erase ? new URLSearchParams() : urlSearchParams;
+
     Object.entries(params).forEach(([key, value]) => {
-      urlSearchParams.set(key, String(value));
+      currentQueryParams.set(key, String(value));
     });
 
-    const search = urlSearchParams.toString();
+    const search = currentQueryParams.toString();
     const query = search ? `?${search}` : '';
 
     const pagePathname = newPathname ?? pathname;

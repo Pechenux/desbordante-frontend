@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Provider as JotaiProvider } from 'jotai';
 import { getQueryClient } from '@/api/queryClient/queryClient';
 import { PortalRoot } from '../PortalRoot';
+import { ToastContainer } from '../ToastContainer';
 
 export const Providers = ({
   children,
@@ -19,6 +20,7 @@ export const Providers = ({
         <PortalRoot>
           {children}
           {isDevelopment && <ReactQueryDevtools initialIsOpen={false} />}
+          <ToastContainer />
         </PortalRoot>
       </JotaiProvider>
     </QueryClientProvider>

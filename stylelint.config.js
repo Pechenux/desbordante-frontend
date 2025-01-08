@@ -7,7 +7,6 @@ module.exports = {
     'color-hex-length': 'long',
     'color-named': 'never',
     'selector-attribute-quotes': 'always',
-    'declaration-no-important': true,
     'property-no-vendor-prefix': true,
     'value-no-vendor-prefix': true,
     'function-url-quotes': 'always',

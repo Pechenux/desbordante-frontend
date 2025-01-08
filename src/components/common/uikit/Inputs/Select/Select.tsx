@@ -94,13 +94,13 @@ export const Select = function <
     (newOptionValue: OnChangeValue<Option<TValue>, IsMulti>) => {
       if (!onChange) return;
 
-      if (props.isMulti && isSingleOption(newOptionValue)) {
+      if (!props.isMulti && isSingleOption(newOptionValue)) {
         onChange(
           (newOptionValue?.value ?? null) as OnChangeValue<TValue, IsMulti>,
         );
       }
 
-      if (!props.isMulti && !isSingleOption(newOptionValue)) {
+      if (props.isMulti && !isSingleOption(newOptionValue)) {
         onChange(
           newOptionValue.map((option) => option.value) as OnChangeValue<
             TValue,

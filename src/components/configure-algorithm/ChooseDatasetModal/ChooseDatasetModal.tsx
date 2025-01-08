@@ -8,101 +8,25 @@ import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
-import { DatasetCard } from '../DatasetCard';
+import { Dataset, DatasetCard } from './components/DatasetCard';
 import styles from './ChooseDatasetModal.module.scss';
 
 // заглушка
-const builtinDatasets = [
-  {
-    dataset: {
-      fileID: '1',
-      originalFileName: 'asd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-  {
-    dataset: {
-      fileID: '2',
-      originalFileName: 'asd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-  {
-    dataset: {
-      fileID: '13',
-      originalFileName: 'asd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-  {
-    dataset: {
-      fileID: '14',
-      originalFileName: 'asd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-  {
-    dataset: {
-      fileID: '16',
-      originalFileName: 'asd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-  {
-    dataset: {
-      fileID: '17',
-      originalFileName: 'asd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-];
+const builtinDatasets: { dataset: Dataset; primitive: MainPrimitives }[] = [];
 // заглушка
-const userDatasets = [
-  {
-    dataset: {
-      fileID: '10',
-      originalFileName: 'afd',
-      rowsCount: 0,
-      createdAt: '0',
-      numberOfUses: 0,
-      isBuiltIn: true,
-      supportedPrimitives: [MainPrimitives.FD],
-    },
-    primitive: MainPrimitives.FD,
-  },
-];
+const userDatasets: { dataset: Dataset; primitive: MainPrimitives }[] = [];
 
-export const ChooseDatasetModal: FC<ModalProps> = ({ isOpen, onClose }) => {
+export type ChooseDatasetProps = ModalProps & {
+  value: string;
+  onClick: (newValue: string) => void;
+};
+
+export const ChooseDatasetModal: FC<ChooseDatasetProps> = ({
+  value,
+  onClick,
+  isOpen,
+  onClose,
+}) => {
   const header = useMemo(
     () => (
       <>
@@ -125,7 +49,7 @@ export const ChooseDatasetModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         Confirm
       </Button>
     ),
-    [],
+    [onClose],
   );
 
   const builtinFiles = (
@@ -136,6 +60,8 @@ export const ChooseDatasetModal: FC<ModalProps> = ({ isOpen, onClose }) => {
             key={dts.dataset.fileID}
             dataset={dts.dataset}
             primitive={dts.primitive}
+            choosedDataset={value}
+            onClick={onClick}
           />
         ))}
       </div>
@@ -149,6 +75,8 @@ export const ChooseDatasetModal: FC<ModalProps> = ({ isOpen, onClose }) => {
             key={dts.dataset.fileID}
             dataset={dts.dataset}
             primitive={dts.primitive}
+            choosedDataset={value}
+            onClick={onClick}
           />
         ))}
       </div>

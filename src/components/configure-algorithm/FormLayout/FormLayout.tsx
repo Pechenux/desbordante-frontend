@@ -1,5 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
 import cn from 'classnames';
-// import { useRouter } from 'next/navigation';
 import {
   FC,
   useCallback,
@@ -10,69 +10,79 @@ import {
 } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
-import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
 import { FormComponent, FormData, Presets } from '@/types/form';
-// import { showError } from '@/utils/toasts';
+import { showError } from '@/utils/toasts';
+import { useQueryParams } from '@/utils/useQueryParams';
+import { FilesSelector } from './components/FilesSelector';
 import { FormFooter } from './components/FormFooter';
 import { FormHeader } from './components/FormHeader';
-// import PresetSelector from './components/PresetSelector';
+// import { PresetSelector } from './components/PresetSelector';
 import styles from './FormLayout.module.scss';
 
 export type FormLayoutProps = {
-  fileID: string;
-  primitive: MainPrimitives;
   FormComponent: FormComponent;
+  datasetInputs: { label: string; inputName: string }[];
   startValues?: FormData;
 };
 
 export const FormLayout: FC<FormLayoutProps> = ({
-  fileID,
-  // primitive,
-  startValues,
   FormComponent,
+  datasetInputs,
+  startValues,
 }) => {
-  // const router = useRouter();
+  const { setQueryParams } = useQueryParams();
+  const [fileIDs, setFileIDs] = useState<Record<string, string>>({});
   const methods = useForm<FormData>({
     mode: 'all',
     reValidateMode: 'onChange',
     values: startValues,
   });
+  const mutation = useMutation({
+    mutationFn: FormComponent.mutationFn,
+    onSuccess: (taskID) =>
+      setQueryParams({
+        newPathname: '/reports',
+        params: { taskID },
+      }),
+    onError: (error) => {
+      if (typeof error === 'string') {
+        console.log('test2');
+        showError(error, 'Internal error occurred. Please try later.');
+      }
+
+      if (error instanceof Error) {
+        showError(error.message, 'Internal error occurred. Please try later.');
+      }
+
+      if (
+        'detail' in error &&
+        Array.isArray(error.detail) &&
+        '0' in error.detail &&
+        'msg' in error.detail[0]
+      ) {
+        showError(
+          error.detail[0].msg,
+          'Internal error occurred. Please try later.',
+        );
+      }
+    },
+  });
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      const fieldData = FormComponent.onSubmit(data);
-
-      console.log(fieldData);
-      // // return;
-
-      // createTask({
-      //   variables: {
-      //     fileID,
-      //     props: {
-      //       ...fieldData,
-      //       type: primitive,
-      //     },
-      //     forceCreate: true,
-      //   },
-      // })
-      //   .then((resp) =>
-      //     router.push({
-      //       pathname: '/reports',
-      //       query: {
-      //         taskID: resp.data?.createMainTaskWithDatasetChoosing.taskID,
-      //       },
-      //     }),
-      //   )
-      //   .catch((error) => {
-      //     if (error instanceof Error) {
-      //       showError(
-      //         error.message,
-      //         'Internal error occurred. Please try later.',
-      //       );
-      //     }
-      //   });
+      console.log(datasetInputs, fileIDs);
+      mutation.mutate({
+        datasets: datasetInputs.reduce((acc, { inputName }) => {
+          const inputData = fileIDs[inputName];
+          if (inputData) {
+            acc.push(inputData);
+          }
+          return acc;
+        }, [] as string[]),
+        data: FormComponent.onSubmit(data),
+      });
     },
-    [FormComponent],
+    [FormComponent, datasetInputs, fileIDs, mutation],
   );
 
   const [presets, setPresets] = useState<Presets>();
@@ -94,8 +104,13 @@ export const FormLayout: FC<FormLayoutProps> = ({
           formTrigger={methods.trigger}
           presets={presets}
         />
-      </div> */}
-      <div className={styles.line} />
+      </div>
+      <div className={styles.line} /> */}
+      <FilesSelector
+        fileIDs={fileIDs}
+        onChange={setFileIDs}
+        datasetInputs={datasetInputs}
+      />
       <FormProvider {...methods}>
         <form
           id="algorithmconfigurator"
@@ -106,7 +121,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
           )}
           onSubmit={methods.handleSubmit(onSubmit)}
         >
-          <FormComponent fileID={fileID} setPresets={setPresets} />
+          <FormComponent setPresets={setPresets} />
         </form>
       </FormProvider>
     </WizardLayout>

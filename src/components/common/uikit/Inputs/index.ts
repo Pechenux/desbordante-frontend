@@ -7,7 +7,7 @@ export * from './Select';
 export * from './Text';
 // export * from './TextArea';
 export * from './Search';
-export * from './SelectDataset';
+export * from '../../../configure-algorithm/SelectDataset';
 
 export interface InputPropsBase {
   error?: string;
