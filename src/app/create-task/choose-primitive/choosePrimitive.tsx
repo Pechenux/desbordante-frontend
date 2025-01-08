@@ -10,7 +10,7 @@ import { Button } from '@/components/common/uikit/Button';
 import { Icon } from '@/components/common/uikit/Icon';
 import { Search, Select } from '@/components/common/uikit/Inputs';
 import { PortalRootContext } from '@/components/meta';
-import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { primitiveInfo } from '@/constants/primitivesInfo/primitivesInfo';
 import { choosenPrimitiveAtom } from '@/store/taskCreationAtoms';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -36,7 +36,7 @@ const options = [
 const ChoosePrimitive = () => {
   const [isOpenFilterModal, setOpenFilterModal] = useState<boolean>(false);
   const [choosenPrimitive, setChoosenPrimitive] =
-    useAtom<MainPrimitives>(choosenPrimitiveAtom);
+    useAtom<PrimitiveType>(choosenPrimitiveAtom);
   const onClose = () => setOpenFilterModal(false);
   const portalRootRef = useContext(PortalRootContext);
   const { setQueryParams } = useQueryParams();
@@ -122,9 +122,9 @@ const ChoosePrimitive = () => {
               key={primitiveCode}
               isSelected={choosenPrimitive === primitiveCode}
               onClick={() =>
-                setChoosenPrimitive(primitiveCode as MainPrimitives)
+                setChoosenPrimitive(primitiveCode as PrimitiveType)
               }
-              {...(primitiveInfo[primitiveCode as MainPrimitives] || {
+              {...(primitiveInfo[primitiveCode as PrimitiveType] || {
                 label: 'Loading',
                 description: 'Loading',
                 tags: [],

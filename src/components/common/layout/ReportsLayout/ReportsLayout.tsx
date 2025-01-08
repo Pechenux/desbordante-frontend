@@ -1,9 +1,9 @@
 'use client';
 
 import classNames from 'classnames';
-import { useRouter } from 'next/navigation';
 import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import NotFound from '@/app/not-found';
+import { useQueryParams } from '@/utils/useQueryParams';
 import { Icon } from '../../uikit';
 import styles from './ReportsLayout.module.scss';
 
@@ -22,7 +22,7 @@ interface Props extends PropsWithChildren {
 }
 
 export const ReportsLayout: FC<Props> = ({ tabs, currentTab }) => {
-  const router = useRouter();
+  const { setQueryParams } = useQueryParams<{ taskID: string }>();
   const page = tabs.filter((tab) => tab.name === currentTab)[0];
   if (!page) return NotFound();
 
@@ -35,7 +35,13 @@ export const ReportsLayout: FC<Props> = ({ tabs, currentTab }) => {
             <li
               key={name}
               className={classNames(currentTab === name && styles.active)}
-              onClick={() => router.push(name)}
+              onClick={() =>
+                setQueryParams({
+                  newPathname: name,
+                  erase: false,
+                  params: {},
+                })
+              }
             >
               {icon}
               <p>{label}</p>

@@ -11,14 +11,14 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 //   TypoFDForm,
 // } from '@/components/configure-algorithm/forms';
 import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
-import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './configureAlgorithm.module.scss';
 
 const forms: Partial<
   Record<
-    MainPrimitives,
+    PrimitiveType,
     {
       formComponent: FormComponent;
       datasetInputs: { label: string; inputName: string }[];
@@ -38,7 +38,7 @@ const forms: Partial<
 
 const ConfigurePrimitive = () => {
   const router = useRouter();
-  const { queryParams } = useQueryParams<{ primitive: MainPrimitives }>();
+  const { queryParams } = useQueryParams<{ primitive: PrimitiveType }>();
   const primitiveValue = queryParams.primitive;
 
   if (primitiveValue === undefined) {

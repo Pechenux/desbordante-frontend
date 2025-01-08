@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';

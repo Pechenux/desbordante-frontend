@@ -7,15 +7,15 @@ import {
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
-import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { Dataset, DatasetCard } from './components/DatasetCard';
 import { DatasetUploader } from './components/DatasetUploader';
 import styles from './ChooseDatasetModal.module.scss';
 
 // заглушка
-const builtinDatasets: { dataset: Dataset; primitive: MainPrimitives }[] = [];
+const builtinDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
 // заглушка
-const userDatasets: { dataset: Dataset; primitive: MainPrimitives }[] = [];
+const userDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
 
 export type ChooseDatasetModalProps = ModalProps & {
   value: string;
