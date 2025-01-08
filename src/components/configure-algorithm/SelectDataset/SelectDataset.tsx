@@ -21,7 +21,13 @@ export const SelectDataset = ({ value, onChange }: SelectDatasetProps) => {
         onClose={() => setIsOpen(false)}
       />
       <label className={styles.inputContainer} onClick={() => setIsOpen(true)}>
-        <input type="text" value={value} placeholder="Choose file..." />
+        <input
+          style={{ width: '100%' }}
+          type="text"
+          readOnly
+          value={value}
+          placeholder="Choose file..."
+        />
         <Icon name="file" color={colors.black[75]} />
       </label>
     </>

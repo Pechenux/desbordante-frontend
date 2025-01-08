@@ -9,7 +9,7 @@ export const FormFooter = () => {
     <>
       <Button
         variant="secondary"
-        onClick={() => router.push('/create-task/choose-file')}
+        onClick={() => router.push('/create-task/choose-primitive')}
       >
         Go Back
       </Button>

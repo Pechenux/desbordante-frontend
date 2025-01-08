@@ -9,6 +9,7 @@ import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
 import { Dataset, DatasetCard } from './components/DatasetCard';
+import { DatasetUploader } from './components/DatasetUploader';
 import styles from './ChooseDatasetModal.module.scss';
 
 // заглушка
@@ -16,12 +17,12 @@ const builtinDatasets: { dataset: Dataset; primitive: MainPrimitives }[] = [];
 // заглушка
 const userDatasets: { dataset: Dataset; primitive: MainPrimitives }[] = [];
 
-export type ChooseDatasetProps = ModalProps & {
+export type ChooseDatasetModalProps = ModalProps & {
   value: string;
   onClick: (newValue: string) => void;
 };
 
-export const ChooseDatasetModal: FC<ChooseDatasetProps> = ({
+export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   value,
   onClick,
   isOpen,
@@ -70,6 +71,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetProps> = ({
   const userFiles = (
     <Collapse title="My Files">
       <div className={styles.files}>
+        <DatasetUploader onUpload={onClick} />
         {userDatasets.map((dts) => (
           <DatasetCard
             key={dts.dataset.fileID}

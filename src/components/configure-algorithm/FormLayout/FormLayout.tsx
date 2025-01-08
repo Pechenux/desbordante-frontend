@@ -37,7 +37,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
     reValidateMode: 'onChange',
     values: startValues,
   });
-  const mutation = useMutation({
+  const mutator = useMutation({
     mutationFn: FormComponent.mutationFn,
     onSuccess: (taskID) =>
       setQueryParams({
@@ -71,7 +71,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
   const onSubmit = useCallback(
     (data: FormData) => {
       console.log(datasetInputs, fileIDs);
-      mutation.mutate({
+      mutator.mutate({
         datasets: datasetInputs.reduce((acc, { inputName }) => {
           const inputData = fileIDs[inputName];
           if (inputData) {
@@ -82,7 +82,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
         data: FormComponent.onSubmit(data),
       });
     },
-    [FormComponent, datasetInputs, fileIDs, mutation],
+    [FormComponent, datasetInputs, fileIDs, mutator],
   );
 
   const [presets, setPresets] = useState<Presets>();

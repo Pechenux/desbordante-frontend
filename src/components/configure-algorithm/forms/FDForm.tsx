@@ -39,7 +39,6 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
 
   const [options, setOptions] = useState<FDOptionalFields[]>([]);
 
-  useEffect(() => console.log(algo_name), [algo_name]);
   useEffect(() => console.log(options), [options]);
 
   useEffect(() => {
@@ -56,6 +55,7 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
     if (!algo_name) {
       return;
     }
+
     setOptions(optionalFields);
     const fields: FDFormKeys[] = ['max_lhs', ...optionalFields];
     fields.forEach((key) => methods.setValue(key, defaultValue[key]));
