@@ -15,7 +15,7 @@ export const WizardLayout: FC<Props> = ({
   footer,
   className,
   children,
-  hasBackground,
+  hasBackground = true,
 }) => {
   return (
     <div className={styles.page}>

@@ -32,18 +32,22 @@
     "lodash": "^4.17.21",
     "next": "14.2.15",
     "next-i18next": "^15.3.1",
+    "next-seo": "^6.6.0",
     "openapi-fetch": "^0.13.0",
     "punycode": "^2.3.1",
     "rc-slider": "^11.1.8",
     "react": "^18",
+    "react-chartjs-2": "^5.3.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-i18next": "^15.0.2",
+    "react-paginate": "^8.2.0",
     "react-select": "^5.8.3",
     "react-toastify": "^11.0.2",
     "sass": "^1.80.3",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "react-spring": "^9.7.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
