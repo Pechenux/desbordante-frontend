@@ -23,20 +23,28 @@ export type NumberInputProps = WithError & {
   boundaries?: BoundariesType;
   slider?: boolean;
   showBoundariesToolTip?: boolean;
+  disabled?: boolean;
 };
 
 const toFixed = (num: number, digits: number) =>
   Math.trunc(num * Math.pow(10, digits)) / Math.pow(10, digits);
 
 export const NumberInput: FC<NumberInputProps> = (props) => {
-  const { value, onChange, boundaries, slider = false, error } = props;
+  const {
+    value,
+    onChange,
+    boundaries,
+    slider = false,
+    error,
+    disabled,
+  } = props;
 
   const {
     defaultNum = 0,
     min,
-    includingMin,
+    includingMin = true,
     max,
-    includingMax,
+    includingMax = true,
     digits = 2,
     step = 1e-2,
   } = boundaries || {};
@@ -189,9 +197,10 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
           value={textFirstValue}
           onChange={(e) => handleFirstInputChange(e.currentTarget.value)}
           onBlur={(e) => handleFirstInputBlur(e.target.value)}
-          className={cn({ [styles.textInputWithSlider!]: slider })}
+          className={cn(slider && styles.textInputWithSlider)}
           error={error}
           size={slider ? 4 : undefined}
+          disabled={disabled}
         />
         {slider && (
           <Slider
@@ -221,6 +230,7 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
             handleRender={(origin) => (
               <div {...origin.props} className={styles.sliderHandle} />
             )}
+            disabled={disabled}
           />
         )}
         {range && (
@@ -230,21 +240,22 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
               value={textSecondValue}
               onChange={(e) => handleSecondInputChange(e.currentTarget.value)}
               onBlur={(e) => handleSecondInputBlur(e.target.value)}
-              className={cn({ [styles.textInputWithSlider!]: slider })}
+              className={cn(slider && styles.textInputWithSlider)}
               error={error}
               size={slider ? 4 : undefined}
+              disabled={disabled}
             />
           </>
         )}
       </div>
       <div className={styles.description}>
-        {min && includingMin ? '[' : '('}
-        {min ? min : '-∞'}
+        {min !== undefined && includingMin ? '[' : '('}
+        {min !== undefined ? min : '-∞'}
         {'; '}
-        {max ? max : '+∞'}
-        {max && includingMax ? ']' : ')'}
-        {step && slider && `, step: ${step}`}
-        {digits && !slider && `, precision: ${digits} digits`}
+        {max !== undefined ? max : '+∞'}
+        {max !== undefined && includingMax ? ']' : ')'}
+        {step !== undefined && slider && `, step: ${step}`}
+        {digits !== undefined && !slider && `, precision: ${digits} digits`}
       </div>
     </div>
   );

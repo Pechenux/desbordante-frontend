@@ -1,0 +1,29 @@
+@import "common";
+
+.title {
+  margin-bottom: 32px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.modal {
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 48px;
+}
+
+.input {
+  width: 466px;
+}

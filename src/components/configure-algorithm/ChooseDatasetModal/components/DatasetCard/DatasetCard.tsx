@@ -1,13 +1,9 @@
 import classNames from 'classnames';
 import { formatDistance } from 'date-fns';
-import { useAtom } from 'jotai';
 import { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { ModalContainer } from '@/components/common/layout';
 import { Icon } from '@/components/common/uikit';
-// import '@formatjs/intl-numberformat/polyfill';
-// import '@formatjs/intl-numberformat/locale-data/en';
-import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
+import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
 import styles from './DatasetCard.module.scss';
 
 interface BaseCardProps extends PropsWithChildren {
@@ -25,7 +21,7 @@ export type Dataset = {
   createdAt: string;
   numberOfUses: number;
   isBuiltIn: boolean;
-  supportedPrimitives: PrimitiveType[];
+  supportedPrimitives: MainPrimitives[];
 };
 
 const getFileDescription = (file: Dataset) => {
@@ -69,13 +65,18 @@ const BaseCard: FC<BaseCardProps> = ({
 
 interface DatasetCardProps {
   dataset: Dataset;
-  primitive: PrimitiveType; // TODO: remove
+  primitive: MainPrimitives; // TODO: remove
+  choosedDataset: string;
+  onClick: (selectedDataset: string) => void;
 }
 
-export const DatasetCard: FC<DatasetCardProps> = ({ dataset, primitive }) => {
+export const DatasetCard: FC<DatasetCardProps> = ({
+  dataset,
+  primitive,
+  choosedDataset,
+  onClick,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [choosenFile, setChoosenFile] =
-    useAtom<choosenFileType>(choosenFileAtom);
 
   const descriptionList = getFileDescription(dataset);
   const fileName = dataset.originalFileName;
@@ -90,16 +91,8 @@ export const DatasetCard: FC<DatasetCardProps> = ({ dataset, primitive }) => {
 
   return (
     <BaseCard
-      isSelected={dataset.fileID === choosenFile.fileId}
-      onClick={
-        isDisabled
-          ? undefined
-          : () =>
-              setChoosenFile({
-                fileId: dataset.fileID,
-                label: dataset.originalFileName,
-              })
-      }
+      isSelected={dataset.fileID === choosedDataset}
+      onClick={isDisabled ? undefined : () => onClick(dataset.fileID)}
       isDisabled={isDisabled}
     >
       <div className={styles.cardTitle}>

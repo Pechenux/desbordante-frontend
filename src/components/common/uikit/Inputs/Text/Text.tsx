@@ -11,7 +11,7 @@ export const Text: FC<TextProps> = ({ id, error, className, ...props }) => {
     <input
       {...props}
       id={id}
-      className={cn(className, styles.textInput, {
+      className={cn(styles.textInput, className, {
         [styles.error!]: Boolean(error),
       })}
     />

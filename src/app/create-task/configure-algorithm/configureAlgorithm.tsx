@@ -1,161 +1,65 @@
 'use client';
 
-import { useAtom } from 'jotai';
-import { memo, useCallback, useMemo, useState } from 'react';
-import { ChooseDatasetModal } from '@/components/choose-file/ChooseDatasetModal';
-import { WizardLayout } from '@/components/common/layout/WizardLayout';
-import { Icon } from '@/components/common/uikit';
-import { Button } from '@/components/common/uikit/Button';
-import { FormField } from '@/components/common/uikit/FormField/FormField';
-import { CheckboxGroup, SelectDataset } from '@/components/common/uikit/Inputs';
-import { Select, badgePrimary, Text } from '@/components/common/uikit/Inputs';
-import { NumberInput } from '@/components/common/uikit/Inputs/NumberInput/NumberInput';
-import { choosenFileAtom, choosenFileType } from '@/store/taskCreationAtoms';
+import { useRouter } from 'next/navigation';
+import { memo } from 'react';
+import { FormLayout } from '@/components/configure-algorithm/FormLayout';
+// import {
+//   ARForm,
+//   CFDForm,
+//   FDForm,
+//   MFDForm,
+//   TypoFDForm,
+// } from '@/components/configure-algorithm/forms';
+import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { FormComponent } from '@/types/form';
+import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './configureAlgorithm.module.scss';
 
+const forms: Partial<
+  Record<
+    MainPrimitives,
+    {
+      formComponent: FormComponent;
+      datasetInputs: { label: string; inputName: string }[];
+    }
+  >
+> = {
+  FD: {
+    formComponent: FDForm,
+    datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
+  },
+  // FD: FDForm,
+  // AR: ARForm,
+  // CFD: CFDForm,
+  // MFD: MFDForm,
+  // TypoFD: TypoFDForm,
+};
+
 const ConfigurePrimitive = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [choosenFile] = useAtom<choosenFileType>(choosenFileAtom);
+  const router = useRouter();
+  const { queryParams } = useQueryParams<{ primitive: MainPrimitives }>();
+  const primitiveValue = queryParams.primitive;
 
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-  const handleFileClick = useCallback(() => {
-    setIsOpen(true);
-  }, []);
+  if (primitiveValue === undefined) {
+    router.push('/create-task/choose-primitive');
+  }
 
-  const header = useMemo(
-    () => (
-      <>
-        <h2 className={styles.title}>Configure Algorithm</h2>
-        <h6 className={styles.description}>Select algorithm parameters</h6>
-      </>
-    ),
-    [],
-  );
-  const footer = useMemo(
-    () => (
-      <Button
-        disabled={false}
-        variant="primary"
-        icon={<Icon name="idea" />}
-        onClick={() => null}
-      >
-        Analyze
-      </Button>
-    ),
-    [],
-  );
-
-  const test = useMemo(
-    () =>
-      Array(30)
-        .fill(1)
-        .map((_, i) => ({
-          label: `${i} ${'asd'.repeat(i)}`,
-          value: `${i}`,
-          badges: [{ label: 'dsadsa', style: badgePrimary }],
-        })),
-    [],
-  );
-
-  const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
+  if (primitiveValue === undefined || !forms[primitiveValue]) {
+    return (
+      <div className={styles.filler}>
+        <h6>
+          &quot;{primitiveValue}&quot; primitive does not have configurator
+        </h6>
+      </div>
+    );
+  }
 
   return (
-    <WizardLayout header={header} footer={footer}>
-      <div className={styles.container}>
-        <SelectDataset
-          placeholder="Choose file..."
-          label="File"
-          tooltip="tooltip"
-          onClick={handleFileClick}
-          readOnly
-          value={choosenFile.label}
-        />
-        <ChooseDatasetModal isOpen={isOpen} onClose={handleClose} />
-        <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
-          <Select
-            onChange={(newValue) => console.log(newValue)}
-            options={[
-              {
-                label: 'asdasd',
-                value: 'asdasd',
-                badges: [{ label: 'asdasd' }],
-              },
-            ]}
-          />
-        </FormField>
-        <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
-          <Select options={test} isMulti error />
-        </FormField>
-        <FormField label="adsasd" tooltip="dsadas" error="qweqwe">
-          <Text error />
-        </FormField>
-        <FormField label="normal" tooltip="test">
-          <NumberInput value={[0]} onChange={() => {}} />
-        </FormField>
-        <FormField label="slider" tooltip="test">
-          <NumberInput
-            slider
-            boundaries={{
-              min: -1,
-              max: 1,
-              step: 1,
-              includingMax: true,
-              includingMin: true,
-            }}
-            value={[0]}
-            onChange={() => {}}
-          />
-        </FormField>
-        <FormField label="range" tooltip="test">
-          <NumberInput value={[0, 0]} onChange={() => {}} />
-        </FormField>
-        <FormField label="range slider" tooltip="test">
-          <NumberInput
-            slider
-            boundaries={{ min: -1, max: 1 }}
-            value={[0, 0]}
-            onChange={() => {}}
-          />
-        </FormField>
-        <FormField label="error" tooltip="test">
-          <NumberInput error value={[0]} onChange={() => {}} />
-        </FormField>
-        <FormField label="everything" tooltip="test">
-          <NumberInput
-            slider
-            error
-            boundaries={{ min: -1, max: 1 }}
-            value={[0, 0]}
-            onChange={() => {}}
-          />
-        </FormField>
-        <FormField label="checkbox group">
-          <CheckboxGroup
-            options={[
-              { label: '1', value: '1' },
-              { label: '2', value: '2' },
-              { label: '3', value: '3' },
-            ]}
-            values={checkboxValue}
-            onChange={setCheckboxValue}
-          />
-        </FormField>
-        <FormField label="checkbox group">
-          <CheckboxGroup
-            options={[
-              { label: '1', value: '1' },
-              { label: '2', value: '2' },
-              { label: '3', value: '3' },
-            ]}
-            values={checkboxValue}
-            onChange={setCheckboxValue}
-            error
-          />
-        </FormField>
-      </div>
-    </WizardLayout>
+    <FormLayout
+      FormComponent={forms[primitiveValue].formComponent}
+      datasetInputs={forms[primitiveValue].datasetInputs}
+    />
   );
 };
 

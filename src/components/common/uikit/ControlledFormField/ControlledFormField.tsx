@@ -11,9 +11,11 @@ export type ControlledFormFieldProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   /** Props for react-hook-form controller */
-  controllerProps: ControllerProps<TFieldValues, TName>;
+  controllerProps: Omit<ControllerProps<TFieldValues, TName>, 'render'>;
   /** Props for form field */
   formFieldProps?: Omit<FormFieldParams, 'error'>;
+  /** Controlled component */
+  children: ControllerProps<TFieldValues, TName>['render'];
 };
 
 /**
@@ -25,16 +27,15 @@ export const ControlledFormField = <
 >(
   props: ControlledFormFieldProps<TFieldValues, TName>,
 ) => {
-  const { render, ...controllerProps } = props.controllerProps;
   return (
     <Controller
-      {...controllerProps}
+      {...props.controllerProps}
       render={(renderProps) => (
         <FormField
           {...props.formFieldProps}
           error={renderProps.fieldState.error?.message}
         >
-          {render(renderProps)}
+          {props.children(renderProps)}
         </FormField>
       )}
     />
