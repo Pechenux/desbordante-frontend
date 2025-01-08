@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
-import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 
-export const choosenPrimitiveAtom = atom<MainPrimitives>(MainPrimitives.FD);
+export const choosenPrimitiveAtom = atom<PrimitiveType>(PrimitiveType.FD);
 
 export interface choosenFileType {
   fileId: string;

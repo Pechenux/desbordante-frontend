@@ -3,7 +3,7 @@ import { formatDistance } from 'date-fns';
 import { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { ModalContainer } from '@/components/common/layout';
 import { Icon } from '@/components/common/uikit';
-import { MainPrimitives } from '@/constants/primitivesInfo/primitives';
+import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import styles from './DatasetCard.module.scss';
 
 interface BaseCardProps extends PropsWithChildren {
@@ -21,7 +21,7 @@ export type Dataset = {
   createdAt: string;
   numberOfUses: number;
   isBuiltIn: boolean;
-  supportedPrimitives: MainPrimitives[];
+  supportedPrimitives: PrimitiveType[];
 };
 
 const getFileDescription = (file: Dataset) => {
@@ -65,7 +65,7 @@ const BaseCard: FC<BaseCardProps> = ({
 
 interface DatasetCardProps {
   dataset: Dataset;
-  primitive: MainPrimitives; // TODO: remove
+  primitive: PrimitiveType; // TODO: remove
   choosedDataset: string;
   onClick: (selectedDataset: string) => void;
 }

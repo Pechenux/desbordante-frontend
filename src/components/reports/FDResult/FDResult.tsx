@@ -1,28 +1,44 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { createQueryFn } from '@/api/fetchFunctions';
 import {
   Button,
   FormField,
   Icon,
-  Pagination,
+  // Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
 import {
+  DependencyList,
   FilteringWindow,
   OrderingWindow,
-  DependencyList,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './FDResult.module.scss';
 
 export const FDResult = () => {
+  const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
-  const shownData = {
+  const { data, isFetching, error } = useQuery({
+    queryKey: [`/api/task/${queryParams.taskID}`],
+    queryFn: createQueryFn('/api/task/{task_id}', {
+      params: {
+        path: { task_id: queryParams.taskID! },
+      },
+    }),
+    enabled: !!queryParams.taskID,
+  });
+
+  if (isFetching || error) return;
+
+  /*const shownData = {
     taskInfo: {
       __typename: 'TaskInfo',
       taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
@@ -135,130 +151,10 @@ export const FDResult = () => {
   const recordsCount =
     shownData?.taskInfo.data.result &&
     'filteredDeps' in shownData?.taskInfo.data.result &&
-    shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount;
+    shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount; */
 
-  const deps = [
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-    },
-  ];
+  const deps = data?.result?.result.fds;
+  if (!deps) return;
 
   return (
     <>
@@ -305,7 +201,7 @@ export const FDResult = () => {
           >
             Ordering
           </Button>
-          {/*<DownloadResult filter={filter} disabled={!deps.length} />*/}
+          {/* <DownloadResult filter={filter} disabled={!deps.length} /> */}
         </div>
       </div>
 
@@ -313,13 +209,13 @@ export const FDResult = () => {
         <DependencyList {...{ deps }} />
       </div>
 
-      <div className={styles.pagination}>
+      {/* <div className={styles.pagination}>
         <Pagination
           onChange={() => {}}
           current={1}
           count={Math.ceil((recordsCount || 10) / 10)}
         />
-      </div>
+      </div> */}
     </>
   );
 };

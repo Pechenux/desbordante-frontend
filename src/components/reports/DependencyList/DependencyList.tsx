@@ -6,22 +6,18 @@ import { FC, ReactElement, useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import styles from './DependencyList.module.scss';
 
-interface Column {
-  __typename: 'Column';
-  name: string;
-  index: number;
-}
+// interface Column {
+//   name: string;
+//   index: number;
+// }
 
-export type GeneralColumn = {
-  column: Column;
-  pattern?: string;
-};
+export type GeneralColumn = number;
 
 type Props = {
   deps: {
     confidence?: number;
-    rhs: GeneralColumn[];
-    lhs: GeneralColumn[];
+    rhs_index: GeneralColumn;
+    lhs_indices: GeneralColumn[];
   }[];
   infoVisible?: boolean;
 };
@@ -34,9 +30,9 @@ const makeSide: (
     return (
       <>
         {data.map((e) => (
-          <span className={styles.attr} key={e.column.index}>
-            {e.column.name}
-            {infoVisible && e.pattern ? ' | ' + e.pattern : ''}
+          <span className={styles.attr} key={e}>
+            {e}
+            {/* {infoVisible && e.pattern ? ' | ' + e.pattern : ''} */}
           </span>
         ))}
       </>
@@ -58,7 +54,7 @@ export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
   return (
     <div className={styles.dependencyListContainer}>
       {_.map(deps, (row, i) => {
-        const fullDependency = row.lhs.concat(row.rhs);
+        const fullDependency = row.lhs_indices.concat(row.rhs_index);
         const isError =
           JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
         const isSelected =
@@ -76,14 +72,14 @@ export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
               setSelectedDependency(isSelected ? [] : fullDependency)
             }
           >
-            {makeSide(row.lhs, infoVisible)}
+            {makeSide(row.lhs_indices, infoVisible)}
             <div className={styles.arrowContainer}>
               <Icon name="longArrow" />
               {row.confidence !== undefined && (
                 <small>{row.confidence * 100}%</small>
               )}
             </div>
-            {makeSide(row.rhs, infoVisible)}
+            {makeSide(row.rhs_index, infoVisible)}
           </div>
         );
       })}
