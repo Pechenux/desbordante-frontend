@@ -200,6 +200,7 @@ FDForm.onSubmit = (fieldValues) => {
   ];
   return _.pick(fieldValues, fields);
 };
+// использовать zod
 FDForm.mutationFn = ({ datasets, data }) =>
   '0' in datasets
     ? createMutationFn('/api/task/set')({
