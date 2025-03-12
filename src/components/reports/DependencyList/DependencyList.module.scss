@@ -11,6 +11,7 @@
   border-radius: 8px;
   padding: 8px 16px;
   text-align: center;
+  text-wrap: nowrap;
   background: $black-10;
   border: 2px solid transparent;
   color: $black-75;
@@ -53,7 +54,7 @@
   .attr {
     border: 2px solid $primary-0;
     background: $secondary-1;
-    color: $black;
+    color: $primary-0;
   }
 
   svg * {

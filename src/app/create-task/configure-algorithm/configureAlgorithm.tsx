@@ -10,24 +10,83 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 //   MFDForm,
 //   TypoFDForm,
 // } from '@/components/configure-algorithm/forms';
+//import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+import {
+  DDForm,
+  MDForm,
+  NARForm,
+  ADCForm,
+  ACForm,
+  AFDVerificationForm,
+  AFDForm,
+} from '@/components/configure-algorithm/forms';
 import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+import { PFDForm } from '@/components/configure-algorithm/forms/PFDForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './configureAlgorithm.module.scss';
+
+export interface datasetInputInfo {
+  label: string;
+  inputId: string;
+  datasetId: string;
+}
 
 const forms: Partial<
   Record<
     PrimitiveType,
     {
       formComponent: FormComponent;
-      datasetInputs: { label: string; inputName: string }[];
+      datasetInputs: datasetInputInfo[];
     }
   >
 > = {
   FD: {
     formComponent: FDForm,
-    datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  PFD: {
+    formComponent: PFDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  DD: {
+    formComponent: DDForm,
+    datasetInputs: [
+      { label: 'Dataset', inputId: '1', datasetId: '' },
+      {
+        label: 'Difference table',
+        inputId: '2',
+        datasetId: '',
+      },
+    ],
+  },
+  MD: {
+    formComponent: MDForm,
+    datasetInputs: [
+      { label: 'Left table', inputId: '1', datasetId: '' },
+      { label: 'Right table (optional)', inputId: '2', datasetId: '' },
+    ],
+  },
+  NAR: {
+    formComponent: NARForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  ADC: {
+    formComponent: ADCForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  AC: {
+    formComponent: ACForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  AFDverification: {
+    formComponent: AFDVerificationForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  AFD: {
+    formComponent: AFDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   // FD: FDForm,
   // AR: ARForm,

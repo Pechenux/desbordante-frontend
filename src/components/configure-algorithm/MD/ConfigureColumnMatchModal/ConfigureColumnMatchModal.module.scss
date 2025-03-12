@@ -1,0 +1,23 @@
+@import "common";
+
+.description {
+  margin-top: 16px;
+}
+
+.title {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.modal {
+  padding: 0;
+}
+
+.container {
+  margin: auto;
+  flex-direction: column;
+  gap: 24px;
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}

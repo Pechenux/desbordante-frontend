@@ -1,4 +1,3 @@
-// import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -12,23 +11,24 @@ import {
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
-import { UnionKeys } from '@/types/unionKeys';
 import {
-  AFDErrorMeasuresOptions,
   FDAlgorithmOptions,
   FDAlgorithms,
+  FDCommonFields,
   FDOptionalFields,
   optionalFieldsByAlgorithm,
-  PFDErrorMeasuresOptions,
 } from './options/FDOptions';
 import { FDPresets } from './presets/FDPresets';
 
 export type FDFormInputs = SchemaFdTaskConfig['config'];
-type FDFormKeys = UnionKeys<FDFormInputs>;
 const defaultValue = FDPresets.common.at(-1)
   ?.preset as GetAllFieds<FDFormInputs>;
 
-export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
+export const FDForm: FormComponent<FDFormInputs> = (
+  {
+    /*setPresets*/
+  },
+) => {
   const methods = useFormContext<FDFormInputs>();
 
   const [algo_name] = useWatch<FDFormInputs>({
@@ -37,12 +37,10 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
 
   const [options, setOptions] = useState<FDOptionalFields[]>([]);
 
-  useEffect(() => console.log(options), [options]);
-
-  useEffect(() => {
-    setPresets(FDPresets);
-    methods.setValue('algo_name', defaultValue['algo_name']);
-  }, [methods, setPresets]);
+  // useEffect(() => {
+  //   setPresets(FDPresets);
+  //   methods.setValue('algo_name', defaultValue['algo_name']);
+  // }, [methods, setPresets]);
 
   const optionalFields = useMemo(
     () => optionalFieldsByAlgorithm[algo_name as FDAlgorithms] ?? [],
@@ -55,10 +53,8 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
     }
 
     setOptions(optionalFields);
-    const fields: FDFormKeys[] = ['max_lhs', ...optionalFields];
-    fields.forEach(
-      (key) => defaultValue[key] && methods.setValue(key, defaultValue[key]),
-    );
+    const fields = [...FDCommonFields, ...optionalFields];
+    fields.forEach((key) => methods.setValue(key, defaultValue[key]!));
   }, [algo_name, methods, optionalFields]);
 
   return (
@@ -87,18 +83,57 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
       >
         {({ field: { value, onChange } }) => (
           <NumberInput
-            value={[value ?? 1]}
+            value={[value ?? 0]}
             onChange={([newValue]) => onChange(newValue)}
-            slider
-            boundaries={{ defaultNum: 1, min: 1, max: 10, step: 1, digits: 0 }}
+            boundaries={{
+              defaultNum: 0,
+              min: 0,
+              step: 1,
+              digitsAfterDot: 0,
+            }}
           />
         )}
       </ControlledFormField>
-      {optionalFields.includes('error') && (
-        <ControlledFormField<FDFormInputs, 'error'>
-          formFieldProps={{ label: 'Error threshold' }}
+
+      {options.includes('seed') && (
+        <ControlledFormField<FDFormInputs, 'seed'>
+          formFieldProps={{ label: 'Seed' }}
           controllerProps={{
-            name: 'error',
+            name: 'seed',
+            control: methods.control,
+          }}
+        >
+          {({ field: { value, onChange } }) => (
+            <NumberInput
+              value={[value ?? 0]}
+              onChange={([newValue]) => onChange(newValue)}
+              boundaries={{ defaultNum: 0, min: 0, step: 1, digitsAfterDot: 0 }}
+            />
+          )}
+        </ControlledFormField>
+      )}
+      {options.includes('seed') && (
+        <ControlledFormField<FDFormInputs, 'custom_random_seed'>
+          formFieldProps={{ label: 'Seed' }}
+          controllerProps={{
+            name: 'custom_random_seed',
+            control: methods.control,
+          }}
+        >
+          {({ field: { value, onChange } }) => (
+            <NumberInput
+              value={[value ?? 1]}
+              onChange={([newValue]) => onChange(newValue)}
+              boundaries={{ defaultNum: 0, min: 0, step: 1, digitsAfterDot: 0 }}
+            />
+          )}
+        </ControlledFormField>
+      )}
+      {options.includes('threads') && (
+        <ControlledFormField<FDFormInputs, 'threads'>
+          formFieldProps={{ label: 'Thread count' }}
+          controllerProps={{
+            name: 'threads',
             control: methods.control,
           }}
         >
@@ -110,84 +145,15 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
               boundaries={{
                 defaultNum: 0,
                 min: 0,
-                max: 1,
-                step: 1e-4,
-                digits: 4,
+                max: 8,
+                step: 1,
+                digitsAfterDot: 0,
               }}
             />
           )}
         </ControlledFormField>
       )}
-      {optionalFields.includes('pfd_error_measure') && (
-        <ControlledFormField<FDFormInputs, 'pfd_error_measure'>
-          formFieldProps={{ label: 'Error measure' }}
-          controllerProps={{
-            name: 'pfd_error_measure',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <Select
-              value={value}
-              onChange={onChange}
-              options={PFDErrorMeasuresOptions}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('afd_error_measure') && (
-        <ControlledFormField<FDFormInputs, 'afd_error_measure'>
-          formFieldProps={{ label: 'Error measure' }}
-          controllerProps={{
-            name: 'afd_error_measure',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <Select
-              value={value}
-              onChange={onChange}
-              options={AFDErrorMeasuresOptions}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('seed') && (
-        <ControlledFormField<FDFormInputs, 'seed'>
-          formFieldProps={{ label: 'Seed' }}
-          controllerProps={{
-            name: 'seed',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <NumberInput
-              value={[value ?? 1]}
-              onChange={([newValue]) => onChange(newValue)}
-              boundaries={{ defaultNum: 0, step: 1, digits: 0 }}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('threads') && (
-        <ControlledFormField<FDFormInputs, 'threads'>
-          formFieldProps={{ label: 'Thread count' }}
-          controllerProps={{
-            name: 'threads',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <NumberInput
-              value={[value ?? 1]}
-              onChange={([newValue]) => onChange(newValue)}
-              slider
-              boundaries={{ defaultNum: 1, min: 1, max: 8, step: 1, digits: 0 }}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('is_null_equal_null') && (
+      {options.includes('is_null_equal_null') && (
         <ControlledFormField<FDFormInputs, 'is_null_equal_null'>
           formFieldProps={{ label: 'Is null equal null' }}
           controllerProps={{
@@ -211,8 +177,7 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
 FDForm.onSubmit = (fieldValues) => {
   const algo_name = fieldValues.algo_name;
   const fields = [
-    'algo_name',
-    'max_lhs',
+    ...FDCommonFields,
     ...(optionalFieldsByAlgorithm[algo_name as FDAlgorithms] ?? []),
   ];
   return _.pick(fieldValues, fields);

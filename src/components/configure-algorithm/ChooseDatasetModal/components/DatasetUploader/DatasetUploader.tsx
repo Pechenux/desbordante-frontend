@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { SchemaFilePublic } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
-import { Icon } from '@/components/common/uikit';
+import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';
 import cardStyles from '../DatasetCard/DatasetCard.module.scss';
 import {
   FileConfigModal,
@@ -16,7 +16,7 @@ import {
 import styles from './DatasetUploader.module.scss';
 
 type Props = {
-  onUpload: (datasetId: string) => void;
+  onUpload: (datasetId: ChoosedDatasetInfo) => void;
 };
 
 export const DatasetUploader: FC<Props> = ({ onUpload }) => {
@@ -35,8 +35,8 @@ export const DatasetUploader: FC<Props> = ({ onUpload }) => {
     onSuccess: (dataset: SchemaFilePublic | undefined) => {
       setFileUploadProgress({ state: 'complete' });
 
-      if (dataset?.id) {
-        onUpload(dataset.id);
+      if (dataset) {
+        onUpload({ fileId: dataset.id, name: dataset.name });
       }
     },
     onError: () => setFileUploadProgress({ state: 'fail' }),

@@ -1,7 +1,15 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { MultiValue, SingleValue } from 'react-select';
+import {
+  AfdFilterOptions,
+  AfdSortOptions,
+  SortOrder,
+} from '@/api/generated/schema';
+import { createQueryFn } from '@/api/services/server';
 import {
   Button,
   FormField,
@@ -9,275 +17,104 @@ import {
   Pagination,
   Text,
 } from '@/components/common/uikit';
-// import DownloadResult from '@components/DownloadResult';
+
 import {
-  FilteringWindow,
   OrderingWindow,
-  // DependencyList,
+  DependencyList,
+  DefaultFilteringWindow,
+  SortOptions,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './AFDResult.module.scss';
 
 export const AFDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [columns, setColumns] = useState<MultiValue<string>>([]);
+  const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
+    SortOrder.asc,
+  );
+  const [orderBy, setOrderBy] = useState<SingleValue<SortOptions>>(
+    AfdSortOptions.lhs,
+  );
 
-  const shownData = {
-    taskInfo: {
-      __typename: 'TaskInfo',
-      taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-      data: {
-        __typename: 'TaskWithDepsData',
-        result: {
-          __typename: 'FDTaskResult',
-          taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-          depsAmount: 6,
-          filteredDeps: {
-            __typename: 'FilteredFDs',
-            filteredDepsAmount: 6,
-            FDs: [
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Planet',
-                    index: 0,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RotationPeriod',
-                  index: 1,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Planet',
-                    index: 0,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RevolutionPeriod',
-                  index: 2,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RotationPeriod',
-                    index: 1,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'Planet',
-                  index: 0,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RotationPeriod',
-                    index: 1,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RevolutionPeriod',
-                  index: 2,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RevolutionPeriod',
-                    index: 2,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'Planet',
-                  index: 0,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RevolutionPeriod',
-                    index: 2,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RotationPeriod',
-                  index: 1,
-                },
-              },
-            ],
-          },
-        },
-      },
-    },
+  const handleApplyOrdering = (
+    newDirection: SingleValue<SortOrder>,
+    newOrderBy: SingleValue<SortOptions>,
+  ) => {
+    setOrderBy(newOrderBy);
+    setOrderDirection(newDirection);
+
+    setIsOrderingShown(false);
   };
-  const recordsCount =
-    shownData?.taskInfo.data.result &&
-    'filteredDeps' in shownData?.taskInfo.data.result &&
-    shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount;
 
-  // const deps = [
-  //   {
-  //     rhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RotationPeriod',
-  //           index: 1,
-  //         },
-  //       },
-  //     ],
-  //     lhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'Planet',
-  //           index: 0,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RevolutionPeriod',
-  //           index: 2,
-  //         },
-  //       },
-  //     ],
-  //     lhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'Planet',
-  //           index: 0,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'Planet',
-  //           index: 0,
-  //         },
-  //       },
-  //     ],
-  //     lhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RotationPeriod',
-  //           index: 1,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RevolutionPeriod',
-  //           index: 2,
-  //         },
-  //       },
-  //     ],
-  //     lhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RotationPeriod',
-  //           index: 1,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'Planet',
-  //           index: 0,
-  //         },
-  //       },
-  //     ],
-  //     lhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RevolutionPeriod',
-  //           index: 2,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RotationPeriod',
-  //           index: 1,
-  //         },
-  //       },
-  //     ],
-  //     lhs: [
-  //       {
-  //         column: {
-  //           __typename: 'Column',
-  //           name: 'RevolutionPeriod',
-  //           index: 2,
-  //         },
-  //       },
-  //     ],
-  //   },
-  // ];
+  const handleApplyFiltering = (newVal: MultiValue<string>) => {
+    setColumns(newVal);
+    setIsFilteringShown(false);
+  };
+
+  const { queryParams } = useQueryParams<{ taskID: string }>();
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: [
+      `/api/tasks/${queryParams.taskID}`,
+      columns,
+      orderBy,
+      orderDirection,
+    ],
+    queryFn: createQueryFn('/api/tasks/{id}', {
+      params: {
+        query: {
+          filter_options: [AfdFilterOptions.attribute_name],
+          filter_params: JSON.stringify({
+            attribute_name: columns,
+          }),
+          sort_direction: orderDirection as SortOrder,
+          sort_option: orderBy as AfdSortOptions,
+        },
+        path: { id: queryParams.taskID! },
+      },
+    }),
+    enabled: !!queryParams.taskID,
+  });
+
+  if (isFetching || error) return;
+
+  const deps = data?.result?.primitive_name === 'afd' && data?.result?.result;
+  const tableHeader =
+    (data?.result?.primitive_name === 'afd' && data?.result?.table_header) ||
+    [];
+  if (!deps) return;
+  const recordsCount = deps.length;
+  const countOnPage = 10;
+  const countPaginationPages = Math.ceil(
+    (recordsCount || countOnPage) / countOnPage,
+  );
+  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
 
   return (
     <>
       <NextSeo title="Discovered approximate functional dependencies" />
       {isOrderingShown && (
         <OrderingWindow
-          {...{
-            isOrderingShown,
-            setIsOrderingShown,
-            primitive: PrimitiveType.AFD,
-          }}
+          primitive={PrimitiveType.AFD}
+          isOpen={isOrderingShown}
+          curOrderDirection={orderDirection}
+          curOrderOption={orderBy}
+          onClose={() => setIsOrderingShown(false)}
+          onApply={handleApplyOrdering}
         />
       )}
       {isFilteringShown && (
-        <FilteringWindow
-          {...{
-            isFilteringShown,
-            setIsFilteringShown,
-          }}
+        <DefaultFilteringWindow
+          tableHeader={tableHeader}
+          isOpen={isFilteringShown}
+          onClose={() => setIsFilteringShown(false)}
+          onApply={handleApplyFiltering}
+          filterColumns={columns}
         />
       )}
 
@@ -310,14 +147,14 @@ export const AFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {/* <DependencyList {...{ deps }} /> */}
+        <DependencyList deps={shownData} />
       </div>
 
       <div className={styles.pagination}>
         <Pagination
-          onChange={() => {}}
-          current={1}
-          count={Math.ceil((recordsCount || 10) / 10)}
+          onChange={(n) => setPageIndex(n)}
+          current={pageIndex}
+          count={countPaginationPages}
         />
       </div>
     </>

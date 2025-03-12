@@ -9,6 +9,7 @@ const rotation = {
   right: -90,
   down: 0,
   up: 180,
+  northeast: 45,
 };
 
 export const icons = {
@@ -313,6 +314,21 @@ export const icons = {
       />
     </svg>
   ),
+  barChart: (props: CommonProps) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20.8125 18.5625H4.8875C4.77704 18.5625 4.6875 18.473 4.6875 18.3625V3.9375C4.6875 3.83437 4.60312 3.75 4.5 3.75H3.1875C3.08437 3.75 3 3.83437 3 3.9375V20.0625C3 20.1656 3.08437 20.25 3.1875 20.25H20.8125C20.9156 20.25 21 20.1656 21 20.0625V18.75C21 18.6469 20.9156 18.5625 20.8125 18.5625ZM6.75 16.6875H8.0625C8.16563 16.6875 8.25 16.6031 8.25 16.5V13.125C8.25 13.0219 8.16563 12.9375 8.0625 12.9375H6.75C6.64687 12.9375 6.5625 13.0219 6.5625 13.125V16.5C6.5625 16.6031 6.64687 16.6875 6.75 16.6875ZM10.3125 16.6875H11.625C11.7281 16.6875 11.8125 16.6031 11.8125 16.5V9C11.8125 8.89687 11.7281 8.8125 11.625 8.8125H10.3125C10.2094 8.8125 10.125 8.89687 10.125 9V16.5C10.125 16.6031 10.2094 16.6875 10.3125 16.6875ZM13.875 16.6875H15.1875C15.2906 16.6875 15.375 16.6031 15.375 16.5V10.8281C15.375 10.725 15.2906 10.6406 15.1875 10.6406H13.875C13.7719 10.6406 13.6875 10.725 13.6875 10.8281V16.5C13.6875 16.6031 13.7719 16.6875 13.875 16.6875ZM17.4375 16.6875H18.75C18.8531 16.6875 18.9375 16.6031 18.9375 16.5V7.125C18.9375 7.02187 18.8531 6.9375 18.75 6.9375H17.4375C17.3344 6.9375 17.25 7.02187 17.25 7.125V16.5C17.25 16.6031 17.3344 16.6875 17.4375 16.6875Z"
+        fill={props.color ?? 'currentColor'}
+      />
+    </svg>
+  ),
   chart: (props: CommonProps) => (
     <svg
       {...props}
@@ -492,6 +508,30 @@ export const icons = {
       />
     </svg>
   ),
+  division: (props: CommonProps) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.332 6.5H11.342V6.50969H11.332V6.5ZM11.332 17.157H11.342V17.1667H11.332V17.157Z"
+        stroke={props.color ?? 'currentColor'}
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16.6667 11.8281H6"
+        stroke={props.color ?? 'currentColor'}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
   download: (props: CommonProps) => (
     <svg
       {...props}
@@ -609,6 +649,27 @@ export const icons = {
       />
     </svg>
   ),
+  greater: (
+    props: CommonProps & { orientation?: 'right' | 'left' | 'down' | 'up' },
+  ) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 18L19 12L5 6"
+        stroke={props.color ?? 'currentColor'}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        transform={`rotate(${rotation[props.orientation ?? 'down']}, 12, 12)`}
+      />
+    </svg>
+  ),
   grid: (props: CommonProps) => (
     <svg
       {...props}
@@ -663,6 +724,39 @@ export const icons = {
     </svg>
   ),
   info: (props: CommonProps) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 20C14.1217 20 16.1566 19.1571 17.6569 17.6569C19.1571 16.1566 20 14.1217 20 12C20 9.87827 19.1571 7.84344 17.6569 6.34315C16.1566 4.84285 14.1217 4 12 4C9.87827 4 7.84344 4.84285 6.34315 6.34315C4.84285 7.84344 4 9.87827 4 12C4 14.1217 4.84285 16.1566 6.34315 17.6569C7.84344 19.1571 9.87827 20 12 20ZM12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7H13V9H11V7Z"
+        fill={props.color ?? 'currentColor'}
+      />
+    </svg>
+  ),
+  minus: (props: CommonProps) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6 12H18"
+        stroke={props.color ?? 'currentColor'}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  multiplication: (props: CommonProps) => (
     <svg
       {...props}
       width={props.size ?? 24}
@@ -798,6 +892,24 @@ export const icons = {
       />
     </svg>
   ),
+  not: (props: CommonProps) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.5 11H22.5V17"
+        stroke={props.color ?? 'currentColor'}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
   ordering: (props: CommonProps) => (
     <svg
       {...props}
@@ -813,6 +925,22 @@ export const icons = {
       />
     </svg>
   ),
+  plus: (props: CommonProps) => (
+    <svg
+      {...props}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 11.3333H12.6667V3.99998C12.6667 3.82317 12.5964 3.6536 12.4714 3.52858C12.3464 3.40355 12.1768 3.33331 12 3.33331C11.8232 3.33331 11.6536 3.40355 11.5286 3.52858C11.4036 3.6536 11.3333 3.82317 11.3333 3.99998V11.3333H3.99999C3.82318 11.3333 3.65361 11.4036 3.52858 11.5286C3.40356 11.6536 3.33332 11.8232 3.33332 12C3.33003 12.0866 3.34535 12.173 3.37825 12.2532C3.41115 12.3334 3.46086 12.4056 3.52404 12.465C3.58722 12.5244 3.66239 12.5696 3.74449 12.5974C3.82659 12.6253 3.91371 12.6353 3.99999 12.6266H11.3333V20C11.3333 20.1768 11.4036 20.3464 11.5286 20.4714C11.6536 20.5964 11.8232 20.6666 12 20.6666C12.1768 20.6666 12.3464 20.5964 12.4714 20.4714C12.5964 20.3464 12.6667 20.1768 12.6667 20V12.6666H20C20.1768 12.6666 20.3464 12.5964 20.4714 12.4714C20.5964 12.3464 20.6667 12.1768 20.6667 12C20.6667 11.8232 20.5964 11.6536 20.4714 11.5286C20.3464 11.4036 20.1768 11.3333 20 11.3333Z"
+        fill={props.color ?? 'currentColor'}
+      />
+    </svg>
+  ),
+
   resourcesLimit: (props: CommonProps) => (
     <svg
       {...props}
