@@ -1,19 +1,31 @@
 @import "common";
 
-.dependencyListContainer {
+.container {
+  width: fit-content;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 8px;
+  align-items: center;
+  border: solid 1px $black-50;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: $white-25;
+}
+
+.relation {
+  @include paragraph;
+  font-weight: 700;
 }
 
 .attr {
   @include paragraph-small;
+  display: flex;
+  gap: 4px;
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 4px 16px;
+  align-items: center;
   text-align: center;
   background: $black-10;
   border: 2px solid transparent;
-  color: $black-75;
 }
 
 .row {
@@ -23,6 +35,7 @@
   width: fit-content;
   cursor: pointer;
   transition: 0.15s;
+  color: $black-75;
 
   &:hover {
     transform: translateX(8px);
@@ -33,36 +46,11 @@
   }
 }
 
-.arrowContainer {
-  position: relative;
-
-  small {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    vertical-align: center;
-    padding: 1px 8px;
-    background: $white;
-    border: 2px solid $black;
-    border-radius: 8px;
-  }
-}
-
-.row.selectedRow {
+.selected {
+  color: $primary-0;
   .attr {
     border: 2px solid $primary-0;
     background: $secondary-1;
-    color: $primary-0;
-  }
-
-  svg * {
-    fill: $primary-0;
-  }
-
-  small {
-    border-color: $primary-0;
-    color: $primary-0;
   }
 }
 
@@ -80,8 +68,4 @@
     border-color: $primary-0;
     color: $error;
   }
-}
-
-:export {
-  errorColor: $error;
 }

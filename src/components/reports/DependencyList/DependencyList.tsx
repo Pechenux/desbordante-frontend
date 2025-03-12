@@ -2,7 +2,7 @@
 
 import classNames from 'classnames';
 import _ from 'lodash';
-import { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, ReactNode, useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import styles from './DependencyList.module.scss';
 
@@ -11,13 +11,19 @@ import styles from './DependencyList.module.scss';
 //   index: number;
 // }
 
-export type GeneralColumn = number;
+export type GeneralColumn = {
+  __typename: 'Column';
+  name: string;
+  index: number;
+};
 
 type Props = {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  formatter?: (column: any) => ReactNode;
   deps: {
     confidence?: number;
-    rhs_index: GeneralColumn;
-    lhs_indices: GeneralColumn[];
+    rhs: GeneralColumn[];
+    lhs: GeneralColumn[];
   }[];
   infoVisible?: boolean;
 };
@@ -25,13 +31,16 @@ type Props = {
 const makeSide: (
   data: GeneralColumn | GeneralColumn[],
   infoVisible: boolean,
-) => ReactElement = (data, infoVisible) => {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  formatter?: (column: any) => ReactNode,
+) => ReactElement = (data, infoVisible, formatter) => {
   if (Array.isArray(data)) {
     return (
       <>
         {data.map((e) => (
-          <span className={styles.attr} key={e}>
-            {e}
+          <span className={styles.attr} key={e.index}>
+            {/* {e.name} */}
+            {formatter ? formatter(e) : e.name}
             {/* {infoVisible && e.pattern ? ' | ' + e.pattern : ''} */}
           </span>
         ))}
@@ -42,7 +51,11 @@ const makeSide: (
   }
 };
 
-export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
+export const DependencyList: FC<Props> = ({
+  deps,
+  infoVisible = true,
+  formatter,
+}) => {
   // const { selectedDependency, selectDependency, errorDependency } =
   //   useTaskContext();
 
@@ -54,7 +67,7 @@ export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
   return (
     <div className={styles.dependencyListContainer}>
       {_.map(deps, (row, i) => {
-        const fullDependency = row.lhs_indices.concat(row.rhs_index);
+        const fullDependency = row.lhs.concat(row.rhs);
         const isError =
           JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
         const isSelected =
@@ -72,14 +85,14 @@ export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
               setSelectedDependency(isSelected ? [] : fullDependency)
             }
           >
-            {makeSide(row.lhs_indices, infoVisible)}
+            {makeSide(row.lhs, infoVisible, formatter)}
             <div className={styles.arrowContainer}>
               <Icon name="longArrow" />
               {row.confidence !== undefined && (
                 <small>{row.confidence * 100}%</small>
               )}
             </div>
-            {makeSide(row.rhs_index, infoVisible)}
+            {makeSide(row.rhs, infoVisible, formatter)}
           </div>
         );
       })}
