@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
-import { createQueryFn } from '@/api/fetchFunctions';
+import { createQueryFn } from '@/api/services/server';
 import {
   NarFilterOptions,
   NarSortOptions,
@@ -64,12 +64,12 @@ export const NARResult = () => {
   // };
   const { data, isFetching, error } = useQuery({
     queryKey: [
-      `/tasks/${queryParams.taskID}`,
+      `/api/tasks/${queryParams.taskID}`,
       columns,
       orderBy,
       orderDirection,
     ],
-    queryFn: createQueryFn('/tasks/{id}', {
+    queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
         query: {
           filter_options: [NarFilterOptions.attribute_name],
