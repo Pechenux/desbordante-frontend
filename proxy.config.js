@@ -8,7 +8,7 @@ module.exports = async () => {
 
   if (serverProtocol && serverIP && serverPort) {
     const serverURL = `${serverProtocol}://${serverIP}:${serverPort}`;
-    const serverRESTAPIEndpoint = `${serverURL}/api`;
+    const serverRESTAPIEndpoint = `${serverURL}`;
     const serverProxyURL = '/api';
 
     proxies.push({
@@ -25,19 +25,12 @@ module.exports = async () => {
 
   if (cmsProtocol && cmsIP && cmsPort) {
     const cmsURL = `${cmsProtocol}://${cmsIP}:${cmsPort}`;
-    const cmsGraphQLEndpoint = `${cmsURL}/graphql`;
     const cmsProxyURL = '/api/cms';
 
-    proxies.push(
-      {
-        source: `${cmsProxyURL}/uploads/:path*`,
-        destination: `${cmsURL}/uploads/:path*`,
-      },
-      {
-        source: `${cmsProxyURL}/:path*`,
-        destination: `${cmsGraphQLEndpoint}/:path*`,
-      },
-    );
+    proxies.push({
+      source: `${cmsProxyURL}/:path*`,
+      destination: `${cmsURL}/:path*`,
+    });
   } else {
     disabledProxies.push('cms');
   }
