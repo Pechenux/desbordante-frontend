@@ -25,11 +25,11 @@ module.exports = async () => {
 
   if (cmsProtocol && cmsIP && cmsPort) {
     const cmsURL = `${cmsProtocol}://${cmsIP}:${cmsPort}`;
-    const cmsProxyURL = '/api/cms';
+    const cmsProxyURL = '/cms';
 
     proxies.push({
       source: `${cmsProxyURL}/:path*`,
-      destination: `${cmsURL}/:path*`,
+      destination: `${cmsURL}/api/:path*`,
     });
   } else {
     disabledProxies.push('cms');

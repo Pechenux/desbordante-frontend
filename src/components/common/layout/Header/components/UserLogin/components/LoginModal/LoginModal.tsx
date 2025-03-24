@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 import { FC, useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLogin, useRegister } from '@/api/services/auth';
 import { RegisterFormData } from '@/api/services/auth/types';
-import { createQueryFn } from '@/api/services/server';
+// import { createQueryFn } from '@/api/services/server';
 import {
   ModalContainer,
   ModalProps,
@@ -34,12 +34,12 @@ export const LoginModal: FC<LoginModalProps> = ({
     },
   });
 
-  const { data, status, error } = useQuery({
-    queryKey: ['user'],
-    queryFn: createQueryFn('/api/users/me', {}),
-  });
+  // const { data, status, error } = useQuery({
+  //   queryKey: ['user'],
+  //   queryFn: createQueryFn('/api/users/me', {}),
+  // });
 
-  console.log({ data, status, error });
+  // console.log({ data, status, error });
 
   const login = useLogin();
   const register = useRegister();

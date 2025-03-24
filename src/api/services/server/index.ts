@@ -4,7 +4,7 @@ import { ServiceParams, ServicePaths } from '@/api/utils/pathsTypes';
 // import { useAccessToken } from '@/api/utils/useAccessToken.js';
 import { baseUrl } from '../definitions';
 
-const serverFetchClient = createClient<paths>({
+export const serverFetchClient = createClient<paths>({
   baseUrl: baseUrl,
 });
 // serverFetchClient.use(useAccessToken);
