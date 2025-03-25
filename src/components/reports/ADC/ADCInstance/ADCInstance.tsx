@@ -3,7 +3,7 @@
 import classNames from 'classnames';
 import { FC, ReactElement } from 'react';
 import { Icon } from '@/components/common/uikit';
-import styles from './ACDInstance.module.scss';
+import styles from './ADCInstance.module.scss';
 
 // interface Column {
 //   name: string;
@@ -18,14 +18,14 @@ type GeneralColumn = {
   index: number;
 };
 
-type ACDType = {
-  __typename: 'ACD';
+type ADCType = {
+  __typename: 'ADC';
   id: string;
   deps: GeneralColumn[];
 };
 
 type Props = {
-  data: ACDType;
+  data: ADCType;
   isSelected: boolean;
   onClick: () => void;
 };
@@ -50,7 +50,7 @@ const makeSide: (data: GeneralColumn[]) => ReactElement = (data) => {
   );
 };
 
-export const ACDInstance: FC<Props> = ({ data, isSelected, onClick }) => {
+export const ADCInstance: FC<Props> = ({ data, isSelected, onClick }) => {
   return (
     <div
       className={classNames(styles.row, isSelected && styles.selected)}

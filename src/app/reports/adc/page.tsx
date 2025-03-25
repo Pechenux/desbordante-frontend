@@ -6,7 +6,7 @@ export default function FD() {
   const { setQueryParams } = useQueryParams<{ taskID: string }>();
 
   setQueryParams({
-    newPathname: '/reports/acd/result',
+    newPathname: '/reports/adc/result',
     erase: false,
     params: {},
   });

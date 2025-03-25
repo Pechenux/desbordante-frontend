@@ -1,10 +1,10 @@
 import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import { Icon } from '@/components/common/uikit';
-import { ACDResult /*, Snippet*/ } from '@/components/reports';
+import { ADCResult /*, Snippet*/ } from '@/components/reports';
 // import { ChartStatistics } from '@/components/reports/ChartStatisctics';
 // import styles from './page.module.scss';
 
-export default async function ACDReport({
+export default async function ADCReport({
   params,
 }: {
   params: Promise<{ tab: string }>;
@@ -20,7 +20,7 @@ export default async function ACDReport({
       name: 'result',
       label: 'Primitive list',
       icon: <Icon name="listDropDown" />,
-      content: <ACDResult />,
+      content: <ADCResult />,
     },
     // {
     //   name: 'snippet',

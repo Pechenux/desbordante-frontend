@@ -7,7 +7,7 @@ import colors from '@/constants/colors';
 import {
   columnMatchType,
   selectedColumnMatchesAtom,
-} from '@/store/MDColumnMatchesAtoms';
+} from '@/store/MDColumnMatchesAtom';
 import { ColumnMatchesModal } from '../ColumnMatchesModal';
 import styles from './ColumnMatchesInput.module.scss';
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
-import { columnMatchType } from '@/store/MDColumnMatchesAtoms';
+import { columnMatchType } from '@/store/MDColumnMatchesAtom';
 import { ConfigureColumnMatchModal } from '../ConfigureColumnMatchModal';
 import styles from './ConfigureColumnMatchInput.module.scss';
 

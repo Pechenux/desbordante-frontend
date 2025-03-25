@@ -13,7 +13,7 @@ import { Button } from '@/components/common/uikit/Button';
 import {
   columnMatchType,
   selectedColumnMatchesAtom,
-} from '@/store/MDColumnMatchesAtoms';
+} from '@/store/MDColumnMatchesAtom';
 import styles from './ConfigureColumnMatchModal.module.scss';
 
 export type ColumnMatchesModalProps = ModalProps & {

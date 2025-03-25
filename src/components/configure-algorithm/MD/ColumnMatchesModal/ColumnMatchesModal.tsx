@@ -14,7 +14,7 @@ import {
   columnMatchType,
   defaultColumnMatch,
   selectedColumnMatchesAtom,
-} from '@/store/MDColumnMatchesAtoms';
+} from '@/store/MDColumnMatchesAtom';
 import { ConfigureColumnMatchInput } from '../ConfigureColumnMatchInput';
 import styles from './ColumnMatchesModal.module.scss';
 

@@ -90,7 +90,13 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             slider
-            boundaries={{ defaultNum: 1, min: 1, max: 10, step: 1, digits: 0 }}
+            boundaries={{
+              defaultNum: 1,
+              min: 1,
+              max: 10,
+              step: 1,
+              digitsAfterPoint: 0,
+            }}
           />
         )}
       </ControlledFormField>
@@ -112,7 +118,7 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
                 min: 0,
                 max: 1,
                 step: 1e-4,
-                digits: 4,
+                digitsAfterPoint: 4,
               }}
             />
           )}
@@ -147,7 +153,7 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
             <NumberInput
               value={[value ?? 1]}
               onChange={([newValue]) => onChange(newValue)}
-              boundaries={{ defaultNum: 0, step: 1, digits: 0 }}
+              boundaries={{ defaultNum: 0, step: 1, digitsAfterPoint: 0 }}
             />
           )}
         </ControlledFormField>
@@ -165,7 +171,13 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
               value={[value ?? 1]}
               onChange={([newValue]) => onChange(newValue)}
               slider
-              boundaries={{ defaultNum: 1, min: 1, max: 8, step: 1, digits: 0 }}
+              boundaries={{
+                defaultNum: 1,
+                min: 1,
+                max: 8,
+                step: 1,
+                digitsAfterPoint: 0,
+              }}
             />
           )}
         </ControlledFormField>

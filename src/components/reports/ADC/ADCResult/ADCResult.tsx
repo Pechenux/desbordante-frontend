@@ -13,7 +13,7 @@ import {
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
 import {
-  ACDInstance,
+  ADCInstance,
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
@@ -21,7 +21,7 @@ import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './ACDResult.module.scss';
 
-export const ACDResult = () => {
+export const ADCResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
@@ -173,7 +173,7 @@ export const ACDResult = () => {
 
       <div className={styles.rows}>
         {deps.map((d) => (
-          <ACDInstance
+          <ADCInstance
             key={d.id}
             data={d}
             isSelected={selectedInstance === d.id}
