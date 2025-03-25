@@ -1,7 +1,7 @@
 import { cmsFetchClient } from '@/api/services/cms';
 import HomeBackground from '@/assets/backgrounds/home.svg?component';
-import { PrPublicationCard } from './components/PrPublicationCard';
-import { SciencePublicationCard } from './components/SciencePublicationCard';
+import { PrPublicationCard } from '../../components/papers/PrPublicationCard';
+import { SciencePublicationCard } from '../../components/papers/SciencePublicationCard';
 import styles from './papers.module.scss';
 
 export async function Papers() {
@@ -12,6 +12,7 @@ export async function Papers() {
         query: {
           'pagination[limit]': -1,
           sort: 'date:desc',
+          populate: 'language,link,link.platform,link.platform.icon',
         },
       },
     },

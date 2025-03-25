@@ -28,6 +28,10 @@ module.exports = async () => {
     const cmsProxyURL = '/cms';
 
     proxies.push({
+      source: `${cmsProxyURL}/uploads/:path*`,
+      destination: `${cmsURL}/uploads/:path*`,
+    });
+    proxies.push({
       source: `${cmsProxyURL}/:path*`,
       destination: `${cmsURL}/api/:path*`,
     });

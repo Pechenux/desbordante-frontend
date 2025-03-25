@@ -1,4 +1,4 @@
-export const revalidate = 3600; // 1 hour
+export const revalidate = 1; // 1 hour
 
 import { Papers } from './papers';
 
