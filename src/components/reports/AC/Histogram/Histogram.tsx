@@ -76,7 +76,7 @@ export const Histogram = () => {
 
   const handle = (e) => {
     setInputValue(e);
-    console.log(111, e);
+    console.log(999, e);
   };
 
   console.log(inputValue);

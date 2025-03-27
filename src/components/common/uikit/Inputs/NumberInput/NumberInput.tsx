@@ -24,6 +24,7 @@ export type NumberInputProps = WithError & {
   onChange: (newValue: number[]) => void;
   boundaries?: BoundariesType;
   slider?: boolean;
+  range?: boolean;
   showBoundariesToolTip?: boolean;
   disabled?: boolean;
 };
@@ -37,6 +38,7 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     onChange,
     boundaries,
     slider = false,
+    range = false,
     error,
     disabled,
   } = props;
@@ -51,14 +53,18 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     step = 1e-2,
   } = boundaries || {};
 
-  const range = value.length === 2;
+  //const range = value.length === 2;
 
   let firstRawValue = value[0] ?? defaultNum;
   let secondRawValue = value[1] ?? defaultNum;
+  console.log(777, value[1], secondRawValue);
+
   if (range && firstRawValue < secondRawValue) {
     [firstRawValue, secondRawValue] = [secondRawValue, firstRawValue];
   } else if (range && firstRawValue === secondRawValue) {
+    console.log(222, value);
     value.pop();
+    console.log(333, value);
   }
 
   const [firstValue, setFirstValue] = useState(firstRawValue);

@@ -20,8 +20,7 @@ export const NumberInputWithButton: FC<Props> = ({
   label,
 }) => {
   const handleButtonClick = () => {
-    console.log(numberProps.value);
-    //console.log('displayValue');
+    console.log('displayValue', numberProps.value);
   };
   return (
     <div /*className={styles.inputContainer}*/>
