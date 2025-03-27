@@ -60,6 +60,8 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
 
   if (range && firstRawValue < secondRawValue) {
     [firstRawValue, secondRawValue] = [secondRawValue, firstRawValue];
+  } else if (range && firstRawValue === secondRawValue) {
+    value.pop();
   }
   // else if (range && firstRawValue === secondRawValue) {
   //   value.pop();
