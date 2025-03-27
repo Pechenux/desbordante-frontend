@@ -283,8 +283,8 @@ export const TypoFDResult = () => {
       <h5>Primitive List</h5>
 
       <div className={styles.filters}>
-        <FormField>
-          <Text label="Search" placeholder="Attribute name or regex" />
+        <FormField label="Search">
+          <Text placeholder="Attribute name or regex" />
         </FormField>
 
         <div className={styles.buttons}>

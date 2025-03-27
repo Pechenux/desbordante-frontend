@@ -1,15 +1,10 @@
-import {
-  GetMainTaskDeps,
-  Operation,
-} from '@graphql/operations/queries/__generated__/GetMainTaskDeps';
-
-export const myData: GetMainTaskDeps = {
+export const myData = {
   taskInfo: {
     __typename: 'TaskInfo',
     taskID: '22fcfc02-de6e-4e4b-b75d-16e3881f68ad',
     data: {
       __typename: 'ACTaskData',
-      operation: Operation.ADDITION,
+      operation: 'ADDITION',
       result: {
         __typename: 'ACTaskResult',
         taskID: '22fcfc02-de6e-4e4b-b75d-16e3881f68ad',

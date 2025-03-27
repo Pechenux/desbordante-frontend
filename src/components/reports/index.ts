@@ -13,4 +13,5 @@ export * from './DDResult';
 export * from './MDResult';
 export * from './NARResult';
 export * from './ADC';
+export * from './AC';
 //export * from './DownloadResult';

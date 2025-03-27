@@ -19,7 +19,7 @@ import {
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
-import styles from './ACDResult.module.scss';
+import styles from './ADCResult.module.scss';
 
 export const ADCResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
@@ -130,7 +130,7 @@ export const ADCResult = () => {
           {...{
             isOrderingShown,
             setIsOrderingShown,
-            primitive: PrimitiveType.FD,
+            primitive: PrimitiveType.ADC,
           }}
         />
       )}
@@ -146,8 +146,8 @@ export const ADCResult = () => {
       <h5>Primitive List</h5>
 
       <div className={styles.filters}>
-        <FormField>
-          <Text label="Search" placeholder="Attribute name or regex" />
+        <FormField label="Search">
+          <Text placeholder="Attribute name or regex" />
         </FormField>
 
         <div className={styles.buttons}>

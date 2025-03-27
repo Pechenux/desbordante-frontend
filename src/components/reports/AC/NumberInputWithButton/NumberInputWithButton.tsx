@@ -24,18 +24,19 @@ export const NumberInputWithButton: FC<Props> = ({
     //console.log('displayValue');
   };
   return (
-    <div className={styles.inputContainer}>
+    <div /*className={styles.inputContainer}*/>
       <FormField label={label}>
-        <NumberInput
-          {...numberProps}
-          // value={displayValue}
-          // onChange={setDisplayValue}
-        />
+        <div className={styles.flex}>
+          <NumberInput
+            {...numberProps}
+            // value={displayValue}
+            // onChange={setDisplayValue}
+          />
+          <Button variant="secondary" onClick={handleButtonClick}>
+            {buttonText}
+          </Button>
+        </div>
       </FormField>
-
-      <Button variant="secondary" onClick={handleButtonClick}>
-        {buttonText}
-      </Button>
     </div>
   );
 };

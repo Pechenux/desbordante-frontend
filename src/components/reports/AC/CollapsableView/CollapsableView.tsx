@@ -1,3 +1,5 @@
+'use client';
+
 import cn from 'classnames';
 import { FC, useLayoutEffect, useRef, useState } from 'react';
 import { WithChildren } from '@/types/withChildren';
