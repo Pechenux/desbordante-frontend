@@ -2,9 +2,8 @@
 
 import _ from 'lodash';
 import { useEffect } from 'react';
-//import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
+import { createMutationFn } from '@/api/services/server';
 import { SchemaNarTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
@@ -212,7 +211,7 @@ NARForm.onSubmit = (fieldValues) => {
 // использовать zod
 NARForm.mutationFn = ({ datasets, data }) =>
   datasets.length
-    ? createMutationFn('/tasks/')({
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {
