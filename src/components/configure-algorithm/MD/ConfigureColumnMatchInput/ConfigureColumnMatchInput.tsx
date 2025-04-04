@@ -7,11 +7,13 @@ import { columnMatchType } from '@/store/MDColumnMatchesAtom';
 import { ConfigureColumnMatchModal } from '../ConfigureColumnMatchModal';
 import styles from './ConfigureColumnMatchInput.module.scss';
 
-type SelectDatasetProps = {
+type ConfigureColumnMatchInputProps = {
   value: columnMatchType;
 };
 
-export const ConfigureColumnMatchInput = ({ value }: SelectDatasetProps) => {
+export const ConfigureColumnMatchInput = ({
+  value,
+}: ConfigureColumnMatchInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState<string>('');
 

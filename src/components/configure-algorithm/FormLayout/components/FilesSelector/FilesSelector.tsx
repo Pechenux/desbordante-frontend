@@ -19,6 +19,7 @@ export function FilesSelector<T extends string>({
         <FormField key={inputName} label={label}>
           <SelectDataset
             value={fileIDs[inputName]}
+            displayValue="da"
             onChange={(newValue) =>
               onChange({ ...fileIDs, [inputName]: newValue })
             }

@@ -8,10 +8,15 @@ import styles from './SelectDataset.module.scss';
 
 type SelectDatasetProps = {
   value: string;
+  displayValue: string;
   onChange: (newValue: string) => void;
 };
 
-export const SelectDataset = ({ value, onChange }: SelectDatasetProps) => {
+export const SelectDataset = ({
+  value,
+  displayValue,
+  onChange,
+}: SelectDatasetProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -27,7 +32,7 @@ export const SelectDataset = ({ value, onChange }: SelectDatasetProps) => {
           style={{ width: '100%' }}
           type="text"
           readOnly
-          value={value}
+          value={displayValue}
           placeholder="Choose file..."
         />
         <Icon name="file" color={colors.black[75]} />

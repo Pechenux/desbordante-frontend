@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { formatDistance } from 'date-fns';
+//import { formatDistance } from 'date-fns';
 import { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { ModalContainer } from '@/components/common/layout';
 import { Icon } from '@/components/common/uikit';
@@ -28,9 +28,10 @@ const getFileDescription = (file: Dataset) => {
   const formatter = new Intl.NumberFormat('en', { notation: 'compact' });
   const rowsCount = formatter.format(file.rowsCount);
   const countOfColumns = formatter.format(file.countOfColumns || 0);
-  const range = formatDistance(new Date(+file.createdAt), new Date(), {
-    addSuffix: true,
-  });
+  // const range = formatDistance(new Date(+file.createdAt), new Date(), {
+  //   addSuffix: true,
+  // });
+  const range = file.createdAt;
   const usedTimes = file.numberOfUses;
   return [
     `${rowsCount} rows, ${countOfColumns} columns`,

@@ -1,8 +1,9 @@
 'use client';
 
 import classNames from 'classnames';
-import _ from 'lodash';
+//import _ from 'lodash';
 import { FC, ReactElement, ReactNode, useState } from 'react';
+import { SchemaNarModel, SchemaNarSideModel } from '@/api/generated/schema';
 import { Icon } from '@/components/common/uikit';
 import styles from './DependencyList.module.scss';
 
@@ -11,34 +12,25 @@ import styles from './DependencyList.module.scss';
 //   index: number;
 // }
 
-export type GeneralColumn = {
-  __typename: 'Column';
-  name: string;
-  index: number;
-};
+type Column = SchemaNarSideModel;
+type Deps = SchemaNarModel;
 
 type Props = {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  formatter?: (column: any) => ReactNode;
-  deps: {
-    confidence?: number;
-    rhs: GeneralColumn[];
-    lhs: GeneralColumn[];
-  }[];
+  formatter?: (column: Column) => ReactNode;
+  deps: Deps[];
   infoVisible?: boolean;
 };
 
 const makeSide: (
-  data: GeneralColumn | GeneralColumn[],
+  data: Column | Column[],
   infoVisible: boolean,
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  formatter?: (column: any) => ReactNode,
+  formatter?: (column: Column) => ReactNode,
 ) => ReactElement = (data, infoVisible, formatter) => {
   if (Array.isArray(data)) {
     return (
       <>
-        {data.map((e) => (
-          <span className={styles.attr} key={e.index}>
+        {data.map((e, index) => (
+          <span className={styles.attr} key={index}>
             {/* {e.name} */}
             {formatter ? formatter(e) : e.name}
             {/* {infoVisible && e.pattern ? ' | ' + e.pattern : ''} */}
@@ -59,14 +51,12 @@ export const DependencyList: FC<Props> = ({
   // const { selectedDependency, selectDependency, errorDependency } =
   //   useTaskContext();
 
-  const [selectedDependency, setSelectedDependency] = useState<GeneralColumn[]>(
-    [],
-  );
-  const errorDependency = [] as GeneralColumn[];
+  const [selectedDependency, setSelectedDependency] = useState<Column[]>([]);
+  const errorDependency = [] as Column[];
 
   return (
     <div className={styles.dependencyListContainer}>
-      {_.map(deps, (row, i) => {
+      {deps.map((row, i) => {
         const fullDependency = row.lhs.concat(row.rhs);
         const isError =
           JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
@@ -89,7 +79,7 @@ export const DependencyList: FC<Props> = ({
             <div className={styles.arrowContainer}>
               <Icon name="longArrow" />
               {row.confidence !== undefined && (
-                <small>{row.confidence * 100}%</small>
+                <small>{Math.round(row.confidence * 100)}%</small>
               )}
             </div>
             {makeSide(row.rhs, infoVisible, formatter)}

@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { bodyToFormData, createMutationFn } from '@/api/fetchFunctions';
+import { SchemaFilePublic } from '@/api/generated/schema';
 import { Icon } from '@/components/common/uikit';
 import cardStyles from '../DatasetCard/DatasetCard.module.scss';
 import {
@@ -29,12 +30,12 @@ export const DatasetUploader: FC<Props> = ({ onUpload }) => {
   const [separator, setSeparator] = useState<Separators>(',');
 
   const mutator = useMutation({
-    mutationFn: createMutationFn('/api/file/csv'),
-    onSuccess: (datasetID: string | undefined) => {
+    mutationFn: createMutationFn('/files/'),
+    onSuccess: (datasetID: SchemaFilePublic | undefined) => {
       setFileUploadProgress({ state: 'complete' });
 
       if (datasetID) {
-        onUpload(datasetID);
+        onUpload(datasetID.id);
       }
     },
     onError: () => setFileUploadProgress({ state: 'fail' }),

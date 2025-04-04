@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { FC, useMemo } from 'react';
+import { createQueryFn } from '@/api/fetchFunctions';
 import { Collapse } from '@/components/common/layout/Collapse';
 import {
   ModalContainer,
@@ -13,7 +15,7 @@ import { DatasetUploader } from './components/DatasetUploader';
 import styles from './ChooseDatasetModal.module.scss';
 
 // заглушка
-const builtinDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
+// const builtinDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
 // заглушка
 const userDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
 
@@ -53,14 +55,36 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
     [onClose],
   );
 
+  const { data } = useQuery({
+    queryKey: [`/files`],
+    queryFn: createQueryFn('/files/', {
+      params: {
+        query: {
+          with_public: true,
+        },
+      },
+    }),
+    enabled: true,
+  });
+
+  console.log(2222, data);
+
   const builtinFiles = (
     <Collapse title="Built-in Datasets">
       <div className={styles.files}>
-        {builtinDatasets.map((dts) => (
+        {data?.map((dts) => (
           <DatasetCard
-            key={dts.dataset.fileID}
-            dataset={dts.dataset}
-            primitive={dts.primitive}
+            key={dts.id}
+            dataset={{
+              fileID: dts.id,
+              originalFileName: dts.name,
+              rowsCount: 10,
+              createdAt: '11.11.2011',
+              numberOfUses: 1,
+              isBuiltIn: true,
+              supportedPrimitives: [PrimitiveType.NAR],
+            }}
+            primitive={PrimitiveType.NAR}
             choosedDataset={value}
             onClick={onClick}
           />

@@ -10,7 +10,8 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 //   MFDForm,
 //   TypoFDForm,
 // } from '@/components/configure-algorithm/forms';
-import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+//import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+import { NARForm } from '@/components/configure-algorithm/forms/NARForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -21,13 +22,19 @@ const forms: Partial<
     PrimitiveType,
     {
       formComponent: FormComponent;
-      datasetInputs: { label: string; inputName: string }[];
+      datasetInputs: { label: string; inputId: string; inputName: string }[];
     }
   >
 > = {
-  FD: {
-    formComponent: FDForm,
-    datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
+  // FD: {
+  //   formComponent: FDForm,
+  //   datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
+  // },
+  NAR: {
+    formComponent: NARForm,
+    datasetInputs: [
+      { label: 'Dataset', inputId: 'dataset_id', inputName: 'dataset_name' },
+    ],
   },
   // FD: FDForm,
   // AR: ARForm,

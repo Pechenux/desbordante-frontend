@@ -30,8 +30,10 @@ export const FormLayout: FC<FormLayoutProps> = ({
   datasetInputs,
   startValues,
 }) => {
+  console.log(3, datasetInputs);
   const { setQueryParams } = useQueryParams();
   const [fileIDs, setFileIDs] = useState<Record<string, string>>({});
+  console.log(44, fileIDs);
   const methods = useForm<FormData>({
     mode: 'all',
     reValidateMode: 'onChange',

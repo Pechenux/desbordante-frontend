@@ -27,10 +27,10 @@ export const FDResult = () => {
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/api/task/${queryParams.taskID}`],
-    queryFn: createQueryFn('/api/task/{task_id}', {
+    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryFn: createQueryFn('/tasks/{id}', {
       params: {
-        path: { task_id: queryParams.taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
     enabled: !!queryParams.taskID,
