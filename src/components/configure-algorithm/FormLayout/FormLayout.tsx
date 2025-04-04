@@ -41,10 +41,10 @@ export const FormLayout: FC<FormLayoutProps> = ({
   });
   const mutator = useMutation({
     mutationFn: FormComponent.mutationFn,
-    onSuccess: (taskID) =>
+    onSuccess: (taskResponse) =>
       setQueryParams({
         newPathname: '/reports',
-        params: { taskID },
+        params: { taskID: taskResponse?.id },
       }),
     onError: (error) => {
       if (typeof error === 'string') {
@@ -95,6 +95,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
   }, []);
 
   useEffect(() => console.log(presets), [presets]);
+  console.log(666, methods.getValues());
 
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>

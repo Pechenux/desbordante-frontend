@@ -19,198 +19,40 @@ import {
   OrderingWindow,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-//import { useQueryParams } from '@/utils/useQueryParams';
+import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './NARResult.module.scss';
 
 export const NARResult = () => {
-  //const { queryParams } = useQueryParams<{ taskID: string }>();
+  const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
-  const taskID = '30da1bc4-c764-4cd9-8937-2a09d036db3d';
+  //const taskID = '30da1bc4-c764-4cd9-8937-2a09d036db3d';
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${taskID}`],
+    queryKey: [`/tasks/${queryParams.taskID}`],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
-        path: { id: taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
-    enabled: !!taskID,
+    enabled: !!queryParams.taskID,
   });
 
   if (isFetching || error) return;
 
   const formatter = (column: SchemaNarSideModel) => {
-    return (
-      <span className={styles.attr}>
-        {column.name} ∈ {column.values}
-      </span>
-    );
+    return `${column.name} ∈ ${column.values}`;
   };
 
-  // const data = {
-  //   taskInfo: {
-  //     __typename: 'TaskInfo',
-  //     taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-  //     data: {
-  //       __typename: 'TaskWithDepsData',
-  //       result: {
-  //         __typename: 'FDTaskResult',
-  //         taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-  //         depsAmount: 6,
-  //         filteredDeps: {
-  //           __typename: 'FilteredFDs',
-  //           filteredDepsAmount: 6,
-  //           NARs: [
-  //             {
-  //               __typename: 'NAR',
-  //               confidence: 0.96,
-  //               support: 0.57,
-  //               lhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Intelligence',
-  //                   index: 0,
-  //                   values: '4 - 10',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Shedding',
-  //                   index: 1,
-  //                   values: 'Moderate',
-  //                 },
-  //               ],
-  //               rhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Friendliness',
-  //                   index: 1,
-  //                   values: '6 - 10',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Life Span',
-  //                   index: 1,
-  //                   values: '9 - 16',
-  //                 },
-  //               ],
-  //             },
-  //             {
-  //               __typename: 'NAR',
-  //               confidence: 0.77,
-  //               support: 0.34,
-  //               lhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Health Issues Risk',
-  //                   index: 0,
-  //                   values: 'Moderate',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Life Span',
-  //                   index: 1,
-  //                   values: '8 - 14',
-  //                 },
-  //               ],
-  //               rhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Friendliness',
-  //                   index: 1,
-  //                   values: '5 - 8',
-  //                 },
-  //               ],
-  //             },
-  //             {
-  //               __typename: 'NAR',
-  //               confidence: 0.72,
-  //               support: 0.08,
-  //               lhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Friendliness',
-  //                   index: 0,
-  //                   values: '5 - 10',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Exercise Requirements',
-  //                   index: 1,
-  //                   values: '1.7 - 2.3',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Type',
-  //                   index: 1,
-  //                   values: 'Working',
-  //                 },
-  //               ],
-  //               rhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Life Span',
-  //                   index: 1,
-  //                   values: '10 - 16',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Training Difficulty',
-  //                   index: 1,
-  //                   values: '4 - 9',
-  //                 },
-  //               ],
-  //             },
-  //             {
-  //               __typename: 'NAR',
-  //               confidence: 0.9,
-  //               support: 0.57,
-  //               lhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Size',
-  //                   index: 0,
-  //                   values: '1 - 2',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Intelligence',
-  //                   index: 1,
-  //                   values: '5 - 8',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Grooming Needs',
-  //                   index: 0,
-  //                   values: 'Moderate',
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Weight',
-  //                   index: 1,
-  //                   values: '15.25 - 68.26',
-  //                 },
-  //               ],
-  //               rhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   name: 'Shedding',
-  //                   index: 1,
-  //                   values: 'Moderate',
-  //                 },
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
+  const deps = data?.result?.primitive_name === 'nar' && data?.result?.result;
+  if (!deps) return;
 
-  //const deps = data?.taskInfo.data.result.filteredDeps.NARs;
-
-  const deps = data?.result?.result;
-  console.log(deps);
+  const shownData = deps?.map((row) => ({
+    lhs: row.lhs.map((e) => formatter(e)),
+    rhs: row.rhs.map((e) => formatter(e)),
+    confidence: row.confidence,
+    support: row.support,
+  }));
 
   return (
     <>
@@ -262,7 +104,7 @@ export const NARResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps, formatter }} />
+        <DependencyList deps={shownData} />
       </div>
 
       {/* <div className={styles.pagination}>

@@ -1,6 +1,7 @@
 // import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
 //import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaNarTaskConfig } from '@/api/generated/schema';
@@ -8,15 +9,15 @@ import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 //import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
-//import { GetAllFieds } from '@/types/getAllFields';
+import { GetAllFieds } from '@/types/getAllFields';
 //import { UnionKeys } from '@/types/unionKeys';
-import { FDAlgorithmOptions, NARFields } from './options/NAROptions';
-//import { FDPresets } from './presets/FDPresets';
+import { NARAlgorithmOptions, NARFields } from './options/NAROptions';
+import { NARPresets } from './presets/NARPresets';
 
 export type NARFormInputs = SchemaNarTaskConfig['config'];
-// type NARFormKeys = UnionKeys<NARFormInputs>;
-// const defaultValue = FDPresets.common.at(-1)
-//   ?.preset as GetAllFieds<FDFormInputs>;
+//type NARFormKeys = UnionKeys<NARFormInputs>;
+const defaultValue = NARPresets.common.at(-1)
+  ?.preset as GetAllFieds<NARFormInputs>;
 
 export const NARForm: FormComponent<NARFormInputs> = (
   {
@@ -34,14 +35,9 @@ export const NARForm: FormComponent<NARFormInputs> = (
   //   methods.setValue('algo_name', defaultValue['algo_name']);
   // }, [methods, setPresets]);
 
-  // useEffect(() => {
-  //   if (!algo_name) {
-  //     return;
-  //   }
-
-  //   const fields: NARFormKeys[] = NARFields;
-  //   fields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  // }, [algo_name, methods, optionalFields]);
+  useEffect(() => {
+    NARFields.forEach((key) => methods.setValue(key, defaultValue[key]));
+  }, [methods]);
 
   return (
     <>
@@ -56,7 +52,7 @@ export const NARForm: FormComponent<NARFormInputs> = (
           <Select
             value={value}
             onChange={onChange}
-            options={FDAlgorithmOptions}
+            options={NARAlgorithmOptions}
           />
         )}
       </ControlledFormField>
@@ -213,15 +209,19 @@ export const NARForm: FormComponent<NARFormInputs> = (
 
 NARForm.onSubmit = (fieldValues) => {
   //const algo_name = fieldValues.algo_name;
+  console.log(999, fieldValues);
   return _.pick(fieldValues, NARFields);
 };
 // использовать zod
 NARForm.mutationFn = ({ datasets, data }) =>
-  '0' in datasets
-    ? createMutationFn('/tasks')({
+  datasets.length
+    ? createMutationFn('/tasks/')({
         body: {
-          files_ids: [datasets[0]],
-          config: data,
+          files_ids: datasets,
+          config: {
+            primitive_name: 'nar',
+            config: data,
+          },
         },
       })
     : Promise.reject('No datasets selected');

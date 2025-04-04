@@ -23,10 +23,10 @@ export const Loader: FC = () => {
   const { queryParams, setQueryParams } = useQueryParams<{ taskID: string }>();
 
   const { data, isFetching, error, refetch } = useQuery({
-    queryKey: [`/api/task/${queryParams.taskID}`],
-    queryFn: createQueryFn('/api/task/{task_id}', {
+    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryFn: createQueryFn('/tasks/{id}', {
       params: {
-        path: { task_id: queryParams.taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
     enabled: !!queryParams.taskID,

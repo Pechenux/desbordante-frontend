@@ -6,20 +6,12 @@ import { Option } from '@/components/common/uikit/Inputs';
 
 export type NARAlgorithms = SchemaNarTaskConfig['config']['algo_name'];
 
-export const FDAlgorithmOptions: Option<NARAlgorithms>[] = [
+export const NARAlgorithmOptions: Option<NARAlgorithms>[] = [
   { label: 'DES', value: DESConfigAlgo_name.des },
 ];
 
-// export type NARFields =
-//   | 'seed'
-//   | 'minconf'
-//   | 'minsup'
-//   | 'population_size'
-//   | 'max_fitness_evaluations'
-//   | 'differential_scale'
-//   | 'crossover_probability';
-
 export const NARFields = [
+  'algo_name',
   'seed',
   'minconf',
   'minsup',
@@ -27,4 +19,4 @@ export const NARFields = [
   'max_fitness_evaluations',
   'differential_scale',
   'crossover_probability',
-];
+] as const;

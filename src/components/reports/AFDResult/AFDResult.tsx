@@ -310,7 +310,7 @@ export const AFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps }} />
+        <DependencyList deps={deps} />
       </div>
 
       <div className={styles.pagination}>
