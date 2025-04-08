@@ -33,7 +33,6 @@ export const FormLayout: FC<FormLayoutProps> = ({
   datasetInputs,
   startValues,
 }) => {
-  console.log(3, datasetInputs);
   const { setQueryParams } = useQueryParams();
 
   const startInputsValues: Record<string, string> = datasetInputs.reduce(

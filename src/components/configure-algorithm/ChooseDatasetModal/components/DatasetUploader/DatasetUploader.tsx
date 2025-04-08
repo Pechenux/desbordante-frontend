@@ -16,7 +16,7 @@ import {
 import styles from './DatasetUploader.module.scss';
 
 type Props = {
-  onUpload: (datasetId: string) => void;
+  onUpload: (datasetId: ChoosedDatasetInfo) => void;
 };
 
 export const DatasetUploader: FC<Props> = ({ onUpload }) => {

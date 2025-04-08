@@ -15,6 +15,11 @@ export type ChoosedDatasetInfo = {
   name: string;
 };
 
+export type ChoosedDatasetInfo = {
+  fileId: string;
+  name: string;
+};
+
 export const SelectDataset = ({ onChange }: SelectDatasetProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [choosedDataset, setChoosedDataset] =

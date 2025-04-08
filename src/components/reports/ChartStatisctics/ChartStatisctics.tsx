@@ -1,8 +1,8 @@
 'use client';
 
 import { NextSeo } from 'next-seo';
-// import { useState } from 'react';
-// import LayeredChart from '../PieChart/LayeredChart';
+import { useState } from 'react';
+import LayeredChart from './PieChart/LayeredChart';
 import styles from './ChartStatistics.module.scss';
 
 // type DependencyFilter = { rhs: number[]; lhs: number[] };
