@@ -3,11 +3,11 @@
 import classNames from 'classnames';
 //import _ from 'lodash';
 import { FC, ReactElement, useState } from 'react';
-import { SchemaNarSideModel } from '@/api/generated/schema';
+import { SchemaDdSideModel, SchemaNarSideModel } from '@/api/generated/schema';
 import { Icon } from '@/components/common/uikit';
 import styles from './DependencyList.module.scss';
 
-type Column = SchemaNarSideModel | string;
+type Column = SchemaNarSideModel | string | SchemaDdSideModel;
 export type Deps = {
   lhs: string[];
   rhs: string[];

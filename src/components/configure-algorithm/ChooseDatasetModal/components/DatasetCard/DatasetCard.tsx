@@ -2,7 +2,7 @@ import classNames from 'classnames';
 //import { formatDistance } from 'date-fns';
 import { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { ModalContainer } from '@/components/common/layout';
-import { Icon } from '@/components/common/uikit';
+import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import styles from './DatasetCard.module.scss';
 
@@ -67,14 +67,16 @@ const BaseCard: FC<BaseCardProps> = ({
 interface DatasetCardProps {
   dataset: Dataset;
   primitive: PrimitiveType; // TODO: remove
-  choosedDataset: string;
-  onClick: (selectedDataset: string) => void;
+  //choosedDataset: string;
+  isSelected: boolean;
+  onClick: (selectedDataset: ChoosedDatasetInfo) => void;
 }
 
 export const DatasetCard: FC<DatasetCardProps> = ({
   dataset,
   primitive,
-  choosedDataset,
+  isSelected,
+  //choosedDataset,
   onClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -92,8 +94,17 @@ export const DatasetCard: FC<DatasetCardProps> = ({
 
   return (
     <BaseCard
-      isSelected={dataset.fileID === choosedDataset}
-      onClick={isDisabled ? undefined : () => onClick(dataset.fileID)}
+      //isSelected={dataset.fileID === choosedDataset}
+      isSelected={isSelected}
+      onClick={
+        isDisabled
+          ? undefined
+          : () =>
+              onClick({
+                fileId: dataset.fileID,
+                name: dataset.originalFileName,
+              })
+      }
       isDisabled={isDisabled}
     >
       <div className={styles.cardTitle}>

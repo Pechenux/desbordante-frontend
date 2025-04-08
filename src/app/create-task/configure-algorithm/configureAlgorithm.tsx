@@ -11,18 +11,25 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 //   TypoFDForm,
 // } from '@/components/configure-algorithm/forms';
 //import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+import { DDForm } from '@/components/configure-algorithm/forms/DDForm';
 import { NARForm } from '@/components/configure-algorithm/forms/NARForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './configureAlgorithm.module.scss';
 
+export interface datasetInputInfo {
+  label: string;
+  inputId: string;
+  datasetId: string;
+}
+
 const forms: Partial<
   Record<
     PrimitiveType,
     {
       formComponent: FormComponent;
-      datasetInputs: { label: string; inputId: string; inputName: string }[];
+      datasetInputs: datasetInputInfo[];
     }
   >
 > = {
@@ -30,11 +37,20 @@ const forms: Partial<
   //   formComponent: FDForm,
   //   datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
   // },
+  DD: {
+    formComponent: DDForm,
+    datasetInputs: [
+      { label: 'Dataset', inputId: '1', datasetId: 'datasetId' },
+      {
+        label: 'Difference table',
+        inputId: '2',
+        datasetId: 'datasetId',
+      },
+    ],
+  },
   NAR: {
     formComponent: NARForm,
-    datasetInputs: [
-      { label: 'Dataset', inputId: 'dataset_id', inputName: 'dataset_name' },
-    ],
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: 'datasetId' }],
   },
   // FD: FDForm,
   // AR: ARForm,

@@ -57,15 +57,13 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
 
   let firstRawValue = value[0] ?? defaultNum;
   let secondRawValue = value[1] ?? defaultNum;
-  console.log(777, value[1], secondRawValue);
 
   if (range && firstRawValue < secondRawValue) {
     [firstRawValue, secondRawValue] = [secondRawValue, firstRawValue];
-  } else if (range && firstRawValue === secondRawValue) {
-    console.log(222, value);
-    value.pop();
-    console.log(333, value);
   }
+  // else if (range && firstRawValue === secondRawValue) {
+  //   value.pop();
+  // }
 
   const [firstValue, setFirstValue] = useState(firstRawValue);
   const [secondValue, setSecondValue] = useState(secondRawValue);

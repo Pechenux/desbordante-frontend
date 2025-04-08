@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { createQueryFn } from '@/api/fetchFunctions';
+import { SchemaDdSideModel } from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -21,23 +22,19 @@ import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './DDResult.module.scss';
 
-interface Column {
-  __typename: 'Column';
-  name: string;
-  index: number;
-  diffs: number[];
-}
-
 export const DDResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
-  const { isFetching, error } = useQuery({
-    queryKey: [`/api/task/${queryParams.taskID}`],
-    queryFn: createQueryFn('/api/task/{task_id}', {
+  // const queryParams = {
+  //   taskID: '3e4bf5fe-19d3-47a9-be9e-e6d05d6fe3c4',
+  // };
+  const { data, isFetching, error } = useQuery({
+    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryFn: createQueryFn('/tasks/{id}', {
       params: {
-        path: { task_id: queryParams.taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
     enabled: !!queryParams.taskID,
@@ -45,200 +42,204 @@ export const DDResult = () => {
 
   if (isFetching || error) return;
 
-  const formatter = (column: Column) => {
-    return (
-      <>
-        {column.name} ∈ [{column.diffs[0]}, {column.diffs[1]}]
-      </>
-    );
+  const formatter = (column: SchemaDdSideModel) => {
+    return `${column.name} ∈ ${column.values}`;
   };
 
-  const data = {
-    taskInfo: {
-      __typename: 'TaskInfo',
-      taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-      data: {
-        __typename: 'TaskWithDepsData',
-        result: {
-          __typename: 'FDTaskResult',
-          taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-          depsAmount: 6,
-          filteredDeps: {
-            __typename: 'FilteredFDs',
-            filteredDepsAmount: 6,
-            DDs: [
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Departure',
-                    index: 0,
-                    diffs: [0, 0],
-                  },
-                  {
-                    __typename: 'Column',
-                    name: 'Arrival',
-                    index: 1,
-                    diffs: [0, 0],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 1,
-                    diffs: [0, 50],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Departure',
-                    index: 0,
-                    diffs: [0, 3],
-                  },
-                  {
-                    __typename: 'Column',
-                    name: 'Arrival',
-                    index: 1,
-                    diffs: [0, 3],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 3,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 0,
-                    diffs: [0, 50],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 1,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 0,
-                    diffs: [0, 50],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 1,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 0,
-                    diffs: [0, 50],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 1,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 0,
-                    diffs: [0, 50],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 1,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 0,
-                    diffs: [0, 50],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 1,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-              {
-                __typename: 'DD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Distance',
-                    index: 0,
-                    diffs: [0, 50],
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Duration',
-                    index: 1,
-                    diffs: [0, 15],
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-    },
-  };
+  const deps = data?.result?.primitive_name === 'dd' && data?.result?.result;
+  if (!deps) return;
 
-  const deps = data?.taskInfo.data.result.filteredDeps.DDs;
+  const shownData = deps?.map((row) => ({
+    lhs: row.lhs.map((e) => formatter(e)),
+    rhs: row.rhs.map((e) => formatter(e)),
+  }));
+
+  // const data = {
+  //   taskInfo: {
+  //     __typename: 'TaskInfo',
+  //     taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
+  //     data: {
+  //       __typename: 'TaskWithDepsData',
+  //       result: {
+  //         __typename: 'FDTaskResult',
+  //         taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
+  //         depsAmount: 6,
+  //         filteredDeps: {
+  //           __typename: 'FilteredFDs',
+  //           filteredDepsAmount: 6,
+  //           DDs: [
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Departure',
+  //                   index: 0,
+  //                   diffs: [0, 0],
+  //                 },
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Arrival',
+  //                   index: 1,
+  //                   diffs: [0, 0],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 1,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Departure',
+  //                   index: 0,
+  //                   diffs: [0, 3],
+  //                 },
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Arrival',
+  //                   index: 1,
+  //                   diffs: [0, 3],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 3,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 0,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 1,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 0,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 1,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 0,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 1,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 0,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 1,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 0,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 1,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //             {
+  //               __typename: 'DD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Distance',
+  //                   index: 0,
+  //                   diffs: [0, 50],
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   name: 'Duration',
+  //                   index: 1,
+  //                   diffs: [0, 15],
+  //                 },
+  //               ],
+  //             },
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
+
+  //const deps = data?.result?.result
 
   return (
     <>
@@ -290,7 +291,7 @@ export const DDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps, formatter }} />
+        <DependencyList deps={shownData} />
       </div>
 
       {/* <div className={styles.pagination}>

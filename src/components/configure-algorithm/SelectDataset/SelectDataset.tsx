@@ -7,23 +7,35 @@ import { ChooseDatasetModal } from '../ChooseDatasetModal';
 import styles from './SelectDataset.module.scss';
 
 type SelectDatasetProps = {
-  value: string;
-  displayValue: string;
+  //choosedDataset: string;
+  //displayValue: string;
   onChange: (newValue: string) => void;
 };
 
+export type ChoosedDatasetInfo = {
+  fileId: string;
+  name: string;
+};
+
 export const SelectDataset = ({
-  value,
-  displayValue,
+  //choosedDataset,
+  //displayValue,
   onChange,
 }: SelectDatasetProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [choosedDataset, setChoosedDataset] =
+    useState<ChoosedDatasetInfo | null>(null);
+
+  const handleChangeDataset = (newValue: ChoosedDatasetInfo) => {
+    setChoosedDataset(newValue);
+    onChange(newValue.fileId);
+  };
 
   return (
     <>
       <ChooseDatasetModal
-        value={value}
-        onClick={onChange}
+        choosedDataset={choosedDataset}
+        onClick={handleChangeDataset}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />
@@ -32,7 +44,7 @@ export const SelectDataset = ({
           style={{ width: '100%' }}
           type="text"
           readOnly
-          value={displayValue}
+          value={choosedDataset?.name}
           placeholder="Choose file..."
         />
         <Icon name="file" color={colors.black[75]} />

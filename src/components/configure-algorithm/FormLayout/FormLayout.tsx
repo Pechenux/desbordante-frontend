@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { datasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { FormComponent, FormData, Presets } from '@/types/form';
 import { showError } from '@/utils/toasts';
@@ -21,7 +22,7 @@ import styles from './FormLayout.module.scss';
 
 export type FormLayoutProps = {
   FormComponent: FormComponent;
-  datasetInputs: { label: string; inputName: string }[];
+  datasetInputs: datasetInputInfo[];
   startValues?: FormData;
 };
 
@@ -30,10 +31,17 @@ export const FormLayout: FC<FormLayoutProps> = ({
   datasetInputs,
   startValues,
 }) => {
-  console.log(3, datasetInputs);
   const { setQueryParams } = useQueryParams();
-  const [fileIDs, setFileIDs] = useState<Record<string, string>>({});
-  console.log(44, fileIDs);
+
+  const startInputsValues: Record<string, string> = datasetInputs.reduce(
+    (acc, input) => ({ ...acc, [input.inputId]: input.datasetId }),
+    {},
+  );
+
+  const [fileIDs, setFileIDs] =
+    useState<Record<string, string>>(startInputsValues);
+
+  console.log(44, datasetInputs, fileIDs);
   const methods = useForm<FormData>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -72,10 +80,9 @@ export const FormLayout: FC<FormLayoutProps> = ({
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      console.log(datasetInputs, fileIDs);
       mutator.mutate({
-        datasets: datasetInputs.reduce((acc, { inputName }) => {
-          const inputData = fileIDs[inputName];
+        datasets: datasetInputs.reduce((acc, { inputId }) => {
+          const inputData = fileIDs[inputId];
           if (inputData) {
             acc.push(inputData);
           }
@@ -95,8 +102,6 @@ export const FormLayout: FC<FormLayoutProps> = ({
   }, []);
 
   useEffect(() => console.log(presets), [presets]);
-  console.log(666, methods.getValues());
-
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>
       {/* <div className={styles.presetSelectorContainer}>

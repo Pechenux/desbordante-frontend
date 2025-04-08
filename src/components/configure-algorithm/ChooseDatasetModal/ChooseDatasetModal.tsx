@@ -7,25 +7,25 @@ import {
   ModalProps,
 } from '@/components/common/layout/ModalContainer';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
-import { Icon } from '@/components/common/uikit';
+import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { Dataset, DatasetCard } from './components/DatasetCard';
+import { DatasetCard } from './components/DatasetCard';
 import { DatasetUploader } from './components/DatasetUploader';
 import styles from './ChooseDatasetModal.module.scss';
 
 // заглушка
 // const builtinDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
 // заглушка
-const userDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
+// const userDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
 
 export type ChooseDatasetModalProps = ModalProps & {
-  value: string;
-  onClick: (newValue: string) => void;
+  choosedDataset: ChoosedDatasetInfo | null;
+  onClick: (newValue: ChoosedDatasetInfo) => void;
 };
 
 export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
-  value,
+  choosedDataset,
   onClick,
   isOpen,
   onClose,
@@ -67,8 +67,6 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
     enabled: true,
   });
 
-  console.log(2222, data);
-
   const builtinFiles = (
     <Collapse title="Built-in Datasets">
       <div className={styles.files}>
@@ -85,7 +83,8 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
               supportedPrimitives: [PrimitiveType.NAR],
             }}
             primitive={PrimitiveType.NAR}
-            choosedDataset={value}
+            isSelected={choosedDataset?.fileId === dts.id}
+            //choosedDataset={choosedDataset}
             onClick={onClick}
           />
         ))}
@@ -96,15 +95,16 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
     <Collapse title="My Files">
       <div className={styles.files}>
         <DatasetUploader onUpload={onClick} />
-        {userDatasets.map((dts) => (
+        {/* {userDatasets.map((dts) => (
           <DatasetCard
             key={dts.dataset.fileID}
             dataset={dts.dataset}
             primitive={dts.primitive}
-            choosedDataset={value}
+            isSelected={choosedDataset?.fileId === dts.id}
+            //choosedDataset={choosedDataset}
             onClick={onClick}
           />
-        ))}
+        ))} */}
       </div>
     </Collapse>
   );
