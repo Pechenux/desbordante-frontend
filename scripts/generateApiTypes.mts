@@ -2,6 +2,7 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import { merge, isErrorResult, MergeInput } from 'openapi-merge';
 import openapiTS, { astToString } from 'openapi-typescript';
+import ts from 'typescript';
 
 type SchemeMergeInput = MergeInput[number]['oas'];
 
@@ -13,6 +14,7 @@ const fetchByUrl = async (
       response.json(),
     )) as SchemeMergeInput;
   } catch {
+    console.log(`Failed to fetch ${url}`);
     return undefined;
   }
 };
@@ -61,81 +63,10 @@ if (cmsSchema) {
 }
 
 // Создаём типы для бинарных файлов
-// const FILE = ts.factory.createTypeReferenceNode(
-//   ts.factory.createIdentifier('File'),
-// );
-// const NULL = ts.factory.createLiteralTypeNode(ts.factory.createNull());
-
-// const algorithms = new Set<string>();
-
-// const ast = await openapiTS(new URL(schemaURL), {
-//   // Если поле в схеме называется File и имеет бинарный тип, заменяем его тип с строки на файл
-//   transform(schemaObject) {
-//     if (
-//       schemaObject.title === 'File' &&
-//       schemaObject.type === 'string' &&
-//       schemaObject.format === 'binary'
-//     ) {
-//       return schemaObject.nullable
-//         ? ts.factory.createUnionTypeNode([FILE, NULL])
-//         : FILE;
-//     }
-
-//     if (
-//       schemaObject.type === 'object' &&
-//       schemaObject.properties &&
-//       'algo_name' in schemaObject.properties &&
-//       'enum' in schemaObject.properties.algo_name &&
-//       schemaObject.properties.algo_name.enum &&
-//       '0' in schemaObject.properties.algo_name.enum &&
-//       typeof schemaObject.properties.algo_name.enum[0] === 'string'
-//     ) {
-//       algorithms.add(schemaObject.properties.algo_name.enum[0]);
-//     }
-//   },
-//   exportType: true,
-//   enum: true,
-//   rootTypes: true,
-// });
-
-// const algorithmsList = Array.from(algorithms.values()).sort();
-// ast.push(
-//   ts.factory.createTypeAliasDeclaration(
-//     [ts.factory.createToken(ts.SyntaxKind.ExportKeyword)],
-//     ts.factory.createIdentifier('Algorithms'),
-//     undefined,
-//     ts.factory.createUnionTypeNode(
-//       algorithmsList.map((algo) =>
-//         ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(algo)),
-//       ),
-//     ),
-//   ),
-//   ts.factory.createVariableStatement(
-//     [ts.factory.createToken(ts.SyntaxKind.ExportKeyword)],
-//     ts.factory.createVariableDeclarationList(
-//       [
-//         ts.factory.createVariableDeclaration(
-//           ts.factory.createIdentifier('AlgorithmList'),
-//           undefined,
-//           ts.factory.createTypeReferenceNode(
-//             ts.factory.createIdentifier('Array'),
-//             [
-//               ts.factory.createTypeReferenceNode(
-//                 ts.factory.createIdentifier('Algorithms'),
-//                 undefined,
-//               ),
-//             ],
-//           ),
-//           ts.factory.createArrayLiteralExpression(
-//             algorithmsList.map((algo) => ts.factory.createStringLiteral(algo)),
-//             false,
-//           ),
-//         ),
-//       ],
-//       ts.NodeFlags.Const,
-//     ),
-//   ),
-// );
+const FILE = ts.factory.createTypeReferenceNode(
+  ts.factory.createIdentifier('File'),
+);
+const NULL = ts.factory.createLiteralTypeNode(ts.factory.createNull());
 
 const mergeResult = merge(mergeTargets);
 
@@ -144,6 +75,17 @@ if (isErrorResult(mergeResult)) {
 }
 
 const ast = await openapiTS(JSON.stringify(mergeResult.output), {
+  transform(schemaObject) {
+    if (
+      schemaObject.title === 'File' &&
+      schemaObject.type === 'string' &&
+      schemaObject.format === 'binary'
+    ) {
+      return schemaObject.nullable
+        ? ts.factory.createUnionTypeNode([FILE, NULL])
+        : FILE;
+    }
+  },
   exportType: true,
   enum: true,
   rootTypes: true,

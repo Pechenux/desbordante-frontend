@@ -34,13 +34,6 @@ export const LoginModal: FC<LoginModalProps> = ({
     },
   });
 
-  // const { data, status, error } = useQuery({
-  //   queryKey: ['user'],
-  //   queryFn: createQueryFn('/api/users/me', {}),
-  // });
-
-  // console.log({ data, status, error });
-
   const login = useLogin();
   const register = useRegister();
 

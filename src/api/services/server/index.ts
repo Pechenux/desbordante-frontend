@@ -1,13 +1,11 @@
 import createClient from 'openapi-fetch';
 import type { paths } from '@/api/generated/schema.ts';
 import { ServiceParams, ServicePaths } from '@/api/utils/pathsTypes';
-// import { useAccessToken } from '@/api/utils/useAccessToken.js';
 import { baseUrl } from '../definitions';
 
 export const serverFetchClient = createClient<paths>({
   baseUrl: baseUrl,
 });
-// serverFetchClient.use(useAccessToken);
 
 /**
  * Function that creates query function
