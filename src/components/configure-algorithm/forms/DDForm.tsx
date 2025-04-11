@@ -102,7 +102,6 @@ export const DDForm: FormComponent<DDFormInputs> = (
 
 DDForm.onSubmit = (fieldValues) => {
   //const algo_name = fieldValues.algo_name;
-  //console.log(999, fieldValues);
   return _.pick(fieldValues, DDFields);
 };
 // использовать zod

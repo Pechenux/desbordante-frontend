@@ -1,6 +1,5 @@
 'use client';
 
-import { useAtom } from 'jotai';
 import { FC, useMemo } from 'react';
 import {
   ModalContainer,
@@ -9,20 +8,30 @@ import {
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
-
-import {
-  columnMatchType,
-  defaultColumnMatch,
-  selectedColumnMatchesAtom,
-} from '@/store/MDColumnMatchesAtom';
+import { ColumnMatchesProps, ColumnMatchType } from '../ColumnMatchesInput';
 import { ConfigureColumnMatchInput } from '../ConfigureColumnMatchInput';
 import styles from './ColumnMatchesModal.module.scss';
 
-export const ColumnMatchesModal: FC<ModalProps> = ({ isOpen, onClose }) => {
-  const [columnMatches, setColumnMatches] = useAtom<columnMatchType[]>(
-    selectedColumnMatchesAtom,
-  );
-
+type ColumnMatchesModalProps = ModalProps &
+  ColumnMatchesProps & {
+    value: ColumnMatchType[];
+    isDisabledAdding: boolean;
+    onAddingColumnMatch: () => void;
+    onDelete: (currentColumnMatch: ColumnMatchType) => void;
+    onApply: (
+      currentColumnMatch: ColumnMatchType,
+      newColumnMatch: ColumnMatchType,
+    ) => void;
+  };
+export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
+  value,
+  isOpen,
+  onClose,
+  isDisabledAdding,
+  onAddingColumnMatch,
+  onDelete,
+  onApply,
+}) => {
   const header = useMemo(
     () => <h4 className={styles.title}>Set the Column Matches</h4>,
     [],
@@ -30,11 +39,11 @@ export const ColumnMatchesModal: FC<ModalProps> = ({ isOpen, onClose }) => {
 
   const footer = (
     <Button
-      disabled={columnMatches[columnMatches.length - 1]?.metrics === ''}
+      disabled={isDisabledAdding}
       variant="secondary"
       icon={<Icon name="plus" />}
       onClick={() => {
-        setColumnMatches([...columnMatches, defaultColumnMatch]);
+        onAddingColumnMatch();
       }}
     >
       Add column match
@@ -54,9 +63,15 @@ export const ColumnMatchesModal: FC<ModalProps> = ({ isOpen, onClose }) => {
           hasBackground={false}
           className={styles.container}
         >
-          {columnMatches.map((cm, i) => (
-            <ConfigureColumnMatchInput key={i} value={cm} />
-          ))}
+          {value &&
+            value.map((cm, i) => (
+              <ConfigureColumnMatchInput
+                onApply={onApply}
+                onDelete={onDelete}
+                key={i}
+                columnMatch={cm}
+              />
+            ))}
         </WizardLayout>
       </ModalContainer>
     </>

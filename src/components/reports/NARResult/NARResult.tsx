@@ -47,12 +47,12 @@ export const NARResult = () => {
   const deps = data?.result?.primitive_name === 'nar' && data?.result?.result;
   if (!deps) return;
 
-  const shownData = deps?.map((row) => ({
-    lhs: row.lhs.map((e) => formatter(e)),
-    rhs: row.rhs.map((e) => formatter(e)),
-    confidence: row.confidence,
-    support: row.support,
-  }));
+  // const shownData = deps?.map((row) => ({
+  //   lhs: row.lhs.map((e) => formatter(e)),
+  //   rhs: row.rhs.map((e) => formatter(e)),
+  //   confidence: row.confidence,
+  //   support: row.support,
+  // }));
 
   return (
     <>
@@ -104,7 +104,7 @@ export const NARResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} />
+        <DependencyList deps={deps} formatter={formatter} />
       </div>
 
       {/* <div className={styles.pagination}>

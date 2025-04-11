@@ -1,34 +1,39 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
-import { columnMatchType } from '@/store/MDColumnMatchesAtom';
-import { ConfigureColumnMatchModal } from '../ConfigureColumnMatchModal';
+import {
+  ConfigureColumnMatchesProps,
+  ConfigureColumnMatchModal,
+  displayedMetricsName,
+} from '../ConfigureColumnMatchModal';
 import styles from './ConfigureColumnMatchInput.module.scss';
 
-type ConfigureColumnMatchInputProps = {
-  value: columnMatchType;
-};
+type ConfigureColumnMatchInputProps = ConfigureColumnMatchesProps;
 
-export const ConfigureColumnMatchInput = ({
-  value,
-}: ConfigureColumnMatchInputProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const ConfigureColumnMatchInput: FC<ConfigureColumnMatchInputProps> = ({
+  columnMatch,
+  onDelete,
+  onApply,
+}) => {
+  const [isOpen, setIsOpen] = useState(!columnMatch);
   const [inputValue, setInputValue] = useState<string>('');
 
   useEffect(() => {
     setInputValue(
-      value.metrics !== '' && value.column1 !== '' && value.column2 !== ''
-        ? `${value.metrics} ( ${value.column1}, ${value.column2} )`
+      columnMatch.metrics && columnMatch.left_column && columnMatch.right_column
+        ? `${displayedMetricsName[columnMatch.metrics]} ( ${columnMatch.left_column}, ${columnMatch.right_column} )`
         : '',
     );
-  }, [value]);
+  }, [columnMatch]);
 
   return (
     <>
       <ConfigureColumnMatchModal
-        value={value}
+        onDelete={onDelete}
+        onApply={onApply}
+        columnMatch={columnMatch}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />

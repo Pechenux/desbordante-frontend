@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { createQueryFn } from '@/api/fetchFunctions';
+import { SchemaMdSideModel } from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -12,7 +13,10 @@ import {
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
-import { ColumnMatchesInput } from '@/components/configure-algorithm/MD/ColumnMatchesInput';
+import {
+  displayedMetricsName,
+  MetricsType,
+} from '@/components/configure-algorithm/MD/ConfigureColumnMatchModal';
 import {
   DependencyList,
   FilteringWindow,
@@ -22,25 +26,19 @@ import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './MDResult.module.scss';
 
-interface Column {
-  __typename: 'Column';
-  metrics: string;
-  column1: string;
-  column2: string;
-  index: number;
-  value: number;
-}
-
 export const MDResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
-  const { isFetching, error } = useQuery({
-    queryKey: [`/api/task/${queryParams.taskID}`],
-    queryFn: createQueryFn('/api/task/{task_id}', {
+  // const queryParams = {
+  //   taskID: 'fd00d451-a3b3-4079-8124-7d6992b33166',
+  // };
+  const { data, isFetching, error } = useQuery({
+    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryFn: createQueryFn('/tasks/{id}', {
       params: {
-        path: { task_id: queryParams.taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
     enabled: !!queryParams.taskID,
@@ -48,80 +46,86 @@ export const MDResult = () => {
 
   if (isFetching || error) return;
 
-  const formatter = (column: Column) => {
+  const formatter = (column: SchemaMdSideModel) => {
     return (
       <span className={styles.attribute}>
-        <span>{column.metrics}</span>
+        <span>{displayedMetricsName[column.metrics as MetricsType]}</span>
         <span className={styles.bigBracket}>(</span>
         <span>
-          {column.column1}
+          {column.left_column}
           <br />
-          {column.column2}
+          {column.right_column}
         </span>
         <span className={styles.bigBracket}>)</span>
         <span className={styles.sign}>≤</span>
-        <span>{column.value}</span>
+        <span>{column.boundary}</span>
       </span>
     );
   };
 
-  const data = {
-    taskInfo: {
-      __typename: 'TaskInfo',
-      taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-      data: {
-        __typename: 'TaskWithDepsData',
-        result: {
-          __typename: 'FDTaskResult',
-          taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-          depsAmount: 6,
-          filteredDeps: {
-            __typename: 'FilteredFDs',
-            filteredDepsAmount: 6,
-            MDs: [
-              {
-                __typename: 'MD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    metrics: 'Jaccard',
-                    column1: 'Departure',
-                    column2: 'Departure',
-                    index: 0,
-                    value: 0,
-                  },
-                  {
-                    __typename: 'Column',
-                    metrics: 'Jaccard',
-                    column1: 'Departure',
-                    column2: 'Departure',
-                    index: 0,
-                    value: 0,
-                  },
-                ],
-                rhs: [
-                  {
-                    __typename: 'Column',
-                    metrics: 'Jaccard',
-                    column1: 'Departure',
-                    column2: 'Departure',
-                    index: 0,
-                    value: 0,
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-    },
-  };
-  const deps = data?.taskInfo.data.result.filteredDeps.MDs;
+  console.log(data);
+
+  //   taskInfo: {
+  //     __typename: 'TaskInfo',
+  //     taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
+  //     data: {
+  //       __typename: 'TaskWithDepsData',
+  //       result: {
+  //         __typename: 'FDTaskResult',
+  //         taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
+  //         depsAmount: 6,
+  //         filteredDeps: {
+  //           __typename: 'FilteredFDs',
+  //           filteredDepsAmount: 6,
+  //           MDs: [
+  //             {
+  //               __typename: 'MD',
+  //               lhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   metrics: 'Jaccard',
+  //                   column1: 'Departure',
+  //                   column2: 'Departure',
+  //                   index: 0,
+  //                   value: 0,
+  //                 },
+  //                 {
+  //                   __typename: 'Column',
+  //                   metrics: 'Jaccard',
+  //                   column1: 'Departure',
+  //                   column2: 'Departure',
+  //                   index: 0,
+  //                   value: 0,
+  //                 },
+  //               ],
+  //               rhs: [
+  //                 {
+  //                   __typename: 'Column',
+  //                   metrics: 'Jaccard',
+  //                   column1: 'Departure',
+  //                   column2: 'Departure',
+  //                   index: 0,
+  //                   value: 0,
+  //                 },
+  //               ],
+  //             },
+  //           ],
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
+  const deps = data?.result?.primitive_name === 'md' && data?.result?.result;
+  if (!deps) return;
+
+  //  const shownData = deps.map((row) => ({
+  //    lhs: row.lhs.map((e) => formatter(e)),
+  //    rhs: row.rhs.map((e) => formatter(e)),
+  //  }));
 
   return (
     <>
       <NextSeo title="Discovered functional dependencies" />
-      <ColumnMatchesInput />
       {isOrderingShown && (
         <OrderingWindow
           {...{
@@ -169,7 +173,7 @@ export const MDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps, formatter }} />
+        <DependencyList deps={deps} formatter={formatter} />
       </div>
 
       {/* <div className={styles.pagination}>

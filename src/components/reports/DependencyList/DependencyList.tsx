@@ -1,62 +1,73 @@
 'use client';
 
 import classNames from 'classnames';
-//import _ from 'lodash';
-import { FC, ReactElement, useState } from 'react';
-import { SchemaDdSideModel, SchemaNarSideModel } from '@/api/generated/schema';
+import { ReactNode, useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import styles from './DependencyList.module.scss';
 
-type Column = SchemaNarSideModel | string | SchemaDdSideModel;
-export type Deps = {
-  lhs: string[];
-  rhs: string[];
+export type Deps<T> = {
+  lhs: T[];
+  rhs: T[];
   confidence?: number;
   support?: number;
 };
 
-type Props = {
-  deps: Deps[] | undefined;
-  infoVisible?: boolean;
+type Props<T> = {
+  deps: Deps<T>[] | undefined;
+  formatter?: (sideItem: T) => ReactNode;
+  //infoVisible?: boolean;
 };
 
-const makeSide: (
-  data: string | string[],
-  infoVisible: boolean,
-) => ReactElement = (data, infoVisible) => {
-  if (Array.isArray(data)) {
-    return (
-      <>
-        {data.map((e, index) => (
+type MakeSideProps<T> = {
+  side: T[] | undefined;
+  formatter: (sideItem: T) => ReactNode;
+  //infoVisible?: boolean;
+};
+
+const makeSide = <T,>({ side, formatter }: MakeSideProps<T>) => {
+  // if (Array.isArray(data)) {
+  return (
+    <>
+      {side &&
+        side.map((s, index) => (
           <span className={styles.attr} key={index}>
-            {e}
+            {formatter(s)}
             {/* {infoVisible && e.pattern ? ' | ' + e.pattern : ''} */}
           </span>
         ))}
-      </>
-    );
-  } else {
-    return makeSide([data], infoVisible);
-  }
+    </>
+  );
 };
+// else {
+//   return makeSide([data], infoVisible);
+// }
+// };
 
-export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
+export const DependencyList = <T,>({
+  deps,
+  formatter = (sideItem: T) => sideItem as ReactNode,
+  //infoVisible = true,
+}: Props<T>) => {
   // const { selectedDependency, selectDependency, errorDependency } =
   //   useTaskContext();
 
-  const [selectedDependency, setSelectedDependency] = useState<Column[]>([]);
-  const errorDependency = [] as Column[];
+  const [selectedDependency, setSelectedDependency] = useState<string>();
+  const errorDependency = '';
 
   return (
     <div className={styles.dependencyListContainer}>
       {deps &&
         deps.map((row, i) => {
-          const fullDependency = row.lhs.concat(row.rhs);
-          const isError =
-            JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
-          const isSelected =
-            JSON.stringify(selectedDependency) ===
-            JSON.stringify(fullDependency);
+          // const fullDependency = row.lhs.concat(row.rhs);
+          // const isError =
+          //   JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
+          // const isSelected =
+          //   JSON.stringify(selectedDependency) ===
+          //   JSON.stringify(fullDependency);
+
+          const fullDependency = JSON.stringify(row);
+          const isError = errorDependency === fullDependency;
+          const isSelected = selectedDependency === fullDependency;
 
           return (
             <div
@@ -67,17 +78,17 @@ export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
                 isError && styles.errorRow,
               )}
               onClick={() =>
-                setSelectedDependency(isSelected ? [] : fullDependency)
+                setSelectedDependency(isSelected ? '' : fullDependency)
               }
             >
-              {makeSide(row.lhs, infoVisible)}
+              {makeSide({ side: row.lhs, formatter })}
               <div className={styles.arrowContainer}>
                 <Icon name="longArrow" />
                 {row.confidence && (
                   <small>{Math.round(row.confidence * 100)}%</small>
                 )}
               </div>
-              {makeSide(row.rhs, infoVisible)}
+              {makeSide({ side: row.rhs, formatter })}
             </div>
           );
         })}

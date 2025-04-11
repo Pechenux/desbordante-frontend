@@ -12,6 +12,7 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 // } from '@/components/configure-algorithm/forms';
 //import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
 import { DDForm } from '@/components/configure-algorithm/forms/DDForm';
+import { MDForm } from '@/components/configure-algorithm/forms/MDForm';
 import { NARForm } from '@/components/configure-algorithm/forms/NARForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
@@ -47,6 +48,10 @@ const forms: Partial<
         datasetId: 'datasetId',
       },
     ],
+  },
+  MD: {
+    formComponent: MDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: 'datasetId' }],
   },
   NAR: {
     formComponent: NARForm,

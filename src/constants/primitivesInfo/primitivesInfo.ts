@@ -50,4 +50,9 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
       description: 'lorem ipsum',
       tags: [TagType.Tag5, TagType.Tag6],
     },
+    [PrimitiveType.MD]: {
+      label: 'Matching Dependencies',
+      description: 'lorem ipsum',
+      tags: [TagType.Tag5, TagType.Tag6],
+    },
   } as const;

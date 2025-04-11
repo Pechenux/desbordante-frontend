@@ -41,7 +41,6 @@ export const FormLayout: FC<FormLayoutProps> = ({
   const [fileIDs, setFileIDs] =
     useState<Record<string, string>>(startInputsValues);
 
-  console.log(44, datasetInputs, fileIDs);
   const methods = useForm<FormData>({
     mode: 'all',
     reValidateMode: 'onChange',
