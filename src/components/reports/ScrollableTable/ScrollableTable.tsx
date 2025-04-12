@@ -30,7 +30,7 @@ export const ScrollableTable: FC<ScrollableTableProps> = ({
   const shouldIgnoreScroll = useRef(false);
 
   const displayHeader = useMemo(
-    () => header || data[0].map((_, index) => `Column ${index}`),
+    () => header || [], // data[0].map((_, index) => `Column ${index}`),
     [header, data],
   );
 

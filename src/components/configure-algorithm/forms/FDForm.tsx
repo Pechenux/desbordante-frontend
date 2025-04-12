@@ -6,7 +6,7 @@ import { createMutationFn } from '@/api/fetchFunctions';
 import {
   FdTaskConfigPrimitive_name,
   SchemaFdTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/serverSchema';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,

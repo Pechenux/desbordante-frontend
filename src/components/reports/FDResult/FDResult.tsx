@@ -206,7 +206,7 @@ export const FDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps }} />
+        {/* <DependencyList {...{ deps }} /> */}
       </div>
 
       {/* <div className={styles.pagination}>

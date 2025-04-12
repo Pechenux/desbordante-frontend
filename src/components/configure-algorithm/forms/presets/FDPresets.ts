@@ -1,7 +1,7 @@
 import {
   PFDTaneConfigError_measure,
   PyroConfigAlgo_name,
-} from '@/api/generated/schema';
+} from '@/api/generated/serverSchema';
 import { FDFormInputs } from '@/components/configure-algorithm/forms/FDForm';
 import { Presets } from '@/types/form';
 

@@ -319,7 +319,7 @@ export const CFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps, infoVisible }} />
+        {/* <DependencyList {...{ deps, infoVisible }} /> */}
       </div>
 
       <div className={styles.pagination}>

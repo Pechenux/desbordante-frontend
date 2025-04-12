@@ -75,7 +75,7 @@ export const ChartStatistics = () => {
       <NextSeo title="Statistics" />
       <div className={styles.container}>
         {/* {loading && <h5>Loading..</h5>} */}
-        <LayeredChart
+        {/* <LayeredChart
           title="Left-hand side"
           attributes={lhs}
           {...{
@@ -93,7 +93,7 @@ export const ChartStatistics = () => {
             setSelectedAttributeIndices: (rhs) =>
               setDependenciesFilter(({ lhs }) => ({ rhs, lhs })),
           }}
-        />
+        /> */}
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 import { FetchOptions } from 'openapi-fetch';
 import { HttpMethod, PathsWithMethod } from 'openapi-typescript-helpers';
-import type { paths } from '../generated/schema.ts';
+import type { paths } from '../generated/serverSchema';
 
 export type Paths<M extends HttpMethod> = PathsWithMethod<paths, M>;
 export type Params<
