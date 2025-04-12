@@ -13,7 +13,7 @@ import {
 import {
   FilteringWindow,
   OrderingWindow,
-  DependencyList,
+  // DependencyList,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import styles from './AFDResult.module.scss';
@@ -137,128 +137,128 @@ export const AFDResult = () => {
     'filteredDeps' in shownData?.taskInfo.data.result &&
     shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount;
 
-  const deps = [
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'Planet',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-    },
-    {
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RotationPeriod',
-            index: 1,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'RevolutionPeriod',
-            index: 2,
-          },
-        },
-      ],
-    },
-  ];
+  // const deps = [
+  //   {
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RotationPeriod',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'Planet',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RevolutionPeriod',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'Planet',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'Planet',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RotationPeriod',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RevolutionPeriod',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RotationPeriod',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'Planet',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RevolutionPeriod',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RotationPeriod',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'RevolutionPeriod',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // ];
 
   return (
     <>

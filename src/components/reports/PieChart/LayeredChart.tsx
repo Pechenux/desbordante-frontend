@@ -37,7 +37,7 @@ const rem =
 
 const AnimatedDoughnut = animated(Doughnut);
 
-const maxItemsSelected = 9;
+// const maxItemsSelected = 9;
 
 const Chart: FC<Props> = ({
   attributes,
