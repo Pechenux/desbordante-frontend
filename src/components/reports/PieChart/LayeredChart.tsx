@@ -37,7 +37,7 @@ const rem =
 
 const AnimatedDoughnut = animated(Doughnut);
 
-const maxItemsSelected = 9;
+// const maxItemsSelected = 9;
 
 const Chart: FC<Props> = ({
   attributes,
@@ -108,11 +108,11 @@ const Chart: FC<Props> = ({
       if (!item.length) {
         return;
       }
-      if (item[0].index === maxItemsShown) {
-        setDepth(depth + 1);
-      } else if (selectedAttributeIndices.length < maxItemsSelected) {
-        selectAttribute(displayAttributes[item[0].index]);
-      }
+      // if (item[0].index === maxItemsShown) {
+      //   setDepth(depth + 1);
+      // } else if (selectedAttributeIndices.length < maxItemsSelected) {
+      //   selectAttribute(displayAttributes[item[0].index]);
+      // }
     },
     [
       depth,

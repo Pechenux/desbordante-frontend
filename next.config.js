@@ -10,6 +10,12 @@ const rewrites = require('./proxy.config.js');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  // TODELETE
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
+  // END TODELETE
   sassOptions: {
     includePaths: [path.join(__dirname, './src/styles')],
   },

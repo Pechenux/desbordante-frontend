@@ -13,7 +13,7 @@ import {
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
 import {
-  DependencyList,
+  // DependencyList,
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
@@ -206,7 +206,7 @@ export const FDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps }} />
+        {/* <DependencyList {...{ deps }} /> */}
       </div>
 
       {/* <div className={styles.pagination}>
