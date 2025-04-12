@@ -22,11 +22,13 @@ import styles from './ChooseDatasetModal.module.scss';
 export type ChooseDatasetModalProps = ModalProps & {
   choosedDataset: ChoosedDatasetInfo | null;
   onClick: (newValue: ChoosedDatasetInfo) => void;
+  onCancel: () => void;
 };
 
 export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   choosedDataset,
   onClick,
+  onCancel,
   isOpen,
   onClose,
 }) => {
@@ -43,16 +45,26 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   );
   const footer = useMemo(
     () => (
-      <Button
-        disabled={false}
-        variant="primary"
-        icon={<Icon name="file" />}
-        onClick={onClose}
-      >
-        Confirm
-      </Button>
+      <>
+        <Button
+          disabled={false}
+          variant="secondary"
+          icon={<Icon name="cross" />}
+          onClick={onCancel}
+        >
+          Unselect
+        </Button>
+        <Button
+          disabled={false}
+          variant="primary"
+          icon={<Icon name="file" />}
+          onClick={onClose}
+        >
+          Confirm
+        </Button>
+      </>
     ),
-    [onClose],
+    [onClose, onCancel],
   );
 
   const { data } = useQuery({

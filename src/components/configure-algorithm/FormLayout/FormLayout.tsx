@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import cn from 'classnames';
+import { useAtom } from 'jotai';
 import {
   FC,
   useCallback,
@@ -11,6 +12,7 @@ import {
 import { FormProvider, useForm } from 'react-hook-form';
 import { datasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
+import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent, FormData, Presets } from '@/types/form';
 import { showError } from '@/utils/toasts';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -38,8 +40,12 @@ export const FormLayout: FC<FormLayoutProps> = ({
     {},
   );
 
-  const [fileIDs, setFileIDs] =
-    useState<Record<string, string>>(startInputsValues);
+  // // const [fileIDs, setFileIDs] =
+  // //   useState<Record<string, string>>(startInputsValues);
+
+  const [fileIDs, setFileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
+
+  useEffect(() => setFileIDs(startInputsValues), [datasetInputs]);
 
   const methods = useForm<FormData>({
     mode: 'all',
@@ -100,7 +106,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
     setInputCount(formRef.current!.children.length);
   }, []);
 
-  useEffect(() => console.log(presets), [presets]);
+  useEffect(() => console.log('Presets', presets), [presets]);
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>
       {/* <div className={styles.presetSelectorContainer}>

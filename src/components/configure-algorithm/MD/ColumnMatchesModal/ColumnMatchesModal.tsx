@@ -8,30 +8,44 @@ import {
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
-import { ColumnMatchesProps, ColumnMatchType } from '../ColumnMatchesInput';
+import { ColumnMatchType, defaultColumnMatch } from '../ColumnMatchesInput';
 import { ConfigureColumnMatchInput } from '../ConfigureColumnMatchInput';
 import styles from './ColumnMatchesModal.module.scss';
 
-type ColumnMatchesModalProps = ModalProps &
-  ColumnMatchesProps & {
-    value: ColumnMatchType[];
-    isDisabledAdding: boolean;
-    onAddingColumnMatch: () => void;
-    onDelete: (currentColumnMatch: ColumnMatchType) => void;
-    onApply: (
-      currentColumnMatch: ColumnMatchType,
-      newColumnMatch: ColumnMatchType,
-    ) => void;
-  };
+type ColumnMatchesModalProps = ModalProps & {
+  value: ColumnMatchType[];
+  onChange: (newValue: ColumnMatchType[]) => void;
+  // isDisabledAdding: boolean;
+  // onAddingColumnMatch: () => void;
+  // onDelete: (currentColumnMatch: ColumnMatchType) => void;
+  // onApply: (
+  //   currentColumnMatch: ColumnMatchType,
+  //   newColumnMatch: ColumnMatchType,
+  // ) => void;
+};
 export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
   value,
+  onChange,
   isOpen,
   onClose,
-  isDisabledAdding,
-  onAddingColumnMatch,
-  onDelete,
-  onApply,
 }) => {
+  const isDisabledAdding =
+    value && !value[value.length - 1]?.left_column && value.length !== 0;
+  const handleAddColumnMatch = () => {
+    onChange([...value, defaultColumnMatch]);
+  };
+  const handleDelete = (currentColumnMatch: ColumnMatchType) => {
+    onChange(value.filter((cm) => cm !== currentColumnMatch));
+  };
+  const handleApplyChanges = (
+    currentColumnMatch: ColumnMatchType,
+    newColumnMatch: ColumnMatchType,
+  ) => {
+    onChange(
+      value.map((cm) => (cm === currentColumnMatch ? newColumnMatch : cm)),
+    );
+  };
+
   const header = useMemo(
     () => <h4 className={styles.title}>Set the Column Matches</h4>,
     [],
@@ -43,7 +57,7 @@ export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
       variant="secondary"
       icon={<Icon name="plus" />}
       onClick={() => {
-        onAddingColumnMatch();
+        handleAddColumnMatch();
       }}
     >
       Add column match
@@ -66,8 +80,8 @@ export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
           {value &&
             value.map((cm, i) => (
               <ConfigureColumnMatchInput
-                onApply={onApply}
-                onDelete={onDelete}
+                onApply={handleApplyChanges}
+                onDelete={handleDelete}
                 key={i}
                 columnMatch={cm}
               />

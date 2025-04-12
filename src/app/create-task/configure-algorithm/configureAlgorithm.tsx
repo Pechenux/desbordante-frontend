@@ -41,21 +41,24 @@ const forms: Partial<
   DD: {
     formComponent: DDForm,
     datasetInputs: [
-      { label: 'Dataset', inputId: '1', datasetId: 'datasetId' },
+      { label: 'Dataset', inputId: '1', datasetId: '' },
       {
         label: 'Difference table',
         inputId: '2',
-        datasetId: 'datasetId',
+        datasetId: '',
       },
     ],
   },
   MD: {
     formComponent: MDForm,
-    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: 'datasetId' }],
+    datasetInputs: [
+      { label: 'Left table', inputId: '1', datasetId: '' },
+      { label: 'Right table (optional)', inputId: '2', datasetId: '' },
+    ],
   },
   NAR: {
     formComponent: NARForm,
-    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: 'datasetId' }],
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   // FD: FDForm,
   // AR: ARForm,
