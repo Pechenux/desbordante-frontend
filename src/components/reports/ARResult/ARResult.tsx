@@ -13,13 +13,14 @@ import {
 import {
   FilteringWindow,
   OrderingWindow,
-  DependencyList,
+  // DependencyList,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import styles from './ARResult.module.scss';
 
 export const ARResult = () => {
   const [infoVisible, setInfoVisible] = useState(true);
+  console.log(infoVisible);
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
@@ -108,316 +109,316 @@ export const ARResult = () => {
     'filteredDeps' in shownData?.taskInfo.data.result &&
     shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount;
 
-  const deps = [
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'CORNFLAKES',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'CORNFLAKES',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COCK',
-            index: 1,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COCK',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'CORNFLAKES',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 1,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COCK',
-            index: 2,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BREAD',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'SUGER',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'TEA',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'MAGGI',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'MAGGI',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'TEA',
-            index: 1,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COCK',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'CORNFLAKES',
-            index: 1,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 2,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'CORNFLAKES',
-            index: 1,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COCK',
-            index: 2,
-          },
-        },
-      ],
-    },
-    {
-      confidence: 1,
-      rhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COFFEE',
-            index: 0,
-          },
-        },
-      ],
-      lhs: [
-        {
-          column: {
-            __typename: 'Column',
-            name: 'BISCUIT',
-            index: 0,
-          },
-        },
-        {
-          column: {
-            __typename: 'Column',
-            name: 'COCK',
-            index: 1,
-          },
-        },
-      ],
-    },
-  ];
+  // const deps = [
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'CORNFLAKES',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'CORNFLAKES',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COCK',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COCK',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'CORNFLAKES',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 1,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COCK',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BREAD',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'SUGER',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'TEA',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'MAGGI',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'MAGGI',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'TEA',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COCK',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'CORNFLAKES',
+  //           index: 1,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'CORNFLAKES',
+  //           index: 1,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COCK',
+  //           index: 2,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     confidence: 1,
+  //     rhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COFFEE',
+  //           index: 0,
+  //         },
+  //       },
+  //     ],
+  //     lhs: [
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'BISCUIT',
+  //           index: 0,
+  //         },
+  //       },
+  //       {
+  //         column: {
+  //           __typename: 'Column',
+  //           name: 'COCK',
+  //           index: 1,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // ];
 
   return (
     <>
@@ -477,7 +478,7 @@ export const ARResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps, infoVisible }} />
+        {/* <DependencyList {...{ deps, infoVisible }} /> */}
       </div>
 
       <div className={styles.pagination}>

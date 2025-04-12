@@ -11,7 +11,7 @@ import {
   PyroConfigAlgo_name,
   SchemaFdTaskConfig,
   TaneConfigAlgo_name,
-} from '@/api/generated/schema';
+} from '@/api/generated/serverSchema';
 import { Option } from '@/components/common/uikit/Inputs';
 
 export type FDAlgorithms = SchemaFdTaskConfig['config']['algo_name'];

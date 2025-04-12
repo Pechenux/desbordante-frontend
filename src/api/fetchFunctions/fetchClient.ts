@@ -1,5 +1,5 @@
 import createClient from 'openapi-fetch';
-import type { paths } from '../generated/schema.ts';
+import type { paths } from '../generated/serverSchema';
 
 const baseUrl = '/api';
 

@@ -6,7 +6,7 @@ import cn from 'classnames';
 import { FC, useEffect } from 'react';
 // import { PrimitiveType } from 'types/globalTypes';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { TaskStatus } from '@/api/generated/schema';
+import { TaskStatus } from '@/api/generated/serverSchema';
 import { showError } from '@/utils/toasts';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './Loader.module.scss';
