@@ -520,15 +520,15 @@ export const icons = {
       <path
         d="M11.332 6.5H11.342V6.50969H11.332V6.5ZM11.332 17.157H11.342V17.1667H11.332V17.157Z"
         stroke={props.color ?? 'currentColor'}
-        stroke-width="2.5"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinejoin="round"
       />
       <path
         d="M16.6667 11.8281H6"
         stroke={props.color ?? 'currentColor'}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   ),
@@ -663,9 +663,9 @@ export const icons = {
       <path
         d="M5 18L19 12L5 6"
         stroke={props.color ?? 'currentColor'}
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         transform={`rotate(${rotation[props.orientation ?? 'down']}, 12, 12)`}
       />
     </svg>
@@ -750,9 +750,9 @@ export const icons = {
       <path
         d="M6 12H18"
         stroke={props.color ?? 'currentColor'}
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   ),
@@ -904,9 +904,9 @@ export const icons = {
       <path
         d="M1.5 11H22.5V17"
         stroke={props.color ?? 'currentColor'}
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   ),

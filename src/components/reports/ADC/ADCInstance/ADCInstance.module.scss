@@ -1,14 +1,18 @@
 @import "common";
 
-.container {
-  width: fit-content;
+.containerOuter {
   display: flex;
   gap: 8px;
-  align-items: center;
   border: solid 1px $black-50;
   border-radius: 8px;
   padding: 16px;
   background-color: $white-25;
+}
+
+.containerInner {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .relation {

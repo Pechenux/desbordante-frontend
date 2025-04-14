@@ -11,9 +11,12 @@ import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 //   TypoFDForm,
 // } from '@/components/configure-algorithm/forms';
 //import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
-import { DDForm } from '@/components/configure-algorithm/forms/DDForm';
-import { MDForm } from '@/components/configure-algorithm/forms/MDForm';
-import { NARForm } from '@/components/configure-algorithm/forms/NARForm';
+import {
+  DDForm,
+  MDForm,
+  NARForm,
+  ADCForm,
+} from '@/components/configure-algorithm/forms';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -58,6 +61,10 @@ const forms: Partial<
   },
   NAR: {
     formComponent: NARForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  ADC: {
+    formComponent: ADCForm,
     datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   // FD: FDForm,

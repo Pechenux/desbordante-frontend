@@ -27,11 +27,14 @@ export const ADCResult = () => {
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [selectedInstance, setSelectedInstance] = useState<string | null>(null);
 
-  const { isFetching, error } = useQuery({
-    queryKey: [`/api/task/${queryParams.taskID}`],
-    queryFn: createQueryFn('/api/task/{task_id}', {
+  // const queryParams = {
+  //   taskID: 'fc1189b2-3beb-412b-a78b-460e8607a43c',
+  // };
+  const { data, isFetching, error } = useQuery({
+    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryFn: createQueryFn('/tasks/{id}', {
       params: {
-        path: { task_id: queryParams.taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
     enabled: !!queryParams.taskID,
@@ -39,88 +42,7 @@ export const ADCResult = () => {
 
   if (isFetching || error) return;
 
-  const data = {
-    taskInfo: {
-      __typename: 'TaskInfo',
-      taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-      data: {
-        __typename: 'TaskWithDepsData',
-        result: {
-          __typename: 'FDTaskResult',
-          taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-          depsAmount: 6,
-          filteredDeps: {
-            __typename: 'FilteredFDs',
-            filteredDepsAmount: 6,
-            ACDs: [
-              {
-                __typename: 'ACD',
-                id: '1',
-                deps: [
-                  {
-                    __typename: 'Column',
-                    value1: 't.State',
-                    value2: 's.State',
-                    relation: '≠',
-                    index: 0,
-                  },
-                  {
-                    __typename: 'Column',
-                    value1: 't.Salary',
-                    value2: 's.Salary',
-                    relation: '≤',
-                    index: 0,
-                  },
-                ],
-              },
-              {
-                __typename: 'ACD',
-                id: '2',
-                deps: [
-                  {
-                    __typename: 'Column',
-                    value1: 't.State',
-                    value2: 's.State',
-                    relation: '≠',
-                    index: 0,
-                  },
-                  {
-                    __typename: 'Column',
-                    value1: 't.Salary',
-                    value2: 's.Salary',
-                    relation: '≤',
-                    index: 0,
-                  },
-                ],
-              },
-              {
-                __typename: 'ACD',
-                id: '3',
-                deps: [
-                  {
-                    __typename: 'Column',
-                    value1: 't.State',
-                    value2: 's.State',
-                    relation: '≠',
-                    index: 0,
-                  },
-                  {
-                    __typename: 'Column',
-                    value1: 't.Salary',
-                    value2: 's.Salary',
-                    relation: '≤',
-                    index: 0,
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      },
-    },
-  };
-
-  const deps = data?.taskInfo.data.result.filteredDeps.ACDs;
+  const deps = data?.result?.primitive_name === 'adc' && data?.result?.result;
 
   return (
     <>
@@ -172,14 +94,19 @@ export const ADCResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {deps.map((d) => (
-          <ADCInstance
-            key={d.id}
-            data={d}
-            isSelected={selectedInstance === d.id}
-            onClick={() => setSelectedInstance(d.id)}
-          />
-        ))}
+        {deps &&
+          deps.map((d, i) => {
+            const fullDependency = JSON.stringify(d);
+
+            return (
+              <ADCInstance
+                key={i}
+                data={d.cojuncts}
+                isSelected={selectedInstance === fullDependency}
+                onClick={() => setSelectedInstance(fullDependency)}
+              />
+            );
+          })}
       </div>
 
       {/* <div className={styles.pagination}>
