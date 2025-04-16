@@ -1,78 +1,63 @@
 import cn from 'classnames';
-import { useAtom } from 'jotai';
+//import { useAtom } from 'jotai';
 import { FC } from 'react';
+import { OperationType, SchemaAcModel } from '@/api/generated/schema';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
-import ACAtom, { ACAtomDefaultValuesWithParams } from '@/store/ACTaskAtom';
+//import ACAtom, { ACAtomDefaultValuesWithParams } from '@/store/ACTaskAtom';
 
 import { CollapsableView } from '../CollapsableView';
 import styles from './ACInstance.module.scss';
 
-interface AttributesType {
-  attribute1: string;
-  attribute2: string;
-}
-
-type IntervalType = [number, number];
-interface Intervals {
-  amount: number;
-  intervals: IntervalType[];
-}
-interface Outliers {
-  amount: number;
-  outliers: number[];
-}
-
-export type ACInstanceType = {
-  id: string;
-  attributes: AttributesType;
-  operation: Operation;
-  intervals: Intervals;
-  outliers: Outliers;
+export type ACInstanceType = SchemaAcModel & {
+  isSelected: boolean;
+  operation: OperationType;
 };
 
-export enum Operation {
-  ADDITION = 'ADDITION',
-  MULTIPLICATION = 'MULTIPLICATION',
-  DIVISION = 'DIVISION',
-  SUBTRACTION = 'SUBTRACTION',
-}
+// export enum Operation {
+//   ADDITION = 'ADDITION',
+//   MULTIPLICATION = 'MULTIPLICATION',
+//   DIVISION = 'DIVISION',
+//   SUBTRACTION = 'SUBTRACTION',
+// }
 
 export const operationIcons = {
-  [Operation.ADDITION]: <Icon name="plus" size={16} color={colors.black[75]} />,
-  [Operation.MULTIPLICATION]: (
+  [OperationType['+']]: <Icon name="plus" size={16} color={colors.black[75]} />,
+  [OperationType['*']]: (
     <Icon name="cross" size={16} color={colors.black[75]} />
   ),
-  [Operation.DIVISION]: (
+  [OperationType['/']]: (
     <Icon name="division" size={16} color={colors.black[75]} />
   ),
-  [Operation.SUBTRACTION]: (
+  [OperationType.ValueMinus]: (
     <Icon name="minus" size={16} color={colors.black[75]} />
   ),
 };
 
 export const ACInstance: FC<ACInstanceType> = ({
-  id,
-  attributes,
+  left_column,
+  right_column,
   operation,
   outliers,
   intervals,
+  isSelected,
 }) => {
-  const [atom, setAtom] = useAtom(ACAtom);
+  //const [atom, setAtom] = useAtom(ACAtom);
   const handleSelect = () => {
-    const instance = {
-      id,
-      attributes: attributes,
-      intervals: intervals,
-      outliers: outliers,
-      operation: operation,
-    };
-    setAtom({ ...ACAtomDefaultValuesWithParams(atom.taskID, instance) });
+    console.log('click');
+    // const instance = {
+    //   id,
+    //   attributes: attributes,
+    //   intervals: intervals,
+    //   outliers: outliers,
+    //   operation: operation,
+    // };
+    // setAtom({ ...ACAtomDefaultValuesWithParams(atom.taskID, instance) });
   };
 
-  const OperationIcon = operationIcons[operation as Operation];
+  const OperationIcon = operationIcons[operation];
 
-  const isSelected = atom.instanceSelected?.id === id;
+  //const isSelected = atom.instanceSelected?.id === id;
 
   return (
     <div
@@ -82,25 +67,26 @@ export const ACInstance: FC<ACInstanceType> = ({
       <div className={styles.containerInner}>
         Operation
         <div className={styles.attributes}>
-          <div className={styles.attribute}>{attributes.attribute1}</div>
+          <div className={styles.attribute}>{left_column}</div>
           {OperationIcon}
-          <div className={styles.attribute}>{attributes.attribute2}</div>
+          <div className={styles.attribute}>{right_column}</div>
         </div>
       </div>
-      <CollapsableView title={`Intervals (${intervals.amount})`}>
-        {intervals.intervals.map((elem) => (
+      <CollapsableView title={`Intervals (${intervals.length})`}>
+        {intervals.map((elem) => (
           <>
             <span
               key={`intervals ${elem[0]} ${elem[1]}`}
-            >{`[${elem[0]}, ${elem[1]}]`}</span>{' '}
+            >{`[${elem[0]}, ${elem[1]}]`}</span>
           </>
         ))}
       </CollapsableView>
-      <CollapsableView title={`Outliers (${outliers.amount})`}>
-        {outliers.outliers.map((elem) => (
-          <>
-            <span key={`Outliers ${elem}`}>{elem}</span>{' '}
-          </>
+      <CollapsableView title={`Outliers (${outliers.length})`}>
+        {outliers.map((elem) => (
+          // <>
+          //   <span key={`Outliers ${elem}`}>{elem}</span>{' '}
+          // </>
+          <span key={`Outliers ${elem}`}>{elem}</span>
         ))}
       </CollapsableView>
     </div>

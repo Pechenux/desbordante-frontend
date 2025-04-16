@@ -6,11 +6,6 @@ import { AdcItemModelSign, SchemaAdcItemModel } from '@/api/generated/schema';
 import { Icon } from '@/components/common/uikit';
 import styles from './ADCInstance.module.scss';
 
-// interface Column {
-//   name: string;
-//   index: number;
-// }
-
 const beautifulSign: Record<AdcItemModelSign, string> = {
   [AdcItemModelSign['==']]: '=',
   [AdcItemModelSign['!=']]: '≠',

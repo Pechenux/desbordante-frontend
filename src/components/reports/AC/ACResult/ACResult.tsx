@@ -2,43 +2,69 @@
 
 //import Pagination from '@components/Pagination/Pagination';
 
-import { useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+//import { useAtom } from 'jotai';
+import { useState } from 'react';
+import { createQueryFn } from '@/api/fetchFunctions';
+import { OperationType } from '@/api/generated/schema';
 import { Button, FormField, Icon, Text } from '@/components/common/uikit';
 import { OrderingWindow } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import ACAtom, { ACAtomDefaultValuesWithParams } from '@/store/ACTaskAtom';
-import { Operation, ACInstance } from '../ACInstance';
-import { myData } from '../FakeData/data4InstanceList';
+//import ACAtom, { ACAtomDefaultValuesWithParams } from '@/store/ACTaskAtom';
+import { useQueryParams } from '@/utils/useQueryParams';
+import { ACInstance } from '../ACInstance';
+//import { myData } from '../FakeData/data4InstanceList';
 import styles from './ACResult.module.scss';
 
 export const ACResult = () => {
+  const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
-  const [atom, setAtom] = useAtom(ACAtom);
+  //const [atom, setAtom] = useAtom(ACAtom);
 
-  const shownData = myData;
-  const ACs =
-    (shownData.taskInfo.data.result &&
-      'ACs' in shownData.taskInfo.data.result &&
-      shownData.taskInfo.data.result.ACs) ||
-    [];
+  // const queryParams = {
+  //   taskID: '48a67b65-3911-4eab-a261-ec9bdd6f5159',
+  // };
+  const { data, isFetching, error } = useQuery({
+    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryFn: createQueryFn('/tasks/{id}', {
+      params: {
+        path: { id: queryParams.taskID! },
+      },
+    }),
+    enabled: !!queryParams.taskID,
+  });
+
+  console.log(data, isFetching, error);
+  if (isFetching || error) return;
+
+  const shownData =
+    data?.result?.primitive_name === 'ac' && data?.result?.result;
   const operation =
-    ('operation' in shownData.taskInfo.data &&
-      shownData.taskInfo.data.operation) ||
-    Operation.ADDITION;
+    data?.config.primitive_name === 'ac' && data.config.config.bin_operation;
+
+  // const shownData = myData;
+  // const ACs =
+  //   (shownData.taskInfo.data.result &&
+  //     'ACs' in shownData.taskInfo.data.result &&
+  //     shownData.taskInfo.data.result.ACs) ||
+  //   [];
+  // const operation =
+  //   ('operation' in shownData.taskInfo.data &&
+  //     shownData.taskInfo.data.operation) ||
+  //   Operation.ADDITION;
   // const recordsCount =
   //   shownData?.taskInfo.data.result &&
   //   'pairsAttributesAmount' in shownData?.taskInfo.data.result &&
   //   shownData?.taskInfo.data.result.pairsAttributesAmount;
 
-  useEffect(() => {
-    setAtom({
-      ...ACAtomDefaultValuesWithParams(
-        shownData.taskInfo.taskID,
-        atom.instanceSelected,
-      ),
-    });
-  }, [atom.instanceSelected, setAtom, shownData.taskInfo.taskID]);
+  // useEffect(() => {
+  //   setAtom({
+  //     ...ACAtomDefaultValuesWithParams(
+  //       data?.id || '',
+  //       atom.instanceSelected,
+  //     ),
+  //   });
+  // }, [atom.instanceSelected, setAtom, data]);
 
   return (
     <>
@@ -71,19 +97,23 @@ export const ACResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {ACs.map((value) => {
-          const id = `${value.attributes.attribute1} ${value.attributes.attribute2}`;
-          return (
-            <ACInstance
-              key={id}
-              id={id}
-              attributes={value.attributes}
-              operation={operation}
-              intervals={value.intervals}
-              outliers={value.outliers}
-            />
-          );
-        })}
+        {shownData &&
+          shownData.map((value) => {
+            const id = `${value.left_column} ${value.right_column}`;
+            //const isSelected = atom.instanceSelected?.id === id;
+            const isSelected = false;
+            return (
+              <ACInstance
+                key={id}
+                isSelected={isSelected}
+                left_column={value.left_column}
+                right_column={value.right_column}
+                operation={operation || OperationType.ValueMinus}
+                intervals={value.intervals}
+                outliers={value.outliers}
+              />
+            );
+          })}
       </div>
 
       <div className={styles.pagination}>

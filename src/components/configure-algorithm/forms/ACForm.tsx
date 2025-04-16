@@ -3,28 +3,29 @@ import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
-import { SchemaAdcTaskConfig } from '@/api/generated/schema';
+import { SchemaAcTaskConfigInput } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
+import { SeedRandomInput } from '../SeedRandomomInput';
 import {
-  ADCAlgorithmOptions,
-  ADCFields,
-  allowCrossColumnsOptions,
-} from './options/ADCOptions';
-import { ADCPresets } from './presets/ADCPresets';
+  ACAlgorithmOptions,
+  ACFields,
+  operationOptions,
+} from './options/ACOptions';
+import { ACPresets } from './presets/ACPresets';
 
-export type ADCFormInputs = SchemaAdcTaskConfig['config'];
-const defaultValue = ADCPresets.common.at(-1)
-  ?.preset as GetAllFieds<ADCFormInputs>;
+export type ACFormInputs = SchemaAcTaskConfigInput['config'];
+const defaultValue = ACPresets.common.at(-1)
+  ?.preset as GetAllFieds<ACFormInputs>;
 
-export const ADCForm: FormComponent<ADCFormInputs> = (
+export const ACForm: FormComponent<ACFormInputs> = (
   {
     /*setPresets*/
   },
 ) => {
-  const methods = useFormContext<ADCFormInputs>();
+  const methods = useFormContext<ACFormInputs>();
 
   // const [algo_name] = useWatch<NARFormInputs>({
   //   name: ['algo_name'],
@@ -36,12 +37,12 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
   // }, [methods, setPresets]);
 
   useEffect(() => {
-    ADCFields.forEach((key) => methods.setValue(key, defaultValue[key]));
+    ACFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);
 
   return (
     <>
-      <ControlledFormField<ADCFormInputs, 'algo_name'>
+      <ControlledFormField<ACFormInputs, 'algo_name'>
         formFieldProps={{ label: 'Algorithm' }}
         controllerProps={{
           name: 'algo_name',
@@ -52,14 +53,14 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
           <Select
             value={value}
             onChange={onChange}
-            options={ADCAlgorithmOptions}
+            options={ACAlgorithmOptions}
           />
         )}
       </ControlledFormField>
-      <ControlledFormField<ADCFormInputs, 'allow_cross_columns'>
-        formFieldProps={{ label: 'Allow cross columns' }}
+      <ControlledFormField<ACFormInputs, 'bin_operation'>
+        formFieldProps={{ label: 'Operation' }}
         controllerProps={{
-          name: 'allow_cross_columns',
+          name: 'bin_operation',
           control: methods.control,
         }}
       >
@@ -67,55 +68,34 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
           <Select
             value={value}
             onChange={onChange}
-            options={allowCrossColumnsOptions}
+            options={operationOptions}
           />
         )}
       </ControlledFormField>
-      <ControlledFormField<ADCFormInputs, 'shard_length'>
-        formFieldProps={{ label: 'Shard length' }}
+      <ControlledFormField<ACFormInputs, 'bumps_limit'>
+        formFieldProps={{ label: 'Bumps limit' }}
         controllerProps={{
-          name: 'shard_length',
+          name: 'bumps_limit',
           control: methods.control,
         }}
       >
         {({ field: { value, onChange } }) => (
           <NumberInput
-            value={[value ?? 1]}
+            value={[value ?? 0]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
               defaultNum: 1,
-              min: 1,
-              max: 10, // TODO: table rows
+              min: 0,
               step: 1,
               digitsAfterDot: 0,
             }}
           />
         )}
       </ControlledFormField>
-      <ControlledFormField<ADCFormInputs, 'minimum_shared_value'>
-        formFieldProps={{ label: 'Minimum shared value' }}
+      <ControlledFormField<ACFormInputs, 'p_fuzz'>
+        formFieldProps={{ label: 'P fuzz' }}
         controllerProps={{
-          name: 'minimum_shared_value',
-          control: methods.control,
-        }}
-      >
-        {({ field: { value, onChange } }) => (
-          <NumberInput
-            value={[value ?? 1]}
-            onChange={([newValue]) => onChange(newValue)}
-            boundaries={{
-              defaultNum: 1,
-              min: 1,
-              step: 1,
-              digitsAfterDot: 0,
-            }}
-          />
-        )}
-      </ControlledFormField>
-      <ControlledFormField<ADCFormInputs, 'comparable_threshold'>
-        formFieldProps={{ label: 'Comparable threshold' }}
-        controllerProps={{
-          name: 'comparable_threshold',
+          name: 'p_fuzz',
           control: methods.control,
         }}
       >
@@ -125,8 +105,9 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
             onChange={([newValue]) => onChange(newValue)}
             slider
             boundaries={{
-              defaultNum: 1,
+              defaultNum: 0.2,
               min: 0,
+              includingMin: false,
               max: 1,
               step: 0.01,
               digitsAfterDot: 2,
@@ -134,10 +115,30 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
           />
         )}
       </ControlledFormField>
-      <ControlledFormField<ADCFormInputs, 'evidence_threshold'>
-        formFieldProps={{ label: 'Evidence threshold' }}
+      <ControlledFormField<ACFormInputs, 'iterations_limit'>
+        formFieldProps={{ label: 'Iterations limit' }}
         controllerProps={{
-          name: 'evidence_threshold',
+          name: 'iterations_limit',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <NumberInput
+            value={[value ?? 1]}
+            onChange={([newValue]) => onChange(newValue)}
+            boundaries={{
+              defaultNum: 4,
+              min: 1,
+              step: 1,
+              digitsAfterDot: 0,
+            }}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<ACFormInputs, 'fuzziness'>
+        formFieldProps={{ label: 'Fuzziness' }}
+        controllerProps={{
+          name: 'fuzziness',
           control: methods.control,
         }}
       >
@@ -147,8 +148,52 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
             onChange={([newValue]) => onChange(newValue)}
             slider
             boundaries={{
-              defaultNum: 1,
+              defaultNum: 0.85,
               min: 0,
+              includingMin: false,
+              max: 1,
+              step: 0.01,
+              digitsAfterDot: 2,
+            }}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<ACFormInputs, 'ac_seed'>
+        formFieldProps={{ label: 'Seed' }}
+        controllerProps={{
+          name: 'ac_seed',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <SeedRandomInput
+            value={[value ?? 1]}
+            onChange={([newValue]) => onChange(newValue)}
+            boundaries={{
+              defaultNum: 11,
+              min: 0,
+              step: 1,
+              digitsAfterDot: 0,
+            }}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<ACFormInputs, 'weight'>
+        formFieldProps={{ label: 'Weight' }}
+        controllerProps={{
+          name: 'weight',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <NumberInput
+            value={[value ?? 1]}
+            onChange={([newValue]) => onChange(newValue)}
+            slider
+            boundaries={{
+              defaultNum: 0.1,
+              min: 0,
+              includingMin: false,
               max: 1,
               step: 0.01,
               digitsAfterDot: 2,
@@ -160,17 +205,17 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
   );
 };
 
-ADCForm.onSubmit = (fieldValues) => {
-  return _.pick(fieldValues, ADCFields);
+ACForm.onSubmit = (fieldValues) => {
+  return _.pick(fieldValues, ACFields);
 };
 // использовать zod
-ADCForm.mutationFn = ({ datasets, data }) =>
+ACForm.mutationFn = ({ datasets, data }) =>
   datasets.length
     ? createMutationFn('/tasks/')({
         body: {
           files_ids: datasets,
           config: {
-            primitive_name: 'adc',
+            primitive_name: 'ac',
             config: data,
           },
         },

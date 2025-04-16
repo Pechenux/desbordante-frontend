@@ -60,4 +60,9 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
       description: 'lorem ipsum',
       tags: [TagType.Tag5, TagType.Tag6],
     },
+    [PrimitiveType.AC]: {
+      label: 'Algebraic Constraints',
+      description: 'lorem ipsum',
+      tags: [TagType.Tag5, TagType.Tag6],
+    },
   } as const;

@@ -16,6 +16,7 @@ import {
   MDForm,
   NARForm,
   ADCForm,
+  ACForm,
 } from '@/components/configure-algorithm/forms';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
@@ -65,6 +66,10 @@ const forms: Partial<
   },
   ADC: {
     formComponent: ADCForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  AC: {
+    formComponent: ACForm,
     datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   // FD: FDForm,
