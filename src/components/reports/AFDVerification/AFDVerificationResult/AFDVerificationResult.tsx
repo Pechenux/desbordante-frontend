@@ -6,7 +6,7 @@ import React, { useCallback, useRef, useState } from 'react';
 //import VisibilityWindow from '@components/Filters/AFDVisibilityWindow';
 
 import { SingleValue } from 'react-select';
-import { createQueryFn } from '@/api/fetchFunctions';
+import { createQueryFn } from '@/api/services/server';
 import { SortOrder, AfdVerificationSortOptions } from '@/api/generated/schema';
 import { Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
@@ -63,8 +63,8 @@ export const AFDVerificationResult = () => {
   );
 
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`, orderBy, orderDirection],
-    queryFn: createQueryFn('/tasks/{id}', {
+    queryKey: [`/api/tasks/${queryParams.taskID}`, orderBy, orderDirection],
+    queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
         query: {
           sort_direction: orderDirection as SortOrder,

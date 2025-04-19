@@ -2,7 +2,7 @@ import { useAtom } from 'jotai';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
+import { createMutationFn } from '@/api/services/server';
 import { SchemaAfdVerificationTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import { CheckboxGroup, Select } from '@/components/common/uikit/Inputs';
@@ -124,7 +124,7 @@ AFDVerificationForm.onSubmit = (fieldValues) => {
 // использовать zod
 AFDVerificationForm.mutationFn = ({ datasets, data }) =>
   datasets.length
-    ? createMutationFn('/tasks/')({
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {
