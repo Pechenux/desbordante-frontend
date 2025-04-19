@@ -65,4 +65,9 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
       description: 'lorem ipsum',
       tags: [TagType.Tag5, TagType.Tag6],
     },
+    [PrimitiveType.AFDVerification]: {
+      label: 'Approximate Functional Dependencies Verification',
+      description: 'lorem ipsum',
+      tags: [TagType.Tag5, TagType.Tag6],
+    },
   } as const;

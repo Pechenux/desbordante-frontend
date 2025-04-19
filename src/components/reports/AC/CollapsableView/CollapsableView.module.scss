@@ -10,13 +10,7 @@
 
 .collabsableOutput {
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
-
-  span {
-    margin-right: 4px;
-    white-space: nowrap;
-  }
 }
 
 .buttonShow {
@@ -31,6 +25,7 @@
 
 .withShowAll {
   display: flex;
+  white-space: nowrap;
 }
 
 .whenShowAll {

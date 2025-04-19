@@ -1,0 +1,24 @@
+@import "common";
+
+.subHeader {
+  @include paragraph;
+  display: flex;
+  gap: 16px;
+}
+
+.table {
+  max-width: 100%;
+  width: fit-content;
+  margin: 0;
+
+  tr {
+    @include paragraph-small;
+    color: $black-75;
+  }
+}
+
+.clustersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

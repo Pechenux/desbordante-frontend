@@ -11,7 +11,6 @@
     border-radius: 8px;
 
     img {
-      filter: brightness(3) saturate(3.4);
       cursor: pointer;
     }
 
@@ -49,6 +48,7 @@
   border: 2px solid $black-25;
   border-top: none;
   border-radius: 8px;
+  max-height: 360px;
   height: 100%;
   overflow: auto;
   margin-bottom: 24px;
@@ -62,7 +62,7 @@
       padding: 8px 24px;
     }
 
-    tr:nth-child(even) {
+    tr.alternate:nth-child(even) {
       background-color: $black-05;
     }
   }
@@ -90,6 +90,7 @@
     display: none;
   }
 }
+
 .disabled .table tbody {
   td {
     color: $black-10;

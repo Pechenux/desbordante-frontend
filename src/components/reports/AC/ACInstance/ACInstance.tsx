@@ -56,6 +56,12 @@ export const ACInstance: FC<ACInstanceType> = ({
   };
 
   const OperationIcon = operationIcons[operation];
+  const outliersString = outliers.join(' ');
+  const intervalsString = intervals.reduce(
+    (acc, range) => acc + `[${range[0]}, ${range[1]}] `,
+    '',
+  );
+  console.log(intervalsString);
 
   //const isSelected = atom.instanceSelected?.id === id;
 
@@ -73,21 +79,10 @@ export const ACInstance: FC<ACInstanceType> = ({
         </div>
       </div>
       <CollapsableView title={`Intervals (${intervals.length})`}>
-        {intervals.map((elem) => (
-          <>
-            <span
-              key={`intervals ${elem[0]} ${elem[1]}`}
-            >{`[${elem[0]}, ${elem[1]}]`}</span>
-          </>
-        ))}
+        {intervalsString}
       </CollapsableView>
       <CollapsableView title={`Outliers (${outliers.length})`}>
-        {outliers.map((elem) => (
-          // <>
-          //   <span key={`Outliers ${elem}`}>{elem}</span>{' '}
-          // </>
-          <span key={`Outliers ${elem}`}>{elem}</span>
-        ))}
+        {outliersString}
       </CollapsableView>
     </div>
   );

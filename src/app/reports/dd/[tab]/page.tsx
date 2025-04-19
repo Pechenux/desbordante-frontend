@@ -10,12 +10,6 @@ export default async function DDReport({
   params: Promise<{ tab: string }>;
 }) {
   const tabs = [
-    // {
-    //   name: 'statistics',
-    //   label: 'Statistics',
-    //   icon: <Icon name="chart" />,
-    //   content: <ChartStatistics />,
-    // },
     {
       name: 'result',
       label: 'Primitive list',

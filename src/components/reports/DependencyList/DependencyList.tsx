@@ -58,13 +58,6 @@ export const DependencyList = <T,>({
     <div className={styles.dependencyListContainer}>
       {deps &&
         deps.map((row, i) => {
-          // const fullDependency = row.lhs.concat(row.rhs);
-          // const isError =
-          //   JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
-          // const isSelected =
-          //   JSON.stringify(selectedDependency) ===
-          //   JSON.stringify(fullDependency);
-
           const fullDependency = JSON.stringify(row);
           const isError = errorDependency === fullDependency;
           const isSelected = selectedDependency === fullDependency;

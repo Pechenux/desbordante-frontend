@@ -17,6 +17,7 @@ import {
   NARForm,
   ADCForm,
   ACForm,
+  AFDVerificationForm,
 } from '@/components/configure-algorithm/forms';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
@@ -70,6 +71,10 @@ const forms: Partial<
   },
   AC: {
     formComponent: ACForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  AFDverification: {
+    formComponent: AFDVerificationForm,
     datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   // FD: FDForm,

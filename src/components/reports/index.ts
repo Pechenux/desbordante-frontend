@@ -1,6 +1,5 @@
 export * from './DependencyList';
 export * from './Filters';
-export * from './ScrollableTable';
 export * from './FDResult';
 export * from './AFDResult';
 export * from './CFDResult';
@@ -13,4 +12,7 @@ export * from './MDResult';
 export * from './NARResult';
 export * from './ADC';
 export * from './AC';
+export * from './AFDVerification';
+export * from './ReportFiller';
+export * from './ScrollableNodeTable';
 //export * from './DownloadResult';
