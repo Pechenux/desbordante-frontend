@@ -18,14 +18,17 @@ import {
   OrderingWindow,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { useQueryParams } from '@/utils/useQueryParams';
+//import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './FDResult.module.scss';
 
 export const FDResult = () => {
-  const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
+  //const { queryParams } = useQueryParams<{ taskID: string }>();
+  const queryParams = {
+    taskID: 'c6d1f11d-174c-4024-a060-d81aa4eb64c3',
+  };
   const { data, isFetching, error } = useQuery({
     queryKey: [`/tasks/${queryParams.taskID}`],
     queryFn: createQueryFn('/tasks/{id}', {
@@ -153,7 +156,7 @@ export const FDResult = () => {
     'filteredDeps' in shownData?.taskInfo.data.result &&
     shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount; */
 
-  const deps = data?.result?.result.fds;
+  const deps = data?.result?.primitive_name === 'fd' && data?.result?.result;
   if (!deps) return;
 
   return (
@@ -206,7 +209,7 @@ export const FDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList {...{ deps }} />
+        <DependencyList deps={deps} />
       </div>
 
       {/* <div className={styles.pagination}>

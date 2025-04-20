@@ -33,15 +33,6 @@ export const MDForm: FormComponent<MDFormInputs> = (
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnMatches = fileIDs['1'] === ''; // left_table unselect
 
-  // const [algo_name] = useWatch<NARFormInputs>({
-  //   name: ['algo_name'],
-  // });
-
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   // useEffect(() => {
   //   MDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   // }, [methods]);

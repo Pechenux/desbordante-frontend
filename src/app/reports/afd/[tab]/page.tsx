@@ -1,8 +1,7 @@
 import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import { Icon } from '@/components/common/uikit';
-import { AFDResult, Snippet } from '@/components/reports';
+import { AFDResult } from '@/components/reports';
 import { ChartStatistics } from '@/components/reports/ChartStatisctics';
-import styles from './page.module.scss';
 
 export default async function AFDReport({
   params,
@@ -22,14 +21,14 @@ export default async function AFDReport({
       icon: <Icon name="listDropDown" />,
       content: <AFDResult />,
     },
-    {
-      name: 'snippet',
-      label: 'Dataset snippet',
-      icon: <Icon name="datatable" />,
-      content: <Snippet />,
-      pageClass: styles.page,
-      containerClass: styles.container,
-    },
+    // {
+    //   name: 'snippet',
+    //   label: 'Dataset snippet',
+    //   icon: <Icon name="datatable" />,
+    //   content: <Snippet />,
+    //   pageClass: styles.page,
+    //   containerClass: styles.container,
+    // },
   ];
 
   const currentTab = (await params).tab;

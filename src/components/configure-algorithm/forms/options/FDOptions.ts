@@ -7,8 +7,8 @@ import {
   FdMineConfigAlgo_name,
   FUNConfigAlgo_name,
   HyFDConfigAlgo_name,
-  PFDTaneConfigAlgo_name,
-  PFDTaneConfigError_measure,
+  //PFDTaneConfigAlgo_name,
+  //PFDTaneConfigError_measure,
   PyroConfigAlgo_name,
   SchemaFdTaskConfig,
   TaneConfigAlgo_name,
@@ -28,13 +28,13 @@ export const FDAlgorithmOptions: Option<FDAlgorithms>[] = [
   { label: 'FDep', value: FDepConfigAlgo_name.fdep },
   { label: 'FUN', value: FUNConfigAlgo_name.fun },
   { label: 'Aid', value: AidConfigAlgo_name.aid },
-  { label: 'PFDTane', value: PFDTaneConfigAlgo_name.pfdtane },
+  //{ label: 'PFDTane', value: PFDTaneConfigAlgo_name.pfdtane },
 ];
 
-export const FDErrorMeasuresOptions: Option<PFDTaneConfigError_measure>[] = [
-  { label: 'Per value', value: PFDTaneConfigError_measure.per_value },
-  { label: 'Per tuple', value: PFDTaneConfigError_measure.per_tuple },
-];
+// export const FDErrorMeasuresOptions: Option<PFDTaneConfigError_measure>[] = [
+//   { label: 'Per value', value: PFDTaneConfigError_measure.per_value },
+//   { label: 'Per tuple', value: PFDTaneConfigError_measure.per_tuple },
+// ];
 
 export type FDOptionalFields =
   | 'error'
@@ -62,9 +62,9 @@ export const optionalFieldsByAlgorithm: Record<
   [FDepConfigAlgo_name.fdep]: [],
   [FUNConfigAlgo_name.fun]: ['is_null_equal_null'],
   [AidConfigAlgo_name.aid]: [],
-  [PFDTaneConfigAlgo_name.pfdtane]: [
-    'is_null_equal_null',
-    'error',
-    'error_measure',
-  ],
+  // [PFDTaneConfigAlgo_name.pfdtane]: [
+  //   'is_null_equal_null',
+  //   'error',
+  //   'error_measure',
+  // ],
 };
