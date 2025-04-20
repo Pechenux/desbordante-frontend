@@ -1,12 +1,8 @@
-// import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
-import {
-  FdTaskConfigPrimitive_name,
-  SchemaFdTaskConfig,
-} from '@/api/generated/schema';
+import { SchemaFdTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,
@@ -14,23 +10,24 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
-import { UnionKeys } from '@/types/unionKeys';
+//import { GetAllFieds } from '@/types/getAllFields';
 import {
   FDAlgorithmOptions,
   FDAlgorithms,
-  FDErrorMeasuresOptions,
   FDOptionalFields,
   optionalFieldsByAlgorithm,
 } from './options/FDOptions';
-import { FDPresets } from './presets/FDPresets';
+//import { FDPresets } from './presets/FDPresets';
 
 export type FDFormInputs = SchemaFdTaskConfig['config'];
-type FDFormKeys = UnionKeys<FDFormInputs>;
-const defaultValue = FDPresets.common.at(-1)
-  ?.preset as GetAllFieds<FDFormInputs>;
+// const defaultValue = FDPresets.common.at(-1)
+//   ?.preset as GetAllFieds<FDFormInputs>;
 
-export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
+export const FDForm: FormComponent<FDFormInputs> = (
+  {
+    /*setPresets*/
+  },
+) => {
   const methods = useFormContext<FDFormInputs>();
 
   const [algo_name] = useWatch<FDFormInputs>({
@@ -41,10 +38,10 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
 
   useEffect(() => console.log(options), [options]);
 
-  useEffect(() => {
-    setPresets(FDPresets);
-    methods.setValue('algo_name', defaultValue['algo_name']);
-  }, [methods, setPresets]);
+  // useEffect(() => {
+  //   setPresets(FDPresets);
+  //   methods.setValue('algo_name', defaultValue['algo_name']);
+  // }, [methods, setPresets]);
 
   const optionalFields = useMemo(
     () => optionalFieldsByAlgorithm[algo_name as FDAlgorithms] ?? [],
@@ -57,8 +54,8 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
     }
 
     setOptions(optionalFields);
-    const fields: FDFormKeys[] = ['max_lhs', ...optionalFields];
-    fields.forEach((key) => methods.setValue(key, defaultValue[key]));
+    // const fields = ['max_lhs', ...optionalFields];
+    // fields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [algo_name, methods, optionalFields]);
 
   return (
@@ -87,24 +84,57 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
       >
         {({ field: { value, onChange } }) => (
           <NumberInput
-            value={[value ?? 1]}
+            value={[value ?? 0]}
             onChange={([newValue]) => onChange(newValue)}
-            slider
             boundaries={{
-              defaultNum: 1,
-              min: 1,
-              max: 10,
+              defaultNum: 0,
+              min: 0,
               step: 1,
               digitsAfterDot: 0,
             }}
           />
         )}
       </ControlledFormField>
-      {optionalFields.includes('error') && (
-        <ControlledFormField<FDFormInputs, 'error'>
-          formFieldProps={{ label: 'Error threshold' }}
+
+      {options.includes('seed') && (
+        <ControlledFormField<FDFormInputs, 'seed'>
+          formFieldProps={{ label: 'Seed' }}
           controllerProps={{
-            name: 'error',
+            name: 'seed',
+            control: methods.control,
+          }}
+        >
+          {({ field: { value, onChange } }) => (
+            <NumberInput
+              value={[value ?? 0]}
+              onChange={([newValue]) => onChange(newValue)}
+              boundaries={{ defaultNum: 0, min: 0, step: 1, digitsAfterDot: 0 }}
+            />
+          )}
+        </ControlledFormField>
+      )}
+      {options.includes('seed') && (
+        <ControlledFormField<FDFormInputs, 'custom_random_seed'>
+          formFieldProps={{ label: 'Seed' }}
+          controllerProps={{
+            name: 'custom_random_seed',
+            control: methods.control,
+          }}
+        >
+          {({ field: { value, onChange } }) => (
+            <NumberInput
+              value={[value ?? 1]}
+              onChange={([newValue]) => onChange(newValue)}
+              boundaries={{ defaultNum: 0, min: 0, step: 1, digitsAfterDot: 0 }}
+            />
+          )}
+        </ControlledFormField>
+      )}
+      {options.includes('threads') && (
+        <ControlledFormField<FDFormInputs, 'threads'>
+          formFieldProps={{ label: 'Thread count' }}
+          controllerProps={{
+            name: 'threads',
             control: methods.control,
           }}
         >
@@ -116,64 +146,6 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
               boundaries={{
                 defaultNum: 0,
                 min: 0,
-                max: 1,
-                step: 1e-4,
-                digitsAfterDot: 4,
-              }}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('error_measure') && (
-        <ControlledFormField<FDFormInputs, 'error_measure'>
-          formFieldProps={{ label: 'Error measure' }}
-          controllerProps={{
-            name: 'error_measure',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <Select
-              value={value}
-              onChange={onChange}
-              options={FDErrorMeasuresOptions}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('seed') && (
-        <ControlledFormField<FDFormInputs, 'seed'>
-          formFieldProps={{ label: 'Seed' }}
-          controllerProps={{
-            name: 'seed',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <NumberInput
-              value={[value ?? 1]}
-              onChange={([newValue]) => onChange(newValue)}
-              boundaries={{ defaultNum: 0, step: 1, digitsAfterDot: 0 }}
-            />
-          )}
-        </ControlledFormField>
-      )}
-      {optionalFields.includes('threads') && (
-        <ControlledFormField<FDFormInputs, 'threads'>
-          formFieldProps={{ label: 'Thread count' }}
-          controllerProps={{
-            name: 'threads',
-            control: methods.control,
-          }}
-        >
-          {({ field: { value, onChange } }) => (
-            <NumberInput
-              value={[value ?? 1]}
-              onChange={([newValue]) => onChange(newValue)}
-              slider
-              boundaries={{
-                defaultNum: 1,
-                min: 1,
                 max: 8,
                 step: 1,
                 digitsAfterDot: 0,
@@ -182,7 +154,7 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
           )}
         </ControlledFormField>
       )}
-      {optionalFields.includes('is_null_equal_null') && (
+      {options.includes('is_null_equal_null') && (
         <ControlledFormField<FDFormInputs, 'is_null_equal_null'>
           formFieldProps={{ label: 'Is null equal null' }}
           controllerProps={{
@@ -213,13 +185,17 @@ FDForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, fields);
 };
 // использовать zod
-FDForm.mutationFn = ({ datasets, data }) =>
-  '0' in datasets
-    ? createMutationFn('/api/task/set')({
-        params: { query: { dataset_id: datasets[0] } },
+FDForm.mutationFn = ({ datasets, data }) => {
+  console.log(222, datasets, data);
+  return datasets.length
+    ? createMutationFn('/tasks/')({
         body: {
-          primitive_name: FdTaskConfigPrimitive_name.fd,
-          config: data,
+          files_ids: datasets,
+          config: {
+            primitive_name: 'fd',
+            config: data,
+          },
         },
       })
     : Promise.reject('No datasets selected');
+};

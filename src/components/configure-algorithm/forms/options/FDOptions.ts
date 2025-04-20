@@ -2,6 +2,7 @@ import {
   AidConfigAlgo_name,
   DepminerConfigAlgo_name,
   DFDConfigAlgo_name,
+  EulerFDConfigAlgo_name,
   FastFDsConfigAlgo_name,
   FDepConfigAlgo_name,
   FdMineConfigAlgo_name,
@@ -37,31 +38,28 @@ export const FDAlgorithmOptions: Option<FDAlgorithms>[] = [
 // ];
 
 export type FDOptionalFields =
-  | 'error'
-  | 'error_measure'
-  | 'seed'
-  | 'threads'
-  | 'is_null_equal_null';
+  // | 'error'
+  // | 'error_measure'
+  'seed' | 'custom_random_seed' | 'threads' | 'is_null_equal_null';
 
 export const optionalFieldsByAlgorithm: Record<
   FDAlgorithms,
   FDOptionalFields[]
 > = {
-  [PyroConfigAlgo_name.pyro]: [
-    'is_null_equal_null',
-    'error',
-    'threads',
-    'seed',
-  ],
-  [TaneConfigAlgo_name.tane]: ['is_null_equal_null', 'error'],
+  [PyroConfigAlgo_name.pyro]: ['is_null_equal_null', 'threads', 'seed'],
+  [TaneConfigAlgo_name.tane]: ['is_null_equal_null'],
   [FastFDsConfigAlgo_name.fastfds]: ['is_null_equal_null', 'threads'],
-  [HyFDConfigAlgo_name.hyfd]: ['is_null_equal_null'],
+  [HyFDConfigAlgo_name.hyfd]: ['is_null_equal_null', 'threads'],
   [FdMineConfigAlgo_name.fdmine]: ['is_null_equal_null'],
   [DFDConfigAlgo_name.dfd]: ['is_null_equal_null', 'threads'],
-  [DepminerConfigAlgo_name.depminer]: ['threads'],
+  [DepminerConfigAlgo_name.depminer]: ['is_null_equal_null'],
   [FDepConfigAlgo_name.fdep]: [],
   [FUNConfigAlgo_name.fun]: ['is_null_equal_null'],
   [AidConfigAlgo_name.aid]: [],
+  [EulerFDConfigAlgo_name.eulerfd]: [
+    'custom_random_seed',
+    'is_null_equal_null',
+  ],
   // [PFDTaneConfigAlgo_name.pfdtane]: [
   //   'is_null_equal_null',
   //   'error',

@@ -1,15 +1,9 @@
 // import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { SingleValue } from 'react-select';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
-
-import {
-  AFDPyroConfigAlgo_name,
-  AFDTaneConfigAlgo_name,
-  SchemaAfdTaskConfig,
-} from '@/api/generated/schema';
+import { SchemaAfdTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,
@@ -43,28 +37,13 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
   //const algo_name = methods.getValues('algo_name');
   //console.log(algo_name);
 
-  // const [algo_name] = useWatch<AFDFormInputs>({
-  //   name: ['algo_name'],
-  // });
-  const [algo_name, setAlgoName] = useState<
-    SingleValue<AFDPyroConfigAlgo_name | AFDTaneConfigAlgo_name>
-  >(AFDPyroConfigAlgo_name.pyro);
-  console.log(algo_name);
+  const [algo_name] = useWatch<AFDFormInputs>({
+    name: ['algo_name'],
+  });
 
   const [options, setOptions] = useState<AFDOptionalFields[]>([]);
 
   useEffect(() => console.log(options), [options]);
-
-  const handleChangeAlgo = (
-    newValue: SingleValue<AFDPyroConfigAlgo_name | AFDTaneConfigAlgo_name>,
-    onChange: (
-      newValue: SingleValue<AFDPyroConfigAlgo_name | AFDTaneConfigAlgo_name>,
-    ) => void,
-  ) => {
-    console.log(newValue);
-    setAlgoName(newValue);
-    onChange(newValue);
-  };
 
   // useEffect(() => {
   //   setPresets(AFDPresets);
@@ -100,7 +79,7 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
           <Select
             value={value}
             defaultValue={AFDAlgorithmOptions[0]}
-            onChange={(newValue) => handleChangeAlgo(newValue, onChange)}
+            onChange={onChange}
             options={AFDAlgorithmOptions}
           />
         )}

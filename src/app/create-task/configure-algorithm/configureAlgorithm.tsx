@@ -20,6 +20,7 @@ import {
   AFDVerificationForm,
   AFDForm,
 } from '@/components/configure-algorithm/forms';
+import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -40,10 +41,10 @@ const forms: Partial<
     }
   >
 > = {
-  // FD: {
-  //   formComponent: FDForm,
-  //   datasetInputs: [{ label: 'Dataset', inputName: 'dataset_id' }],
-  // },
+  FD: {
+    formComponent: FDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
   DD: {
     formComponent: DDForm,
     datasetInputs: [

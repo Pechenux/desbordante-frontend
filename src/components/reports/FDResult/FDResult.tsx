@@ -18,17 +18,17 @@ import {
   OrderingWindow,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-//import { useQueryParams } from '@/utils/useQueryParams';
+import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './FDResult.module.scss';
 
 export const FDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
 
-  //const { queryParams } = useQueryParams<{ taskID: string }>();
-  const queryParams = {
-    taskID: 'c6d1f11d-174c-4024-a060-d81aa4eb64c3',
-  };
+  const { queryParams } = useQueryParams<{ taskID: string }>();
+  // const queryParams = {
+  //   taskID: 'c6d1f11d-174c-4024-a060-d81aa4eb64c3',
+  // };
   const { data, isFetching, error } = useQuery({
     queryKey: [`/tasks/${queryParams.taskID}`],
     queryFn: createQueryFn('/tasks/{id}', {
