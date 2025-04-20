@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
+import { createMutationFn } from '@/api/services/server';
 import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
@@ -179,7 +179,7 @@ MDForm.onSubmit = (fieldValues) => {
 MDForm.mutationFn = ({ datasets, data }) => {
   console.log(4444, data);
   return datasets.length
-    ? createMutationFn('/tasks/')({
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {

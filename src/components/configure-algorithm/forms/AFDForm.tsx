@@ -1,8 +1,8 @@
 // import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
+import { createMutationFn } from '@/api/services/server';
 import { SchemaAfdTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
@@ -216,7 +216,7 @@ AFDForm.onSubmit = (fieldValues) => {
 AFDForm.mutationFn = ({ datasets, data }) => {
   console.log(222, datasets, data);
   return datasets.length
-    ? createMutationFn('/tasks/')({
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {

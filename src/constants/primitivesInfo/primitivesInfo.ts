@@ -101,14 +101,4 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
       description: 'lorem ipsum',
       tags: [TagType.SingleSource, TagType.Table, TagType.ApproximatePattern],
     },
-    [PrimitiveType.NAR]: {
-      label: 'Numerical Association Rules',
-      description: 'pupupu',
-      tags: [TagType.Tag5, TagType.Tag6],
-    },
-    [PrimitiveType.DD]: {
-      label: 'Differential Dependencies',
-      description: 'lorem ipsum',
-      tags: [TagType.Tag5, TagType.Tag6],
-    },
   } as const;

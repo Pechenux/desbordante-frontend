@@ -38,9 +38,6 @@ export type FDOptionalFields =
   | 'custom_random_seed'
   | 'threads'
   | 'is_null_equal_null'
-  | 'pfd_error_measure'
-  | 'afd_error_measure'
-  | 'custom_random_seed';
 
 // FIXME
 export const optionalFieldsByAlgorithm: Record<
