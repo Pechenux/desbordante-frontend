@@ -1,7 +1,7 @@
 import {
   AFDPyroConfigAlgo_name,
   AFDTaneConfigAlgo_name,
-  AFDTaneConfigError_measure,
+  AFDTaneConfigAfd_error_measure,
   SchemaAfdTaskConfig,
 } from '@/api/generated/schema';
 import { Option } from '@/components/common/uikit/Inputs';
@@ -20,20 +20,20 @@ export const AFDCommonFields = [
   'is_null_equal_null',
 ] as const;
 
-export type AFDOptionalFields = 'error_measure' | 'seed' | 'threads';
+export type AFDOptionalFields = 'afd_error_measure' | 'seed' | 'threads';
 
 export const optionalFieldsByAlgorithm: Record<
   AFDAlgorithms,
   AFDOptionalFields[]
 > = {
   [AFDPyroConfigAlgo_name.pyro]: ['threads', 'seed'],
-  [AFDTaneConfigAlgo_name.tane]: ['error_measure'],
+  [AFDTaneConfigAlgo_name.tane]: ['afd_error_measure'],
 };
 
-export const ErrorMeasuresOptions: Option<AFDTaneConfigError_measure>[] = [
-  { label: 'g1', value: AFDTaneConfigError_measure.g1 },
-  { label: 'mu+', value: AFDTaneConfigError_measure.mu_plus },
-  { label: 'pdep', value: AFDTaneConfigError_measure.pdep },
-  { label: 'rho', value: AFDTaneConfigError_measure.rho },
-  { label: 'tau', value: AFDTaneConfigError_measure.tau },
+export const ErrorMeasuresOptions: Option<AFDTaneConfigAfd_error_measure>[] = [
+  { label: 'g1', value: AFDTaneConfigAfd_error_measure.g1 },
+  { label: 'mu+', value: AFDTaneConfigAfd_error_measure.mu_plus },
+  { label: 'pdep', value: AFDTaneConfigAfd_error_measure.pdep },
+  { label: 'rho', value: AFDTaneConfigAfd_error_measure.rho },
+  { label: 'tau', value: AFDTaneConfigAfd_error_measure.tau },
 ];

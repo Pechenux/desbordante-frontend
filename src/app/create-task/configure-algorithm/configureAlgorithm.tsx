@@ -21,6 +21,7 @@ import {
   AFDForm,
 } from '@/components/configure-algorithm/forms';
 import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
+import { PFDForm } from '@/components/configure-algorithm/forms/PFDForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -43,6 +44,10 @@ const forms: Partial<
 > = {
   FD: {
     formComponent: FDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  PFD: {
+    formComponent: PFDForm,
     datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   DD: {

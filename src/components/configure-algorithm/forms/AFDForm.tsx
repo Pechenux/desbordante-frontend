@@ -141,11 +141,11 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
           />
         )}
       </ControlledFormField>
-      {options.includes('error_measure') && (
-        <ControlledFormField<AFDFormInputs, 'error_measure'>
+      {options.includes('afd_error_measure') && (
+        <ControlledFormField<AFDFormInputs, 'afd_error_measure'>
           formFieldProps={{ label: 'Error measure' }}
           controllerProps={{
-            name: 'error_measure',
+            name: 'afd_error_measure',
             control: methods.control,
           }}
         >

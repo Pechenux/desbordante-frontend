@@ -2,7 +2,7 @@ import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import { Icon } from '@/components/common/uikit';
 import { AFDVerificationResult } from '@/components/reports/AFDVerification';
 
-export default async function AFDVerification({
+export default async function AFDVerificationReport({
   params,
 }: {
   params: Promise<{ tab: string }>;

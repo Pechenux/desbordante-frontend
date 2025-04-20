@@ -12,4 +12,5 @@ export enum PrimitiveType {
   TypoFD = 'TypoFD',
   AFD = 'AFD',
   AFDVerification = 'AFDverification',
+  PFD = 'PFD',
 }

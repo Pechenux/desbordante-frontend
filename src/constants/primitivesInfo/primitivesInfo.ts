@@ -94,4 +94,9 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
       description: 'lorem ipsum',
       tags: [TagType.SingleSource, TagType.Table, TagType.ApproximatePattern],
     },
+    [PrimitiveType.PFD]: {
+      label: 'p Functional Dependencies',
+      description: 'lorem ipsum',
+      tags: [TagType.SingleSource, TagType.Table, TagType.ApproximatePattern],
+    },
   } as const;

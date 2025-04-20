@@ -2,11 +2,11 @@
 
 import { useQueryParams } from '@/utils/useQueryParams';
 
-export default function ADC() {
+export default function PFD() {
   const { setQueryParams } = useQueryParams<{ taskID: string }>();
 
   setQueryParams({
-    newPathname: '/reports/adc/result',
+    newPathname: '/reports/pfd/result',
     erase: false,
     params: {},
   });

@@ -10,11 +10,6 @@ export type AFDVerificationAlgorithms =
 export const AFDVerificationAlgorithmOptions: Option<AFDVerificationAlgorithms>[] =
   [{ label: 'FDVerifier', value: FDVerifierConfigAlgo_name.fdverifier }];
 
-export const isNullEqualNullOptions: Option<boolean>[] = [
-  { label: 'True', value: true },
-  { label: 'False', value: false },
-];
-
 export const AFDVerificationFields = [
   'algo_name',
   'lhs_indices',

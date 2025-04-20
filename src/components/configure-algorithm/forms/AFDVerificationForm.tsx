@@ -6,14 +6,13 @@ import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaAfdVerificationTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
-import { Select } from '@/components/common/uikit/Inputs';
+import { CheckboxGroup, Select } from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
 import {
   AFDVerificationAlgorithmOptions,
   AFDVerificationFields,
-  isNullEqualNullOptions,
 } from './options/AFDVerificationOptions';
 import { AFDVerificationPresets } from './presets/AFDVerificationPresets';
 export type AFDVerificationFormInputs =
@@ -127,10 +126,10 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
         }}
       >
         {({ field: { value, onChange } }) => (
-          <Select
-            value={value}
-            onChange={onChange}
-            options={isNullEqualNullOptions}
+          <CheckboxGroup
+            values={value ? ['isEqual'] : []}
+            onChange={(newValue) => onChange(newValue.length > 0)}
+            options={[{ label: 'Equal', value: 'isEqual' }]}
           />
         )}
       </ControlledFormField>
