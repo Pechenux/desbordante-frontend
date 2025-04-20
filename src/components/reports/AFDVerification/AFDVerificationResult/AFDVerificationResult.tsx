@@ -11,8 +11,6 @@ import { Button, Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import { OrderingWindow } from '../../Filters';
-
-//import { data } from './AFDFakeData';
 import { ReportFiller } from '../../ReportFiller';
 import { ScrollDirection } from '../../ScrollableNodeTable';
 import { AFDCluster } from '../AFDCluster/AFDCluster';
@@ -27,7 +25,6 @@ export const AFDVerificationResult = () => {
   // };
 
   const [clusterIndex, setClusterIndex] = useState(0);
-  //const clusterIndex = 0
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   //const [isVisibilityShown, setIsVisibilityShown] = useState(false);
   const shouldIgnoreScrollEvent = useRef(false);

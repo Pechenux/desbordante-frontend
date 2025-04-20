@@ -1,53 +1,58 @@
 'use client';
 
-import { useAtom } from 'jotai';
-import { memo, useContext, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { MultiValue } from 'react-select';
 import { PrimitiveCard } from '@/components/choose-primitive/PrimitiveCard/PrimitiveCard';
-import { PropertiesModal } from '@/components/common/layout/PropertiesModal';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
-import { FormField } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 import { Icon } from '@/components/common/uikit/Icon';
-import { Search, Select } from '@/components/common/uikit/Inputs';
-//import { Option } from '@/components/common/uikit/Inputs';
-import { PortalRootContext } from '@/components/meta';
+import { Search } from '@/components/common/uikit/Inputs';
+
+import { FilteringPrimitivesModal } from '@/components/configure-algorithm/FilteringPrimitivesModal';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { primitiveInfo } from '@/constants/primitivesInfo/primitivesInfo';
 import { TagType } from '@/constants/primitivesInfo/primitivesTags';
-import { choosenPrimitiveAtom } from '@/store/taskCreationAtoms';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './choosePrimitive.module.scss';
 
-const options = [
-  {
-    label: '# ' + TagType.ApproximateAlgorithm,
-    value: TagType.ApproximateAlgorithm,
-  },
-  { label: '# ' + TagType.ExactAlgorithm, value: TagType.ExactAlgorithm },
-
-  {
-    label: '# ' + TagType.ApproximatePattern,
-    value: TagType.ApproximatePattern,
-  },
-  { label: '# ' + TagType.ExactPattern, value: TagType.ExactPattern },
-
-  { label: '# ' + TagType.Table, value: TagType.Table },
-  { label: '# ' + TagType.Transactional, value: TagType.Transactional },
-  { label: '# ' + TagType.Graph, value: TagType.Graph },
-
-  { label: '# ' + TagType.SingleSource, value: TagType.SingleSource },
-  { label: '# ' + TagType.MultiSource, value: TagType.MultiSource },
-];
-
 const ChoosePrimitive = () => {
   const [isOpenFilterModal, setOpenFilterModal] = useState<boolean>(false);
-  const [choosenPrimitive, setChoosenPrimitive] =
-    useAtom<PrimitiveType>(choosenPrimitiveAtom);
-  console.log('TODO: заменить на useState');
-  const [choosenTags, setChoosenTags] = useState<TagType[]>([]);
-  console.log(choosenTags);
+  const [choosenPrimitive, setChoosenPrimitive] = useState<PrimitiveType>(
+    PrimitiveType.FD,
+  );
+  const [searchString, setSearchString] = useState<string>('');
+  const [choosenFilteringTags, setChoosenFilteringTags] = useState<
+    MultiValue<TagType>
+  >([]);
+  const primitivesCodes = Object.keys(primitiveInfo) as PrimitiveType[];
+  const [filteringPrimitives, setFilteringPrimitives] =
+    useState<PrimitiveType[]>(primitivesCodes);
+  const [searchingPrimitives, setSearchingPrimitives] =
+    useState<PrimitiveType[]>(primitivesCodes);
+
   const onClose = () => setOpenFilterModal(false);
-  const portalRootRef = useContext(PortalRootContext);
+
+  const onApply = () => {
+    const newShownPrimitives = primitivesCodes.filter((primitive) =>
+      choosenFilteringTags.every((tag) =>
+        primitiveInfo[primitive]?.tags.includes(tag),
+      ),
+    );
+    setFilteringPrimitives(newShownPrimitives);
+
+    onClose();
+  };
+
+  useEffect(() => {
+    setSearchingPrimitives(
+      filteringPrimitives.filter((primitive) =>
+        primitiveInfo[primitive]?.label
+          .toLocaleLowerCase()
+          .includes(searchString.toLocaleLowerCase()),
+      ),
+    );
+  }, [searchString, filteringPrimitives]);
+
   const { setQueryParams } = useQueryParams();
 
   const header = useMemo(
@@ -99,7 +104,13 @@ const ChoosePrimitive = () => {
     <div>
       <WizardLayout footer={footer} header={header}>
         <div className={styles.search}>
-          <Search label="Search" placeholder="Search..." />
+          <Search
+            label="Search"
+            placeholder="Search..."
+            value={searchString}
+            onSearch={setSearchString}
+            tooltip={'123'}
+          />
           <Button
             variant="primary"
             size="md"
@@ -108,26 +119,17 @@ const ChoosePrimitive = () => {
           >
             Filters
           </Button>
-          <PropertiesModal
-            name="Filters"
-            onApply={onClose}
-            onClose={onClose}
+          <FilteringPrimitivesModal
             isOpen={isOpenFilterModal}
-          >
-            <FormField label="Tags">
-              <Select
-                options={options}
-                isMulti
-                menuPosition="fixed"
-                onChange={setChoosenTags}
-                menuPortalTarget={portalRootRef?.current}
-              />
-            </FormField>
-          </PropertiesModal>
+            onClose={onClose}
+            onApply={onApply}
+            onChange={setChoosenFilteringTags}
+            choosenTags={choosenFilteringTags}
+          />
         </div>
 
         <div className={styles.container}>
-          {Object.entries(primitiveInfo).map(([primitiveCode]) => (
+          {searchingPrimitives.map((primitiveCode) => (
             <PrimitiveCard
               key={primitiveCode}
               isSelected={choosenPrimitive === primitiveCode}

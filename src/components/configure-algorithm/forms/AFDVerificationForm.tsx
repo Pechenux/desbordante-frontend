@@ -30,10 +30,6 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnSelect = fileIDs['1'] === '';
 
-  // const [algo_name] = useWatch<NARFormInputs>({
-  //   name: ['algo_name'],
-  // });
-
   // useEffect(() => {
   //   setPresets(FDPresets);
   //   methods.setValue('algo_name', defaultValue['algo_name']);

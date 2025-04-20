@@ -39,10 +39,6 @@ export const FormLayout: FC<FormLayoutProps> = ({
     (acc, input) => ({ ...acc, [input.inputId]: input.datasetId }),
     {},
   );
-
-  // // const [fileIDs, setFileIDs] =
-  // //   useState<Record<string, string>>(startInputsValues);
-
   const [fileIDs, setFileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
 
   useEffect(() => setFileIDs(startInputsValues), [datasetInputs]);
