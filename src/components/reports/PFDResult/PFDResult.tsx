@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
-import { createQueryFn } from '@/api/fetchFunctions';
+import { createQueryFn } from '@/api/services/server';
 import {
   PfdFilterOptions,
   PfdSortOptions,
