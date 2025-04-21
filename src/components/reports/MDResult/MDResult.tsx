@@ -9,7 +9,7 @@ import {
   Button,
   FormField,
   Icon,
-  // Pagination,
+  Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
@@ -22,6 +22,7 @@ import {
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './MDResult.module.scss';
@@ -30,6 +31,7 @@ export const MDResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
 
   // const queryParams = {
   //   taskID: 'fe61e08b-7d37-40f9-98b0-178e7713d66a',
@@ -63,65 +65,10 @@ export const MDResult = () => {
     );
   };
 
-  console.log(data);
-
-  //   taskInfo: {
-  //     __typename: 'TaskInfo',
-  //     taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-  //     data: {
-  //       __typename: 'TaskWithDepsData',
-  //       result: {
-  //         __typename: 'FDTaskResult',
-  //         taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-  //         depsAmount: 6,
-  //         filteredDeps: {
-  //           __typename: 'FilteredFDs',
-  //           filteredDepsAmount: 6,
-  //           MDs: [
-  //             {
-  //               __typename: 'MD',
-  //               lhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   metrics: 'Jaccard',
-  //                   column1: 'Departure',
-  //                   column2: 'Departure',
-  //                   index: 0,
-  //                   value: 0,
-  //                 },
-  //                 {
-  //                   __typename: 'Column',
-  //                   metrics: 'Jaccard',
-  //                   column1: 'Departure',
-  //                   column2: 'Departure',
-  //                   index: 0,
-  //                   value: 0,
-  //                 },
-  //               ],
-  //               rhs: [
-  //                 {
-  //                   __typename: 'Column',
-  //                   metrics: 'Jaccard',
-  //                   column1: 'Departure',
-  //                   column2: 'Departure',
-  //                   index: 0,
-  //                   value: 0,
-  //                 },
-  //               ],
-  //             },
-  //           ],
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
   const deps = data?.result?.primitive_name === 'md' && data?.result?.result;
   if (!deps) return;
-
-  //  const shownData = deps.map((row) => ({
-  //    lhs: row.lhs.map((e) => formatter(e)),
-  //    rhs: row.rhs.map((e) => formatter(e)),
-  //  }));
+  const recordsCount = deps.length;
+  const shownData = extractShownDeps(deps, pageIndex, 10);
 
   return (
     <>
@@ -173,16 +120,16 @@ export const MDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={deps} formatter={formatter} />
+        <DependencyList deps={shownData} formatter={formatter} />
       </div>
 
-      {/* <div className={styles.pagination}>
+      <div className={styles.pagination}>
         <Pagination
-          onChange={() => {}}
-          current={1}
-          count={Math.ceil((recordsCount || 10) / 10)}
+          onChange={(n) => setPageIndex(n)}
+          current={pageIndex}
+          count={Math.ceil((recordsCount || 8) / 8)}
         />
-      </div> */}
+      </div>
     </>
   );
 };

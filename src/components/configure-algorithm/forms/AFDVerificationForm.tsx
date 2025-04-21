@@ -1,7 +1,6 @@
 import { useAtom } from 'jotai';
 import _ from 'lodash';
-//import { useEffect, useMemo, useState } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaAfdVerificationTaskConfig } from '@/api/generated/schema';
@@ -47,20 +46,6 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
     { label: 'Column3', value: 2 },
   ];
 
-  const columns2 = [
-    { label: 'aaa', value: 0 },
-    { label: 'bbb', value: 1 },
-    { label: 'ccc', value: 2 },
-  ];
-
-  const [columns, setColumns] = useState(columns1);
-  const [flag, setFlag] = useState(false);
-
-  useEffect(() => {
-    setColumns(flag ? columns2 : columns1);
-    setFlag(!flag);
-  }, [fileIDs]);
-
   return (
     <>
       <ControlledFormField<AFDVerificationFormInputs, 'algo_name'>
@@ -92,7 +77,7 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
             isMulti
             value={value}
             onChange={onChange}
-            options={columns}
+            options={columns1}
           />
         )}
       </ControlledFormField>
@@ -110,7 +95,7 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
             isMulti
             value={value}
             onChange={onChange}
-            options={columns}
+            options={columns1}
           />
         )}
       </ControlledFormField>

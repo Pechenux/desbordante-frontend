@@ -8,7 +8,7 @@ import {
   Button,
   FormField,
   Icon,
-  //Pagination,
+  Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
@@ -17,6 +17,7 @@ import {
   OrderingWindow,
   DependencyList,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './AFDResult.module.scss';
@@ -24,6 +25,7 @@ import styles from './AFDResult.module.scss';
 export const AFDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
   // const queryParams = {
@@ -43,6 +45,8 @@ export const AFDResult = () => {
 
   const deps = data?.result?.primitive_name === 'afd' && data?.result?.result;
   if (!deps) return;
+  const recordsCount = deps.length;
+  const shownData = extractShownDeps(deps, pageIndex, 10);
 
   return (
     <>
@@ -94,15 +98,15 @@ export const AFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={deps} />
+        <DependencyList deps={shownData} />
       </div>
 
       <div className={styles.pagination}>
-        {/* <Pagination
-          onChange={() => {}}
-          current={1}
+        <Pagination
+          onChange={(n) => setPageIndex(n)}
+          current={pageIndex}
           count={Math.ceil((recordsCount || 10) / 10)}
-        /> */}
+        />
       </div>
     </>
   );

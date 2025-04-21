@@ -8,7 +8,7 @@ import {
   Button,
   FormField,
   Icon,
-  // Pagination,
+  Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
@@ -17,6 +17,7 @@ import {
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './ADCResult.module.scss';
@@ -26,6 +27,7 @@ export const ADCResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [selectedInstance, setSelectedInstance] = useState<string | null>(null);
+  const [pageIndex, setPageIndex] = useState(1);
 
   // const queryParams = {
   //   taskID: 'fc1189b2-3beb-412b-a78b-460e8607a43c',
@@ -43,6 +45,9 @@ export const ADCResult = () => {
   if (isFetching || error) return;
 
   const deps = data?.result?.primitive_name === 'adc' && data?.result?.result;
+  if (!deps) return;
+  const recordsCount = deps.length;
+  const shownData = extractShownDeps(deps, pageIndex, 10);
 
   return (
     <>
@@ -94,8 +99,8 @@ export const ADCResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {deps &&
-          deps.map((d, i) => {
+        {shownData &&
+          shownData.map((d, i) => {
             const fullDependency = JSON.stringify(d);
 
             return (
@@ -109,13 +114,13 @@ export const ADCResult = () => {
           })}
       </div>
 
-      {/* <div className={styles.pagination}>
+      <div className={styles.pagination}>
         <Pagination
-          onChange={() => {}}
-          current={1}
-          count={Math.ceil((recordsCount || 10) / 10)}
+          onChange={(n) => setPageIndex(n)}
+          current={pageIndex}
+          count={Math.ceil((recordsCount || 8) / 8)}
         />
-      </div> */}
+      </div>
     </>
   );
 };

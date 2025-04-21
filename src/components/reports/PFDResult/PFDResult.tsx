@@ -8,7 +8,7 @@ import {
   Button,
   FormField,
   Icon,
-  // Pagination,
+  Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
@@ -17,6 +17,7 @@ import {
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './PFDResult.module.scss';
@@ -24,6 +25,7 @@ import styles from './PFDResult.module.scss';
 export const PFDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
   // const queryParams = {
@@ -41,123 +43,10 @@ export const PFDResult = () => {
 
   if (isFetching || error) return;
 
-  /*const shownData = {
-    taskInfo: {
-      __typename: 'TaskInfo',
-      taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-      data: {
-        __typename: 'TaskWithDepsData',
-        result: {
-          __typename: 'FDTaskResult',
-          taskID: 'd77b74fd-b881-45c9-8d3d-cf8a2478907d',
-          depsAmount: 6,
-          filteredDeps: {
-            __typename: 'FilteredFDs',
-            filteredDepsAmount: 6,
-            FDs: [
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Planet',
-                    index: 0,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RotationPeriod',
-                  index: 1,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'Planet',
-                    index: 0,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RevolutionPeriod',
-                  index: 2,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RotationPeriod',
-                    index: 1,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'Planet',
-                  index: 0,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RotationPeriod',
-                    index: 1,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RevolutionPeriod',
-                  index: 2,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RevolutionPeriod',
-                    index: 2,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'Planet',
-                  index: 0,
-                },
-              },
-              {
-                __typename: 'FD',
-                lhs: [
-                  {
-                    __typename: 'Column',
-                    name: 'RevolutionPeriod',
-                    index: 2,
-                  },
-                ],
-                rhs: {
-                  __typename: 'Column',
-                  name: 'RotationPeriod',
-                  index: 1,
-                },
-              },
-            ],
-          },
-        },
-      },
-    },
-  };
-  const recordsCount =
-    shownData?.taskInfo.data.result &&
-    'filteredDeps' in shownData?.taskInfo.data.result &&
-    shownData?.taskInfo.data.result.filteredDeps.filteredDepsAmount; */
-
   const deps = data?.result?.primitive_name === 'pfd' && data?.result?.result;
   if (!deps) return;
+  const recordsCount = deps.length;
+  const shownData = extractShownDeps(deps, pageIndex, 10);
 
   return (
     <>
@@ -209,16 +98,16 @@ export const PFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={deps} />
+        <DependencyList deps={shownData} />
       </div>
 
-      {/* <div className={styles.pagination}>
+      <div className={styles.pagination}>
         <Pagination
-          onChange={() => {}}
+          onChange={(n) => setPageIndex(n)}
           current={1}
           count={Math.ceil((recordsCount || 10) / 10)}
         />
-      </div> */}
+      </div>
     </>
   );
 };

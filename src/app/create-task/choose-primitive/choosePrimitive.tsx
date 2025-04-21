@@ -109,7 +109,6 @@ const ChoosePrimitive = () => {
             placeholder="Search..."
             value={searchString}
             onSearch={setSearchString}
-            tooltip={'123'}
           />
           <Button
             variant="primary"

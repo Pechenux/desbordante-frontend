@@ -80,7 +80,6 @@ export const AFDVerificationResult = () => {
     most_frequent_rhs_value_proportion: 0,
     rows: [],
   };
-  //const curCluster = clusters[0]
 
   return (
     <>

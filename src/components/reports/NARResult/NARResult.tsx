@@ -9,7 +9,7 @@ import {
   Button,
   FormField,
   Icon,
-  // Pagination,
+  Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
@@ -18,6 +18,7 @@ import {
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './NARResult.module.scss';
@@ -26,6 +27,7 @@ export const NARResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
 
   //const taskID = '30da1bc4-c764-4cd9-8937-2a09d036db3d';
   const { data, isFetching, error } = useQuery({
@@ -46,13 +48,8 @@ export const NARResult = () => {
 
   const deps = data?.result?.primitive_name === 'nar' && data?.result?.result;
   if (!deps) return;
-
-  // const shownData = deps?.map((row) => ({
-  //   lhs: row.lhs.map((e) => formatter(e)),
-  //   rhs: row.rhs.map((e) => formatter(e)),
-  //   confidence: row.confidence,
-  //   support: row.support,
-  // }));
+  const recordsCount = deps.length;
+  const shownData = extractShownDeps(deps, pageIndex, 10);
 
   return (
     <>
@@ -104,16 +101,16 @@ export const NARResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={deps} formatter={formatter} />
+        <DependencyList deps={shownData} formatter={formatter} />
       </div>
 
-      {/* <div className={styles.pagination}>
+      <div className={styles.pagination}>
         <Pagination
-          onChange={() => {}}
-          current={1}
+          onChange={(n) => setPageIndex(n)}
+          current={pageIndex}
           count={Math.ceil((recordsCount || 10) / 10)}
         />
-      </div> */}
+      </div>
     </>
   );
 };

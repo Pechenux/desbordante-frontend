@@ -9,7 +9,7 @@ import {
   Button,
   FormField,
   Icon,
-  // Pagination,
+  Pagination,
   Text,
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
@@ -18,6 +18,7 @@ import {
   FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
+import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './DDResult.module.scss';
@@ -26,6 +27,7 @@ export const DDResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
 
   // const queryParams = {
   //   taskID: '3e4bf5fe-19d3-47a9-be9e-e6d05d6fe3c4',
@@ -48,11 +50,8 @@ export const DDResult = () => {
 
   const deps = data?.result?.primitive_name === 'dd' && data?.result?.result;
   if (!deps) return;
-
-  // const shownData = deps.map((row) => ({
-  //   lhs: row.lhs.map((e) => formatter(e)),
-  //   rhs: row.rhs.map((e) => formatter(e)),
-  // }));
+  const recordsCount = deps.length;
+  const shownData = extractShownDeps(deps, pageIndex, 10);
 
   return (
     <>
@@ -104,16 +103,16 @@ export const DDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={deps} formatter={formatter} />
+        <DependencyList deps={shownData} formatter={formatter} />
       </div>
 
-      {/* <div className={styles.pagination}>
+      <div className={styles.pagination}>
         <Pagination
-          onChange={() => {}}
-          current={1}
+          onChange={(n) => setPageIndex(n)}
+          current={pageIndex}
           count={Math.ceil((recordsCount || 10) / 10)}
         />
-      </div> */}
+      </div>
     </>
   );
 };

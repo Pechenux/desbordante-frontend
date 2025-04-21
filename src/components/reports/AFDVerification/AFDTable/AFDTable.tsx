@@ -4,7 +4,6 @@ import { FC, useMemo } from 'react';
 
 import { Row, ScrollDirection, Table, TableProps } from '@/components/reports';
 import styles from './AFDTable.module.scss';
-//import { Icon } from '@/components/common/uikit';
 
 export type AFDTableProps = {
   header: string[];
@@ -18,16 +17,6 @@ export type AFDTableRow = {
   index: number;
   snippetRow: string[];
 };
-
-// const getRowColor: (index: number) => string = (
-//   index,
-//   //isMostFrequent,
-// ) => {
-//   // if (isMostFrequent) {
-//   //   return index % 2 === 0 ? styles.greenEven : styles.greenOdd;
-//   // }
-//   return index % 2 === 0 ? styles.redEven : styles.redOdd;
-// };
 
 const getAFDRow: (row: AFDTableRow, position: number) => Row = (
   row,
