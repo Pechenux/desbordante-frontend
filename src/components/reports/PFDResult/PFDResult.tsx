@@ -62,12 +62,12 @@ export const PFDResult = () => {
   // };
   const { data, isFetching, error } = useQuery({
     queryKey: [
-      `/tasks/${queryParams.taskID}`,
+      `/api/tasks/${queryParams.taskID}`,
       columns,
       orderBy,
       orderDirection,
     ],
-    queryFn: createQueryFn('/tasks/{id}', {
+    queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
         query: {
           filter_options: [PfdFilterOptions.attribute_name],
