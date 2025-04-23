@@ -1,4 +1,3 @@
-// import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
 //import { useEffect, useMemo, useState } from 'react';
 import { useEffect } from 'react';
@@ -7,15 +6,12 @@ import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaDdTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
-//import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
-//import { UnionKeys } from '@/types/unionKeys';
 import { DDAlgorithmOptions, DDFields } from './options/DDOptions';
 import { DDPresets } from './presets/DDPresets';
 
 export type DDFormInputs = SchemaDdTaskConfig['config'];
-//type NARFormKeys = UnionKeys<DDFormInputs>;
 const defaultValue = DDPresets.common.at(-1)
   ?.preset as GetAllFieds<DDFormInputs>;
 
@@ -25,10 +21,6 @@ export const DDForm: FormComponent<DDFormInputs> = (
   },
 ) => {
   const methods = useFormContext<DDFormInputs>();
-
-  // const [algo_name] = useWatch<NARFormInputs>({
-  //   name: ['algo_name'],
-  // });
 
   // useEffect(() => {
   //   setPresets(FDPresets);
@@ -68,8 +60,8 @@ export const DDForm: FormComponent<DDFormInputs> = (
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
-              defaultNum: 1,
-              min: 1,
+              //defaultNum: 0,
+              min: 0,
               step: 1,
               digitsAfterDot: 0,
             }}
@@ -88,8 +80,8 @@ export const DDForm: FormComponent<DDFormInputs> = (
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
-              defaultNum: 1,
-              min: 1,
+              // defaultNum: 1,
+              min: 0,
               step: 1,
               digitsAfterDot: 0,
             }}
@@ -101,7 +93,6 @@ export const DDForm: FormComponent<DDFormInputs> = (
 };
 
 DDForm.onSubmit = (fieldValues) => {
-  //const algo_name = fieldValues.algo_name;
   return _.pick(fieldValues, DDFields);
 };
 // использовать zod

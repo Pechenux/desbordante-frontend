@@ -147,7 +147,7 @@ export const MDForm: FormComponent<MDFormInputs> = (
         )}
       </ControlledFormField>
       <ControlledFormField<MDFormInputs, 'threads'>
-        formFieldProps={{ label: 'Threads' }}
+        formFieldProps={{ label: 'Thread count' }}
         controllerProps={{
           name: 'threads',
           control: methods.control,

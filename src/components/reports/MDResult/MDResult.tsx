@@ -3,8 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { MultiValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { SchemaMdSideModel } from '@/api/generated/schema';
+import { MdFilterOptions, SchemaMdSideItemModel } from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -19,7 +20,7 @@ import {
 } from '@/components/configure-algorithm/MD/ConfigureColumnMatchModal';
 import {
   DependencyList,
-  FilteringWindow,
+  MDFilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
 import { extractShownDeps } from '@/constants/extractShownDeps';
@@ -32,14 +33,36 @@ export const MDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
+  const [columns, setColumns] = useState<MultiValue<string>>([]);
+  const [metrics, setMetrics] = useState<MultiValue<MetricsType>>([]);
+
+  const handleApply = (
+    newColumns: MultiValue<string>,
+    newMetrics: MultiValue<MetricsType>,
+  ) => {
+    setColumns(newColumns);
+    setMetrics(newMetrics);
+
+    setIsFilteringShown(false);
+  };
 
   // const queryParams = {
-  //   taskID: 'fe61e08b-7d37-40f9-98b0-178e7713d66a',
+  //   taskID: 'fd00d451-a3b3-4079-8124-7d6992b33166',
   // };
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryKey: [`/tasks/${queryParams.taskID}`, columns, metrics],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
+        query: {
+          filter_options: [
+            MdFilterOptions.attribute_name,
+            MdFilterOptions.metrics,
+          ],
+          filter_params: JSON.stringify({
+            attribute_name: columns,
+            metrics: metrics,
+          }),
+        },
         path: { id: queryParams.taskID! },
       },
     }),
@@ -48,7 +71,7 @@ export const MDResult = () => {
 
   if (isFetching || error) return;
 
-  const formatter = (column: SchemaMdSideModel) => {
+  const formatter = (column: SchemaMdSideItemModel) => {
     return (
       <span className={styles.attribute}>
         <span>{displayedMetricsName[column.metrics as MetricsType]}</span>
@@ -83,11 +106,12 @@ export const MDResult = () => {
         />
       )}
       {isFilteringShown && (
-        <FilteringWindow
-          {...{
-            isFilteringShown,
-            setIsFilteringShown,
-          }}
+        <MDFilteringWindow
+          isOpen={isFilteringShown}
+          onClose={() => setIsFilteringShown(false)}
+          onApply={handleApply}
+          filterColumns={columns}
+          filterMetrics={metrics}
         />
       )}
 

@@ -3,8 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { MultiValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { SchemaDdSideModel } from '@/api/generated/schema';
+import { DdFilterOptions, SchemaDdSideItemModel } from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -14,8 +15,8 @@ import {
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
 import {
+  DefaultFilteringWindow,
   DependencyList,
-  FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
 import { extractShownDeps } from '@/constants/extractShownDeps';
@@ -28,14 +29,26 @@ export const DDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
+  const [columns, setColumns] = useState<MultiValue<string>>([]);
+
+  const handleApply = (newVal: MultiValue<string>) => {
+    setColumns(newVal);
+    setIsFilteringShown(false);
+  };
 
   // const queryParams = {
   //   taskID: '3e4bf5fe-19d3-47a9-be9e-e6d05d6fe3c4',
   // };
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryKey: [`/tasks/${queryParams.taskID}`, columns],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
+        query: {
+          filter_options: [DdFilterOptions.attribute_name],
+          filter_params: JSON.stringify({
+            attribute_name: columns,
+          }),
+        },
         path: { id: queryParams.taskID! },
       },
     }),
@@ -44,7 +57,7 @@ export const DDResult = () => {
 
   if (isFetching || error) return;
 
-  const formatter = (column: SchemaDdSideModel) => {
+  const formatter = (column: SchemaDdSideItemModel) => {
     return `${column.name} ∈ ${column.values}`;
   };
 
@@ -66,11 +79,11 @@ export const DDResult = () => {
         />
       )}
       {isFilteringShown && (
-        <FilteringWindow
-          {...{
-            isFilteringShown,
-            setIsFilteringShown,
-          }}
+        <DefaultFilteringWindow
+          isOpen={isFilteringShown}
+          onClose={() => setIsFilteringShown(false)}
+          onApply={handleApply}
+          filterColumns={columns}
         />
       )}
 

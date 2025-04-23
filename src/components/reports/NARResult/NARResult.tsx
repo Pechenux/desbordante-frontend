@@ -3,8 +3,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { MultiValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { SchemaNarSideModel } from '@/api/generated/schema';
+import {
+  NarFilterOptions,
+  SchemaNarSideItemModel,
+} from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -14,8 +18,8 @@ import {
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
 import {
+  DefaultFilteringWindow,
   DependencyList,
-  FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
 import { extractShownDeps } from '@/constants/extractShownDeps';
@@ -28,12 +32,26 @@ export const NARResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
+  const [columns, setColumns] = useState<MultiValue<string>>([]);
 
-  //const taskID = '30da1bc4-c764-4cd9-8937-2a09d036db3d';
+  const handleApply = (newVal: MultiValue<string>) => {
+    setColumns(newVal);
+    setIsFilteringShown(false);
+  };
+
+  // const queryParams = {
+  //   taskID: '30da1bc4-c764-4cd9-8937-2a09d036db3d',
+  // };
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryKey: [`/tasks/${queryParams.taskID}`, columns],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
+        query: {
+          filter_options: [NarFilterOptions.attribute_name],
+          filter_params: JSON.stringify({
+            attribute_name: columns,
+          }),
+        },
         path: { id: queryParams.taskID! },
       },
     }),
@@ -42,7 +60,7 @@ export const NARResult = () => {
 
   if (isFetching || error) return;
 
-  const formatter = (column: SchemaNarSideModel) => {
+  const formatter = (column: SchemaNarSideItemModel) => {
     return `${column.name} ∈ ${column.values}`;
   };
 
@@ -64,11 +82,11 @@ export const NARResult = () => {
         />
       )}
       {isFilteringShown && (
-        <FilteringWindow
-          {...{
-            isFilteringShown,
-            setIsFilteringShown,
-          }}
+        <DefaultFilteringWindow
+          isOpen={isFilteringShown}
+          onClose={() => setIsFilteringShown(false)}
+          onApply={handleApply}
+          filterColumns={columns}
         />
       )}
 

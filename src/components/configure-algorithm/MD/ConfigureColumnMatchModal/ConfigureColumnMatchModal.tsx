@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import {
   EqualityConfigMetrics,
   JaccardConfigMetrics,
@@ -15,7 +15,12 @@ import {
   ModalProps,
 } from '@/components/common/layout/ModalContainer';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
-import { FormField, NumberInput, Select } from '@/components/common/uikit';
+import {
+  FormField,
+  NumberInput,
+  Option,
+  Select,
+} from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 
 import { ColumnMatchType } from '../ColumnMatchesInput';
@@ -34,11 +39,7 @@ type ConfigureColumnMatchesModalProps = ModalProps &
 
 export type MetricsType = ColumnMatchType['metrics'];
 
-interface optionsType {
-  label: string;
-  value: MetricsType;
-}
-export const optionsMetrics: optionsType[] = [
+export const optionsMetrics: Option<MetricsType>[] = [
   { label: 'Equality', value: EqualityConfigMetrics.equality },
   { label: 'Jaccard', value: JaccardConfigMetrics.jaccard },
   {
@@ -119,15 +120,11 @@ export const ConfigureColumnMatchModal: FC<
             minimum_similarity: minSimilarity[0] ?? 0.7,
           };
 
-    console.log('not error');
     onApply(columnMatch, newColumnMatch);
     onClose();
   };
 
-  const header = useMemo(
-    () => <h4 className={styles.title}>Configure Column Match</h4>,
-    [],
-  );
+  const header = <h4 className={styles.title}>Configure Column Match</h4>;
   const footer = (
     <>
       <Button variant="secondary" onClick={handleDelete}>

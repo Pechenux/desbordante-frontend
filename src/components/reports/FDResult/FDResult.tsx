@@ -3,7 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { MultiValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
+import { FdFilterOptions } from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -13,8 +15,8 @@ import {
 } from '@/components/common/uikit';
 // import DownloadResult from '@components/DownloadResult';
 import {
+  DefaultFilteringWindow,
   DependencyList,
-  FilteringWindow,
   OrderingWindow,
 } from '@/components/reports';
 import { extractShownDeps } from '@/constants/extractShownDeps';
@@ -26,15 +28,27 @@ export const FDResult = () => {
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
+  const [columns, setColumns] = useState<MultiValue<string>>([]);
+
+  const handleApply = (newVal: MultiValue<string>) => {
+    setColumns(newVal);
+    setIsFilteringShown(false);
+  };
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
   // const queryParams = {
   //   taskID: 'c6d1f11d-174c-4024-a060-d81aa4eb64c3',
   // };
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryKey: [`/tasks/${queryParams.taskID}`, columns],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
+        query: {
+          filter_options: [FdFilterOptions.attribute_name],
+          filter_params: JSON.stringify({
+            attribute_name: columns,
+          }),
+        },
         path: { id: queryParams.taskID! },
       },
     }),
@@ -61,11 +75,11 @@ export const FDResult = () => {
         />
       )}
       {isFilteringShown && (
-        <FilteringWindow
-          {...{
-            isFilteringShown,
-            setIsFilteringShown,
-          }}
+        <DefaultFilteringWindow
+          isOpen={isFilteringShown}
+          onClose={() => setIsFilteringShown(false)}
+          onApply={handleApply}
+          filterColumns={columns}
         />
       )}
 
