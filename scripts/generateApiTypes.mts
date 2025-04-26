@@ -43,23 +43,27 @@ const cmsSchemaURL = `${cmsProtocol}://${cmsIP}:${cmsPort}/documentation/${cmsVe
 const mergeTargets: MergeInput = [];
 
 const serverSchema = await fetchByUrl(serverSchemaURL);
-if (serverSchema) {
+if (serverSchema && !('error' in serverSchema)) {
   mergeTargets.push({
     oas: serverSchema,
     pathModification: {
       prepend: '/api',
     },
   });
+} else {
+  console.error(`Failed to fetch ${serverSchemaURL}`);
 }
 
 const cmsSchema = await fetchByUrl(cmsSchemaURL);
-if (cmsSchema) {
+if (cmsSchema && !('error' in cmsSchema)) {
   mergeTargets.push({
     oas: cmsSchema,
     pathModification: {
       prepend: '/cms',
     },
   });
+} else {
+  console.error(`Failed to fetch ${cmsSchemaURL}`);
 }
 
 // Создаём типы для бинарных файлов

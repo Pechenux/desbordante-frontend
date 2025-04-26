@@ -1,5 +1,3 @@
-'use client';
-
 import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import { Icon } from '@/components/common/uikit';
 import { FDResult /*, Snippet*/ } from '@/components/reports';

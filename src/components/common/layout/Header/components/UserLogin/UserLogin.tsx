@@ -1,6 +1,6 @@
-import { noop } from 'lodash';
 import Link from 'next/link';
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
+import { useLogout } from '@/api/services/auth';
 import { useUser } from '@/api/services/server/hooks';
 import { Button } from '@/components/common/uikit';
 import { LoginModal } from './components/LoginModal';
@@ -23,7 +23,13 @@ const UserLoginComponent = () => {
     isOpen: false,
   });
 
-  const { data: user } = useUser();
+  const user = useUser();
+  const logout = useLogout();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleLogout = useCallback(() => {
+    logout.mutate();
+  }, [logout]);
 
   return (
     <>
@@ -51,7 +57,7 @@ const UserLoginComponent = () => {
                 Verify Email
               </Button>
             )} */}
-            <Button variant="secondary-danger" size="sm" onClick={noop}>
+            <Button variant="secondary-danger" size="sm" onClick={handleLogout}>
               Log Out
             </Button>
           </>

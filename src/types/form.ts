@@ -1,6 +1,7 @@
 import { MutationFunction } from '@tanstack/react-query';
 import { FC } from 'react';
 import { FieldValues } from 'react-hook-form';
+import { SchemaTaskPublic } from '@/api/generated/schema';
 import { GetAllFieds } from './getAllFields';
 
 export type FormData = FieldValues;
@@ -42,7 +43,7 @@ export type FormComponent<FormInputs extends object = any> = FC<
 > & {
   onSubmit: (data: FormInputs) => FormData;
   mutationFn: MutationFunction<
-    string | undefined,
+    SchemaTaskPublic | undefined,
     {
       datasets: string[];
       data: FormInputs;

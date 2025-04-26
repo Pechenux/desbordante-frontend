@@ -2,11 +2,8 @@
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
-import {
-  FdTaskConfigPrimitive_name,
-  SchemaFdTaskConfig,
-} from '@/api/generated/serverSchema';
+import { SchemaFdTaskConfig } from '@/api/generated/schema';
+import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,
@@ -17,11 +14,12 @@ import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
 import { UnionKeys } from '@/types/unionKeys';
 import {
+  AFDErrorMeasuresOptions,
   FDAlgorithmOptions,
   FDAlgorithms,
-  FDErrorMeasuresOptions,
   FDOptionalFields,
   optionalFieldsByAlgorithm,
+  PFDErrorMeasuresOptions,
 } from './options/FDOptions';
 import { FDPresets } from './presets/FDPresets';
 
@@ -58,7 +56,9 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
 
     setOptions(optionalFields);
     const fields: FDFormKeys[] = ['max_lhs', ...optionalFields];
-    fields.forEach((key) => methods.setValue(key, defaultValue[key]));
+    fields.forEach(
+      (key) => defaultValue[key] && methods.setValue(key, defaultValue[key]),
+    );
   }, [algo_name, methods, optionalFields]);
 
   return (
@@ -118,11 +118,11 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
           )}
         </ControlledFormField>
       )}
-      {optionalFields.includes('error_measure') && (
-        <ControlledFormField<FDFormInputs, 'error_measure'>
+      {optionalFields.includes('pfd_error_measure') && (
+        <ControlledFormField<FDFormInputs, 'pfd_error_measure'>
           formFieldProps={{ label: 'Error measure' }}
           controllerProps={{
-            name: 'error_measure',
+            name: 'pfd_error_measure',
             control: methods.control,
           }}
         >
@@ -130,7 +130,24 @@ export const FDForm: FormComponent<FDFormInputs> = ({ setPresets }) => {
             <Select
               value={value}
               onChange={onChange}
-              options={FDErrorMeasuresOptions}
+              options={PFDErrorMeasuresOptions}
+            />
+          )}
+        </ControlledFormField>
+      )}
+      {optionalFields.includes('afd_error_measure') && (
+        <ControlledFormField<FDFormInputs, 'afd_error_measure'>
+          formFieldProps={{ label: 'Error measure' }}
+          controllerProps={{
+            name: 'afd_error_measure',
+            control: methods.control,
+          }}
+        >
+          {({ field: { value, onChange } }) => (
+            <Select
+              value={value}
+              onChange={onChange}
+              options={AFDErrorMeasuresOptions}
             />
           )}
         </ControlledFormField>
@@ -202,12 +219,14 @@ FDForm.onSubmit = (fieldValues) => {
 };
 // использовать zod
 FDForm.mutationFn = ({ datasets, data }) =>
-  '0' in datasets
-    ? createMutationFn('/api/task/set')({
-        params: { query: { dataset_id: datasets[0] } },
+  datasets && datasets.length
+    ? createMutationFn('/api/tasks')({
         body: {
-          primitive_name: FdTaskConfigPrimitive_name.fd,
-          config: data,
+          files_ids: datasets,
+          config: {
+            primitive_name: 'fd',
+            config: data,
+          },
         },
       })
     : Promise.reject('No datasets selected');

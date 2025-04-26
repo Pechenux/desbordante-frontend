@@ -1,7 +1,8 @@
 import {
-  PFDTaneConfigError_measure,
+  PFDTaneConfigPfd_error_measure,
   PyroConfigAlgo_name,
-} from '@/api/generated/serverSchema';
+  TaneConfigAfd_error_measure,
+} from '@/api/generated/schema';
 import { FDFormInputs } from '@/components/configure-algorithm/forms/FDForm';
 import { Presets } from '@/types/form';
 
@@ -21,10 +22,12 @@ export const FDPresets: Presets<FDFormInputs> = {
         algo_name: PyroConfigAlgo_name.pyro,
         max_lhs: 1,
         error: 0,
-        error_measure: PFDTaneConfigError_measure.per_value,
         threads: 1,
         is_null_equal_null: false,
         seed: 0,
+        custom_random_seed: 0,
+        afd_error_measure: TaneConfigAfd_error_measure.g1,
+        pfd_error_measure: PFDTaneConfigPfd_error_measure.per_value,
       },
     },
   ],

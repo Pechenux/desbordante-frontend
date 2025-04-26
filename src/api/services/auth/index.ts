@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import createClient from 'openapi-fetch';
-import { bodyToFormData } from '@/api/fetchFunctions';
-import { paths, SchemaUserSchema } from '@/api/generated/schema';
+import { paths, SchemaRegisterResponse } from '@/api/generated/schema';
 import { getQueryClient } from '@/api/queryClient';
+import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { baseUrl } from '../definitions';
 import { removeFromStorage, saveTokenStorage } from './helpers';
 import { LoginFormData, RegisterFormData } from './types';
@@ -11,16 +11,11 @@ export const authFetchClient = createClient<paths>({
   baseUrl: baseUrl,
 });
 
-export type SuccessResponse = {
-  access_token: string;
-  user: SchemaUserSchema;
-};
-
 export type ErrorResponse = {
   error: string;
 };
 
-export type LoginResponse = SuccessResponse | ErrorResponse;
+export type LoginResponse = SchemaRegisterResponse | ErrorResponse;
 
 async function login(data: LoginFormData): Promise<LoginResponse> {
   const response = await authFetchClient.POST('/api/auth/login', {
@@ -81,10 +76,12 @@ async function register(data: RegisterFormData): Promise<LoginResponse> {
 }
 
 export const useRegister = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: register,
     onSuccess: (data) => {
-      if ('user' in data) getQueryClient().setQueryData(['user'], data.user);
+      if ('user' in data) queryClient.setQueryData(['user'], data.user);
     },
   });
 };
@@ -100,11 +97,14 @@ async function logout() {
 }
 
 export const useLogout = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: logout,
     onSuccess: (data) => {
-      if (data.response.status === 204)
-        getQueryClient().setQueryData(['user'], undefined);
+      if (data.response.status === 204) {
+        queryClient.removeQueries({ queryKey: ['user'] });
+      }
     },
   });
 };
@@ -130,7 +130,7 @@ async function refresh(): Promise<LoginResponse> {
   }
 
   return {
-    error: response.error as string,
+    error: 'Something went wrong',
   };
 }
 
