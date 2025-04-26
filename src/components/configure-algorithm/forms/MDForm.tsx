@@ -1,7 +1,8 @@
-// import { FDPresets } from '@constants/presets/FDPresets';
+'use client';
+
 import { useAtom } from 'jotai';
 import _ from 'lodash';
-//import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
@@ -9,7 +10,7 @@ import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
-//import { GetAllFieds } from '@/types/getAllFields';
+import { GetAllFieds } from '@/types/getAllFields';
 import { ColumnMatchesInput } from '../MD/ColumnMatchesInput';
 import {
   levelDefenitionOptions,
@@ -17,11 +18,11 @@ import {
   MDFields,
   pruneNondisjointOptions,
 } from './options/MDOptions';
-//import { MDPresets } from './presets/MDPresets';
+import { MDPresets } from './presets/MDPresets';
 
 export type MDFormInputs = SchemaMdTaskConfigInput['config'];
-// const defaultValue = MDPresets.common.at(-1)
-//   ?.preset as GetAllFieds<MDFormInputs>;
+const defaultValue = MDPresets.common.at(-1)
+  ?.preset as GetAllFieds<MDFormInputs>;
 
 export const MDForm: FormComponent<MDFormInputs> = (
   {
@@ -33,9 +34,9 @@ export const MDForm: FormComponent<MDFormInputs> = (
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnMatches = fileIDs['1'] === ''; // left_table unselect
 
-  // useEffect(() => {
-  //   MDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  // }, [methods]);
+  useEffect(() => {
+    MDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
+  }, [methods]);
 
   return (
     <>
@@ -49,7 +50,7 @@ export const MDForm: FormComponent<MDFormInputs> = (
         {({ field: { value, onChange } }) => (
           <Select
             value={value}
-            defaultValue={MDAlgorithmOptions[0]}
+            //defaultValue={MDAlgorithmOptions[0]}
             onChange={onChange}
             options={MDAlgorithmOptions}
           />
@@ -124,7 +125,7 @@ export const MDForm: FormComponent<MDFormInputs> = (
         {({ field: { value, onChange } }) => (
           <Select
             value={value}
-            defaultValue={levelDefenitionOptions[0]}
+            //defaultValue={levelDefenitionOptions[0]}
             onChange={onChange}
             options={levelDefenitionOptions}
           />
@@ -140,7 +141,7 @@ export const MDForm: FormComponent<MDFormInputs> = (
         {({ field: { value, onChange } }) => (
           <Select
             value={value}
-            defaultValue={pruneNondisjointOptions[0]}
+            //defaultValue={pruneNondisjointOptions[0]}
             onChange={onChange}
             options={pruneNondisjointOptions}
           />

@@ -3,9 +3,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
-import { MultiValue } from 'react-select';
+import { MultiValue, SingleValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { AfdFilterOptions } from '@/api/generated/schema';
+import {
+  AfdFilterOptions,
+  AfdSortOptions,
+  SortOrder,
+} from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -18,6 +22,7 @@ import {
   OrderingWindow,
   DependencyList,
   DefaultFilteringWindow,
+  SortOptions,
 } from '@/components/reports';
 import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
@@ -29,8 +34,24 @@ export const AFDResult = () => {
   const [isFilteringShown, setIsFilteringShown] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [columns, setColumns] = useState<MultiValue<string>>([]);
+  const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
+    SortOrder.asc,
+  );
+  const [orderBy, setOrderBy] = useState<SingleValue<SortOptions>>(
+    AfdSortOptions.lhs,
+  );
 
-  const handleApply = (newVal: MultiValue<string>) => {
+  const handleApplyOrdering = (
+    newDirection: SingleValue<SortOrder>,
+    newOrderBy: SingleValue<SortOptions>,
+  ) => {
+    setOrderBy(newOrderBy);
+    setOrderDirection(newDirection);
+
+    setIsOrderingShown(false);
+  };
+
+  const handleApplyFiltering = (newVal: MultiValue<string>) => {
     setColumns(newVal);
     setIsFilteringShown(false);
   };
@@ -40,7 +61,12 @@ export const AFDResult = () => {
   //   taskID: 'b122241f-c28e-4de1-9bf0-80c2b601641d',
   // };
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`, columns],
+    queryKey: [
+      `/tasks/${queryParams.taskID}`,
+      columns,
+      orderBy,
+      orderDirection,
+    ],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
         query: {
@@ -48,6 +74,8 @@ export const AFDResult = () => {
           filter_params: JSON.stringify({
             attribute_name: columns,
           }),
+          sort_direction: orderDirection as SortOrder,
+          sort_option: orderBy as SortOptions,
         },
         path: { id: queryParams.taskID! },
       },
@@ -58,27 +86,36 @@ export const AFDResult = () => {
   if (isFetching || error) return;
 
   const deps = data?.result?.primitive_name === 'afd' && data?.result?.result;
+  const tableHeader =
+    (data?.result?.primitive_name === 'afd' && data?.result?.table_header) ||
+    [];
   if (!deps) return;
   const recordsCount = deps.length;
-  const shownData = extractShownDeps(deps, pageIndex, 10);
+  const countOnPage = 10;
+  const countPaginationPages = Math.ceil(
+    (recordsCount || countOnPage) / countOnPage,
+  );
+  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
 
   return (
     <>
       <NextSeo title="Discovered approximate functional dependencies" />
       {isOrderingShown && (
         <OrderingWindow
-          {...{
-            isOrderingShown,
-            setIsOrderingShown,
-            primitive: PrimitiveType.AFD,
-          }}
+          primitive={PrimitiveType.AFD}
+          isOpen={isOrderingShown}
+          curOrderDirection={orderDirection}
+          curOrderOption={orderBy}
+          onClose={() => setIsOrderingShown(false)}
+          onApply={handleApplyOrdering}
         />
       )}
       {isFilteringShown && (
         <DefaultFilteringWindow
+          tableHeader={tableHeader}
           isOpen={isFilteringShown}
           onClose={() => setIsFilteringShown(false)}
-          onApply={handleApply}
+          onApply={handleApplyFiltering}
           filterColumns={columns}
         />
       )}
@@ -119,7 +156,7 @@ export const AFDResult = () => {
         <Pagination
           onChange={(n) => setPageIndex(n)}
           current={pageIndex}
-          count={Math.ceil((recordsCount || 10) / 10)}
+          count={countPaginationPages}
         />
       </div>
     </>

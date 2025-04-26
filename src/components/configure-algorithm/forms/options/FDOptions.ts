@@ -8,8 +8,6 @@ import {
   FdMineConfigAlgo_name,
   FUNConfigAlgo_name,
   HyFDConfigAlgo_name,
-  //PFDTaneConfigAlgo_name,
-  //PFDTaneConfigError_measure,
   PyroConfigAlgo_name,
   SchemaFdTaskConfig,
   TaneConfigAlgo_name,
@@ -29,18 +27,15 @@ export const FDAlgorithmOptions: Option<FDAlgorithms>[] = [
   { label: 'FDep', value: FDepConfigAlgo_name.fdep },
   { label: 'FUN', value: FUNConfigAlgo_name.fun },
   { label: 'Aid', value: AidConfigAlgo_name.aid },
-  //{ label: 'PFDTane', value: PFDTaneConfigAlgo_name.pfdtane },
 ];
 
-// export const FDErrorMeasuresOptions: Option<PFDTaneConfigError_measure>[] = [
-//   { label: 'Per value', value: PFDTaneConfigError_measure.per_value },
-//   { label: 'Per tuple', value: PFDTaneConfigError_measure.per_tuple },
-// ];
+export const FDCommonFields = ['algo_name', 'max_lhs'] as const;
 
 export type FDOptionalFields =
-  // | 'error'
-  // | 'error_measure'
-  'seed' | 'custom_random_seed' | 'threads' | 'is_null_equal_null';
+  | 'seed'
+  | 'custom_random_seed'
+  | 'threads'
+  | 'is_null_equal_null';
 
 export const optionalFieldsByAlgorithm: Record<
   FDAlgorithms,
@@ -60,9 +55,4 @@ export const optionalFieldsByAlgorithm: Record<
     'custom_random_seed',
     'is_null_equal_null',
   ],
-  // [PFDTaneConfigAlgo_name.pfdtane]: [
-  //   'is_null_equal_null',
-  //   'error',
-  //   'error_measure',
-  // ],
 };

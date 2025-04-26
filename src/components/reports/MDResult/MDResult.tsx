@@ -3,9 +3,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
-import { MultiValue } from 'react-select';
+import { MultiValue, SingleValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { MdFilterOptions, SchemaMdSideItemModel } from '@/api/generated/schema';
+import {
+  MdFilterOptions,
+  MdSortOptions,
+  SchemaMdSideItemModel,
+  SortOrder,
+} from '@/api/generated/schema';
 import {
   Button,
   FormField,
@@ -22,6 +27,7 @@ import {
   DependencyList,
   MDFilteringWindow,
   OrderingWindow,
+  SortOptions,
 } from '@/components/reports';
 import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
@@ -35,8 +41,24 @@ export const MDResult = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [columns, setColumns] = useState<MultiValue<string>>([]);
   const [metrics, setMetrics] = useState<MultiValue<MetricsType>>([]);
+  const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
+    SortOrder.asc,
+  );
+  const [orderBy, setOrderBy] = useState<SingleValue<SortOptions>>(
+    MdSortOptions.lhs,
+  );
 
-  const handleApply = (
+  const handleApplyOrdering = (
+    newDirection: SingleValue<SortOrder>,
+    newOrderBy: SingleValue<SortOptions>,
+  ) => {
+    setOrderBy(newOrderBy);
+    setOrderDirection(newDirection);
+
+    setIsOrderingShown(false);
+  };
+
+  const handleApplyFiltering = (
     newColumns: MultiValue<string>,
     newMetrics: MultiValue<MetricsType>,
   ) => {
@@ -49,8 +71,15 @@ export const MDResult = () => {
   // const queryParams = {
   //   taskID: 'fd00d451-a3b3-4079-8124-7d6992b33166',
   // };
+
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`, columns, metrics],
+    queryKey: [
+      `/tasks/${queryParams.taskID}`,
+      columns,
+      metrics,
+      orderBy,
+      orderDirection,
+    ],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
         query: {
@@ -62,6 +91,8 @@ export const MDResult = () => {
             attribute_name: columns,
             metrics: metrics,
           }),
+          sort_direction: orderDirection as SortOrder,
+          sort_option: orderBy as SortOptions,
         },
         path: { id: queryParams.taskID! },
       },
@@ -89,27 +120,35 @@ export const MDResult = () => {
   };
 
   const deps = data?.result?.primitive_name === 'md' && data?.result?.result;
+  const tableHeader =
+    (data?.result?.primitive_name === 'md' && data?.result?.table_header) || [];
   if (!deps) return;
   const recordsCount = deps.length;
-  const shownData = extractShownDeps(deps, pageIndex, 10);
+  const countOnPage = 8;
+  const countPaginationPages = Math.ceil(
+    (recordsCount || countOnPage) / countOnPage,
+  );
+  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
 
   return (
     <>
       <NextSeo title="Discovered functional dependencies" />
       {isOrderingShown && (
         <OrderingWindow
-          {...{
-            isOrderingShown,
-            setIsOrderingShown,
-            primitive: PrimitiveType.MD,
-          }}
+          primitive={PrimitiveType.MD}
+          isOpen={isOrderingShown}
+          curOrderDirection={orderDirection}
+          curOrderOption={orderBy}
+          onClose={() => setIsOrderingShown(false)}
+          onApply={handleApplyOrdering}
         />
       )}
       {isFilteringShown && (
         <MDFilteringWindow
+          tableHeader={tableHeader}
           isOpen={isFilteringShown}
           onClose={() => setIsFilteringShown(false)}
-          onApply={handleApply}
+          onApply={handleApplyFiltering}
           filterColumns={columns}
           filterMetrics={metrics}
         />
@@ -151,7 +190,7 @@ export const MDResult = () => {
         <Pagination
           onChange={(n) => setPageIndex(n)}
           current={pageIndex}
-          count={Math.ceil((recordsCount || 8) / 8)}
+          count={countPaginationPages}
         />
       </div>
     </>

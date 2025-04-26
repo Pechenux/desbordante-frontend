@@ -17,9 +17,7 @@ import styles from './choosePrimitive.module.scss';
 
 const ChoosePrimitive = () => {
   const [isOpenFilterModal, setOpenFilterModal] = useState<boolean>(false);
-  const [choosenPrimitive, setChoosenPrimitive] = useState<PrimitiveType>(
-    PrimitiveType.FD,
-  );
+
   const [searchString, setSearchString] = useState<string>('');
   const [choosenFilteringTags, setChoosenFilteringTags] = useState<
     MultiValue<TagType>
@@ -29,13 +27,15 @@ const ChoosePrimitive = () => {
     useState<PrimitiveType[]>(primitivesCodes);
   const [searchingPrimitives, setSearchingPrimitives] =
     useState<PrimitiveType[]>(primitivesCodes);
-
+  const [choosenPrimitive, setChoosenPrimitive] = useState<PrimitiveType>(
+    PrimitiveType.AC,
+  );
   const onClose = () => setOpenFilterModal(false);
 
   const onApply = () => {
     const newShownPrimitives = primitivesCodes.filter((primitive) =>
       choosenFilteringTags.every((tag) =>
-        primitiveInfo[primitive]?.tags.includes(tag),
+        primitiveInfo[primitive]!.tags.includes(tag),
       ),
     );
     setFilteringPrimitives(newShownPrimitives);
@@ -46,9 +46,9 @@ const ChoosePrimitive = () => {
   useEffect(() => {
     setSearchingPrimitives(
       filteringPrimitives.filter((primitive) =>
-        primitiveInfo[primitive]?.label
-          .toLocaleLowerCase()
-          .includes(searchString.toLocaleLowerCase()),
+        primitiveInfo[primitive]!.label.toLocaleLowerCase().includes(
+          searchString.toLocaleLowerCase(),
+        ),
       ),
     );
   }, [searchString, filteringPrimitives]);
@@ -128,7 +128,7 @@ const ChoosePrimitive = () => {
         </div>
 
         <div className={styles.container}>
-          {searchingPrimitives.map((primitiveCode) => (
+          {searchingPrimitives.sort().map((primitiveCode) => (
             <PrimitiveCard
               key={primitiveCode}
               isSelected={choosenPrimitive === primitiveCode}

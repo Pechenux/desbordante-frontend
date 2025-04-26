@@ -9,23 +9,24 @@ import { Option } from '@/components/common/uikit/Inputs';
 type DefaultFilteringProps = ModalProps & {
   onApply: (newValue: MultiValue<string>) => void;
   filterColumns: MultiValue<string>;
+  tableHeader: string[];
 };
-
-const options: Option<string>[] = [
-  { label: 'Arrival', value: 'Arrival' },
-  { label: 'Departure', value: 'Departure' },
-  { label: 'Duration', value: 'Duration' },
-  { label: 'Distance', value: 'Distance' },
-];
 
 export const DefaultFilteringWindow: FC<DefaultFilteringProps> = ({
   isOpen = false,
   onClose,
   onApply,
   filterColumns,
+  tableHeader,
 }) => {
   const [selectedOptions, setSelectedOptions] =
     useState<MultiValue<string>>(filterColumns);
+
+  const options: Option<string>[] = tableHeader.map((column) => ({
+    label: column,
+    value: column,
+  }));
+
   return (
     <PropertiesModal
       isOpen={isOpen}

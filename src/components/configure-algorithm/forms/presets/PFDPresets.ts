@@ -13,8 +13,8 @@ export const PFDPresets: Presets<PFDFormInputs> = {
       preset: {
         algo_name: PFDTaneConfigAlgo_name.pfdtane,
         pfd_error_measure: PFDTaneConfigPfd_error_measure.per_tuple,
+        error: 0.5,
         max_lhs: 0,
-        threads: 0,
         is_null_equal_null: false,
       },
     },

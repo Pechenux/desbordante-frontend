@@ -17,14 +17,15 @@ type MDFilteringProps = ModalProps & {
     newColumns: MultiValue<string>,
     newMetrics: MultiValue<MetricsType>,
   ) => void;
+  tableHeader: string[];
 };
 
-const options: Option<string>[] = [
-  { label: 'zoo', value: 'zoo' },
-  { label: 'name', value: 'name' },
-  { label: 'animal', value: 'animal' },
-  { label: 'diet', value: 'siet' },
-];
+// const options: Option<string>[] = [
+//   { label: 'zoo', value: 'zoo' },
+//   { label: 'name', value: 'name' },
+//   { label: 'animal', value: 'animal' },
+//   { label: 'diet', value: 'diet' },
+// ];
 
 export const MDFilteringWindow: FC<MDFilteringProps> = ({
   isOpen = false,
@@ -32,11 +33,17 @@ export const MDFilteringWindow: FC<MDFilteringProps> = ({
   onApply,
   filterColumns,
   filterMetrics,
+  tableHeader,
 }) => {
   const [selectedColumns, setSelectedColumns] =
     useState<MultiValue<string>>(filterColumns);
   const [selectedMetrics, setSelectedMetrics] =
     useState<MultiValue<MetricsType>>(filterMetrics);
+
+  const options: Option<string>[] = tableHeader.map((column) => ({
+    label: column,
+    value: column,
+  }));
 
   return (
     <PropertiesModal

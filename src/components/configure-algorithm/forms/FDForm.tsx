@@ -10,18 +10,19 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-//import { GetAllFieds } from '@/types/getAllFields';
+import { GetAllFieds } from '@/types/getAllFields';
 import {
   FDAlgorithmOptions,
   FDAlgorithms,
+  FDCommonFields,
   FDOptionalFields,
   optionalFieldsByAlgorithm,
 } from './options/FDOptions';
-//import { FDPresets } from './presets/FDPresets';
+import { FDPresets } from './presets/FDPresets';
 
 export type FDFormInputs = SchemaFdTaskConfig['config'];
-// const defaultValue = FDPresets.common.at(-1)
-//   ?.preset as GetAllFieds<FDFormInputs>;
+const defaultValue = FDPresets.common.at(-1)
+  ?.preset as GetAllFieds<FDFormInputs>;
 
 export const FDForm: FormComponent<FDFormInputs> = (
   {
@@ -54,8 +55,8 @@ export const FDForm: FormComponent<FDFormInputs> = (
     }
 
     setOptions(optionalFields);
-    // const fields = ['max_lhs', ...optionalFields];
-    // fields.forEach((key) => methods.setValue(key, defaultValue[key]));
+    const fields = [...FDCommonFields, ...optionalFields];
+    fields.forEach((key) => methods.setValue(key, defaultValue[key]!));
   }, [algo_name, methods, optionalFields]);
 
   return (
@@ -178,8 +179,7 @@ export const FDForm: FormComponent<FDFormInputs> = (
 FDForm.onSubmit = (fieldValues) => {
   const algo_name = fieldValues.algo_name;
   const fields = [
-    'algo_name',
-    'max_lhs',
+    ...FDCommonFields,
     ...(optionalFieldsByAlgorithm[algo_name as FDAlgorithms] ?? []),
   ];
   return _.pick(fieldValues, fields);

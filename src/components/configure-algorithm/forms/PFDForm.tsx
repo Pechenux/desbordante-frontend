@@ -1,5 +1,5 @@
 import _ from 'lodash';
-//import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaPfdTaskConfig } from '@/api/generated/schema';
@@ -10,18 +10,17 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
+import { GetAllFieds } from '@/types/getAllFields';
 import {
   PFDAlgorithmOptions,
   PFDErrorMeasuresOptions,
   PFDFields,
 } from './options/PFDOptions';
-//import { GetAllFieds } from '@/types/getAllFields';
-
-//import { FDPresets } from './presets/FDPresets';
+import { PFDPresets } from './presets/PFDPresets';
 
 export type PFDFormInputs = SchemaPfdTaskConfig['config'];
-// const defaultValue = FDPresets.common.at(-1)
-//   ?.preset as GetAllFieds<FDFormInputs>;
+const defaultValue = PFDPresets.common.at(-1)
+  ?.preset as GetAllFieds<PFDFormInputs>;
 
 export const PFDForm: FormComponent<PFDFormInputs> = (
   {
@@ -30,6 +29,10 @@ export const PFDForm: FormComponent<PFDFormInputs> = (
 ) => {
   const methods = useFormContext<PFDFormInputs>();
   console.log(methods.getValues());
+
+  useEffect(() => {
+    PFDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
+  }, [methods]);
 
   // useEffect(() => {
   //   setPresets(FDPresets);

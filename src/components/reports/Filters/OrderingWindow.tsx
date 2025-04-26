@@ -1,62 +1,123 @@
-import _ from 'lodash';
-import React, { Dispatch, FC, SetStateAction, useContext } from 'react';
-import { PropertiesModal } from '@/components/common/layout';
-import { Select } from '@/components/common/uikit/Inputs';
+'use client';
+
+import React, { FC, useContext, useState } from 'react';
+import { SingleValue } from 'react-select';
+import {
+  AcSortOptions,
+  AdcSortOptions,
+  AfdSortOptions,
+  DdSortOptions,
+  FdSortOptions,
+  MdSortOptions,
+  NarSortOptions,
+  PfdSortOptions,
+  SortOrder,
+} from '@/api/generated/schema';
+import { ModalProps, PropertiesModal } from '@/components/common/layout';
+import { Option, Select } from '@/components/common/uikit/Inputs';
 import { PortalRootContext } from '@/components/meta';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormField } from '../../common/uikit/FormField';
 
-const options = [
-  { label: 'option 1', value: 1 },
-  { label: 'option 2', value: 2 },
-  { label: 'option 3', value: 3 },
+export type SortOptions =
+  | AfdSortOptions
+  | DdSortOptions
+  | FdSortOptions
+  | MdSortOptions
+  | NarSortOptions
+  | PfdSortOptions
+  | AcSortOptions
+  | AdcSortOptions;
+
+export const optionsByPrimitive: Partial<
+  Record<PrimitiveType, Option<SortOptions>[]>
+> = {
+  [PrimitiveType.FD]: [
+    { label: 'LHS names', value: FdSortOptions.lhs },
+    { label: 'RHS names', value: FdSortOptions.rhs },
+  ],
+  [PrimitiveType.AFD]: [
+    { label: 'LHS names', value: AfdSortOptions.lhs },
+    { label: 'RHS names', value: AfdSortOptions.rhs },
+  ],
+  [PrimitiveType.PFD]: [
+    { label: 'LHS names', value: PfdSortOptions.lhs },
+    { label: 'RHS names', value: PfdSortOptions.rhs },
+  ],
+  [PrimitiveType.DD]: [
+    { label: 'LHS names', value: DdSortOptions.lhs },
+    { label: 'RHS names', value: DdSortOptions.rhs },
+  ],
+  [PrimitiveType.MD]: [
+    { label: 'LHS names', value: MdSortOptions.lhs },
+    { label: 'RHS names', value: MdSortOptions.rhs },
+  ],
+  [PrimitiveType.NAR]: [
+    { label: 'LHS names', value: NarSortOptions.lhs },
+    { label: 'RHS names', value: NarSortOptions.rhs },
+  ],
+  [PrimitiveType.AC]: [
+    { label: 'Attributes names', value: AcSortOptions.attrubites_names },
+    { label: 'Number of intervals', value: AcSortOptions.num_intervals },
+    { label: 'Number of outliers', value: AcSortOptions.num_outliers },
+  ],
+  [PrimitiveType.ADC]: [
+    { label: 'Attributes names', value: AdcSortOptions.attrubites_names },
+    { label: 'Number of conjuncts', value: AdcSortOptions.len },
+  ],
+};
+
+const directionOptions: Option<SortOrder>[] = [
+  { value: SortOrder.asc, label: 'Ascending' },
+  { value: SortOrder.desc, label: 'Descending' },
 ];
 
-enum OrderDirection {
-  ASC = 'ASC',
-  DESC = 'DESC',
-}
-
-type OrderingProps = {
-  isOrderingShown: boolean;
-  setIsOrderingShown: Dispatch<SetStateAction<boolean>>;
+type OrderingProps = ModalProps & {
+  onApply: (
+    newDirection: SingleValue<SortOrder>,
+    newOrderBy: SingleValue<SortOptions>,
+  ) => void;
   primitive: PrimitiveType;
+  curOrderDirection: SingleValue<SortOrder>;
+  curOrderOption: SingleValue<SortOptions>;
 };
 
 export const OrderingWindow: FC<OrderingProps> = ({
-  isOrderingShown,
-  setIsOrderingShown,
+  isOpen,
+  primitive,
+  curOrderDirection,
+  curOrderOption,
+  onClose,
+  onApply,
 }) => {
   const portalRootRef = useContext(PortalRootContext);
 
-  const directionOptions = {
-    [OrderDirection.ASC]: { value: OrderDirection.ASC, label: 'Ascending' },
-    [OrderDirection.DESC]: { value: OrderDirection.DESC, label: 'Descending' },
-  };
+  const [orderDirection, setOrderDirection] =
+    useState<SingleValue<SortOrder>>(curOrderDirection);
+  const [orderOption, setOrderOption] =
+    useState<SingleValue<SortOptions>>(curOrderOption);
 
   return (
     <PropertiesModal
-      isOpen={isOrderingShown}
+      isOpen={isOpen}
       name="Ordering"
-      onClose={() => {
-        setIsOrderingShown(false);
-      }}
-      onApply={() => {
-        setIsOrderingShown(false);
-      }}
+      onClose={onClose}
+      onApply={() => onApply(orderDirection, orderOption)}
     >
       <FormField label="Order by">
         <Select
-          options={options}
-          isMulti
+          value={orderOption}
+          onChange={setOrderOption}
+          options={optionsByPrimitive[primitive]}
           menuPosition="fixed"
           menuPortalTarget={portalRootRef?.current}
         />
       </FormField>
       <FormField label="Direction">
         <Select
-          options={_.values(directionOptions)}
-          isMulti
+          value={orderDirection}
+          onChange={setOrderDirection}
+          options={directionOptions}
           menuPosition="fixed"
           menuPortalTarget={portalRootRef?.current}
         />

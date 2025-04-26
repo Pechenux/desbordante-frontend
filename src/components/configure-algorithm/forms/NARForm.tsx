@@ -1,21 +1,19 @@
-// import { FDPresets } from '@constants/presets/FDPresets';
+'use client';
+
 import _ from 'lodash';
-//import { useEffect, useMemo, useState } from 'react';
 import { useEffect } from 'react';
+//import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaNarTaskConfig } from '@/api/generated/schema';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
-//import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
-//import { UnionKeys } from '@/types/unionKeys';
 import { NARAlgorithmOptions, NARFields } from './options/NAROptions';
 import { NARPresets } from './presets/NARPresets';
 
 export type NARFormInputs = SchemaNarTaskConfig['config'];
-//type NARFormKeys = UnionKeys<NARFormInputs>;
 const defaultValue = NARPresets.common.at(-1)
   ?.preset as GetAllFieds<NARFormInputs>;
 

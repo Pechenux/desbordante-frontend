@@ -1,6 +1,6 @@
 // import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaAfdTaskConfig } from '@/api/generated/schema';
@@ -11,22 +11,21 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-//import { GetAllFieds } from '@/types/getAllFields';
+import { GetAllFieds } from '@/types/getAllFields';
 
 import {
   AFDAlgorithmOptions,
   AFDAlgorithms,
   AFDCommonFields,
-  //AFDCommonFields,
   AFDOptionalFields,
   ErrorMeasuresOptions,
   optionalFieldsByAlgorithm,
 } from './options/AFDOptions';
-//import { AFDPresets } from './presets/AFDPresets';
+import { AFDPresets } from './presets/AFDPresets';
 
 export type AFDFormInputs = SchemaAfdTaskConfig['config'];
-// const defaultValue = AFDPresets.common.at(-1)
-//   ?.preset as GetAllFieds<AFDFormInputs>;
+const defaultValue = AFDPresets.common.at(-1)
+  ?.preset as GetAllFieds<AFDFormInputs>;
 
 export const AFDForm: FormComponent<AFDFormInputs> = (
   {
@@ -62,8 +61,8 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
     console.log(algo_name, methods.getValues());
 
     setOptions(optionalFields);
-    //const fields = [...AFDCommonFields, ...optionalFields];
-    //fields.forEach((key) => methods.setValue(key, defaultValue[key]!));
+    const fields = [...AFDCommonFields, ...optionalFields];
+    fields.forEach((key) => methods.setValue(key, defaultValue[key]!));
   }, [algo_name, methods, optionalFields]);
 
   return (
