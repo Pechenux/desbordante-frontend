@@ -1,10 +1,7 @@
-// import { primitivePathnames } from '@constants/primitiveReportPathnames';
 import { useQuery } from '@tanstack/react-query';
 // import getTaskStatusData from '@utils/getTaskStatusData';
 import cn from 'classnames';
-// import Image from 'next/image';
 import { FC, useEffect } from 'react';
-// import { PrimitiveType } from 'types/globalTypes';
 import { TaskStatus } from '@/api/generated/schema';
 import { createQueryFn } from '@/api/services/server';
 import { showError } from '@/utils/toasts';
@@ -74,7 +71,6 @@ export const Loader: FC = () => {
   //   </video>
   // ) : (
   //     <Icon name="status" alt="status" size={70} />
-  //   <Image src={status.icon} alt="status" width={70} height={76} />
   // );
   return (
     <div className={styles.container}>

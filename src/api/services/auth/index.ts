@@ -4,7 +4,7 @@ import { paths, SchemaRegisterResponse } from '@/api/generated/schema';
 import { getQueryClient } from '@/api/queryClient';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { baseUrl } from '../definitions';
-import { removeFromStorage, saveTokenStorage } from './helpers';
+import { removeFromStorage } from './helpers';
 import { LoginFormData, RegisterFormData } from './types';
 
 export const authFetchClient = createClient<paths>({
@@ -27,8 +27,6 @@ async function login(data: LoginFormData): Promise<LoginResponse> {
   });
 
   if (response.data?.access_token) {
-    saveTokenStorage(response.data.access_token);
-
     return {
       access_token: response.data.access_token,
       user: response.data.user,
@@ -62,8 +60,6 @@ async function register(data: RegisterFormData): Promise<LoginResponse> {
   });
 
   if (response.data?.access_token) {
-    saveTokenStorage(response.data?.access_token);
-
     return {
       access_token: response.data.access_token,
       user: response.data.user,
@@ -113,8 +109,6 @@ async function refresh(): Promise<LoginResponse> {
   const response = await authFetchClient.POST('/api/auth/refresh');
 
   if (response.data?.access_token) {
-    saveTokenStorage(response.data?.access_token);
-
     return {
       access_token: response.data.access_token,
       user: response.data.user,

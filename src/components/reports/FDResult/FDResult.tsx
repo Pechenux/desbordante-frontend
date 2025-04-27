@@ -40,8 +40,6 @@ export const FDResult = () => {
 
   const deps = data?.result?.result;
 
-  console.log({ deps });
-
   if (!deps) return;
 
   return (
