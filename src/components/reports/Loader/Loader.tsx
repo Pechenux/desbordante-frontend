@@ -5,8 +5,8 @@ import cn from 'classnames';
 // import Image from 'next/image';
 import { FC, useEffect } from 'react';
 // import { PrimitiveType } from 'types/globalTypes';
-import { createQueryFn } from '@/api/fetchFunctions';
-import { TaskStatus } from '@/api/generated/serverSchema';
+import { TaskStatus } from '@/api/generated/schema';
+import { createQueryFn } from '@/api/services/server';
 import { showError } from '@/utils/toasts';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './Loader.module.scss';
@@ -24,9 +24,9 @@ export const Loader: FC = () => {
 
   const { data, isFetching, error, refetch } = useQuery({
     queryKey: [`/api/task/${queryParams.taskID}`],
-    queryFn: createQueryFn('/api/task/{task_id}', {
+    queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
-        path: { task_id: queryParams.taskID! },
+        path: { id: queryParams.taskID! },
       },
     }),
     enabled: !!queryParams.taskID,

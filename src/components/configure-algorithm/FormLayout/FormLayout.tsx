@@ -39,10 +39,11 @@ export const FormLayout: FC<FormLayoutProps> = ({
   });
   const mutator = useMutation({
     mutationFn: FormComponent.mutationFn,
-    onSuccess: (taskID) =>
+    onSuccess: (task) =>
+      task &&
       setQueryParams({
         newPathname: '/reports',
-        params: { taskID },
+        params: { taskID: task.id },
       }),
     onError: (error) => {
       if (typeof error === 'string') {

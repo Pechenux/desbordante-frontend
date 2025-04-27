@@ -1,5 +1,5 @@
-import styles from './page.module.scss';
+export const revalidate = 1; // 1 hour
 
-export default function Home() {
-  return <div className={styles.longItem}>hello world</div>;
-}
+import { Papers } from './papers';
+
+export default Papers;
