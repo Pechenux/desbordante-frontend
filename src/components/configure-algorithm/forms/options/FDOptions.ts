@@ -11,8 +11,9 @@ import {
   PyroConfigAlgo_name,
   SchemaFdTaskConfig,
   TaneConfigAlgo_name,
-} from '@/api/generated/serverSchema';
+} from '@/api/generated/schema';
 import { Option } from '@/components/common/uikit/Inputs';
+import { UnionKeys } from '@/types/unionKeys';
 
 export type FDAlgorithms = SchemaFdTaskConfig['config']['algo_name'];
 
@@ -27,6 +28,7 @@ export const FDAlgorithmOptions: Option<FDAlgorithms>[] = [
   { label: 'FDep', value: FDepConfigAlgo_name.fdep },
   { label: 'FUN', value: FUNConfigAlgo_name.fun },
   { label: 'Aid', value: AidConfigAlgo_name.aid },
+  { label: 'Euler FD', value: EulerFDConfigAlgo_name.eulerfd },
 ];
 
 export const FDCommonFields = ['algo_name', 'max_lhs'] as const;
@@ -35,8 +37,12 @@ export type FDOptionalFields =
   | 'seed'
   | 'custom_random_seed'
   | 'threads'
-  | 'is_null_equal_null';
+  | 'is_null_equal_null'
+  | 'pfd_error_measure'
+  | 'afd_error_measure'
+  | 'custom_random_seed';
 
+// FIXME
 export const optionalFieldsByAlgorithm: Record<
   FDAlgorithms,
   FDOptionalFields[]

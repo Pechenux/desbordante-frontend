@@ -1,3 +1,4 @@
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { isServer, QueryClient } from '@tanstack/react-query';
 
 function makeQueryClient() {
@@ -5,6 +6,7 @@ function makeQueryClient() {
     defaultOptions: {
       queries: {
         staleTime: 60 * 1000,
+        gcTime: 1000 * 60 * 60 * 24, // 24 hours
       },
     },
   });
@@ -20,3 +22,7 @@ export function getQueryClient() {
     return browserQueryClient;
   }
 }
+
+export const persister = createSyncStoragePersister({
+  storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+});

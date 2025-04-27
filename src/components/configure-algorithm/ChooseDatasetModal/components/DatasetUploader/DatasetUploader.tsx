@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { bodyToFormData, createMutationFn } from '@/api/fetchFunctions';
+import { createMutationFn } from '@/api/services/server';
+import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { SchemaFilePublic } from '@/api/generated/schema';
 import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';
 import cardStyles from '../DatasetCard/DatasetCard.module.scss';
@@ -15,7 +16,7 @@ import {
 import styles from './DatasetUploader.module.scss';
 
 type Props = {
-  onUpload: (datasetId: ChoosedDatasetInfo) => void;
+  onUpload: (datasetId: string) => void;
 };
 
 export const DatasetUploader: FC<Props> = ({ onUpload }) => {
@@ -30,12 +31,12 @@ export const DatasetUploader: FC<Props> = ({ onUpload }) => {
   const [separator, setSeparator] = useState<Separators>(',');
 
   const mutator = useMutation({
-    mutationFn: createMutationFn('/files/'),
-    onSuccess: (datasetID: SchemaFilePublic | undefined) => {
+    mutationFn: createMutationFn('/api/files'),
+    onSuccess: (dataset: SchemaFilePublic | undefined) => {
       setFileUploadProgress({ state: 'complete' });
 
-      if (datasetID) {
-        onUpload({ fileId: datasetID.id, name: datasetID.name });
+      if (dataset?.id) {
+        onUpload(dataset.id);
       }
     },
     onError: () => setFileUploadProgress({ state: 'fail' }),
@@ -134,14 +135,18 @@ export const DatasetUploader: FC<Props> = ({ onUpload }) => {
     }
 
     mutator.mutate({
+      credentials: 'include',
+      params: {
+        query: {
+          make_public: false, // todo: make checkbox for that
+        },
+      },
       body: {
         file: file,
-        separator: separator,
-        header: [0],
       },
       bodySerializer: bodyToFormData,
     });
-  }, [file, mutator, separator]);
+  }, [file, mutator]);
 
   return (
     <>

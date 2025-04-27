@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaFdTaskConfig } from '@/api/generated/schema';
+import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,
@@ -185,10 +185,9 @@ FDForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, fields);
 };
 // использовать zod
-FDForm.mutationFn = ({ datasets, data }) => {
-  console.log(222, datasets, data);
-  return datasets.length
-    ? createMutationFn('/tasks/')({
+FDForm.mutationFn = ({ datasets, data }) =>
+  datasets && datasets.length
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {
