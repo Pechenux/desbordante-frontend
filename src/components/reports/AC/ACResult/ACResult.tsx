@@ -85,6 +85,7 @@ export const ACResult = () => {
     enabled: !!queryParams.taskID,
   });
 
+  console.log(data);
   if (isFetching || error) return;
 
   const deps = data?.result?.primitive_name === 'ac' && data?.result?.result;

@@ -5,11 +5,10 @@ module.exports = async () => {
   const serverProtocol = process.env.SERVER_PROTOCOL;
   const serverIP = process.env.SERVER_IP;
   const serverPort = process.env.SERVER_PORT;
-  const serverPrefix = process.env.SERVER_PREFIX;
 
   if (serverProtocol && serverIP && serverPort) {
     const serverURL = `${serverProtocol}://${serverIP}:${serverPort}`;
-    const serverRESTAPIEndpoint = `${serverURL}${serverPrefix}`;
+    const serverRESTAPIEndpoint = `${serverURL}`;
     const serverProxyURL = '/api';
 
     proxies.push({

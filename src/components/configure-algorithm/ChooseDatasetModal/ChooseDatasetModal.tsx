@@ -82,24 +82,27 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   const builtinFiles = (
     <Collapse title="Built-in Datasets">
       <div className={styles.files}>
-        {data?.map((dts) => (
-          <DatasetCard
-            key={dts.id}
-            dataset={{
-              fileID: dts.id,
-              originalFileName: dts.name,
-              rowsCount: 10,
-              createdAt: '11.11.2011',
-              numberOfUses: 1,
-              isBuiltIn: true,
-              supportedPrimitives: [PrimitiveType.NAR],
-            }}
-            primitive={PrimitiveType.NAR}
-            isSelected={choosedDataset?.fileId === dts.id}
-            //choosedDataset={choosedDataset}
-            onClick={onClick}
-          />
-        ))}
+        {data?.map(
+          (dts) =>
+            !dts.owner_id && (
+              <DatasetCard
+                key={dts.id}
+                dataset={{
+                  fileID: dts.id,
+                  originalFileName: dts.name,
+                  rowsCount: 10,
+                  createdAt: '11.11.2011',
+                  numberOfUses: 1,
+                  isBuiltIn: true,
+                  supportedPrimitives: [PrimitiveType.NAR],
+                }}
+                primitive={PrimitiveType.NAR}
+                isSelected={choosedDataset?.fileId === dts.id}
+                //choosedDataset={choosedDataset}
+                onClick={onClick}
+              />
+            ),
+        )}
       </div>
     </Collapse>
   );
@@ -107,16 +110,27 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
     <Collapse title="My Files">
       <div className={styles.files}>
         <DatasetUploader onUpload={onClick} />
-        {/* {userDatasets.map((dts) => (
-          <DatasetCard
-            key={dts.dataset.fileID}
-            dataset={dts.dataset}
-            primitive={dts.primitive}
-            isSelected={choosedDataset?.fileId === dts.id}
-            //choosedDataset={choosedDataset}
-            onClick={onClick}
-          />
-        ))} */}
+        {data?.map(
+          (dts) =>
+            dts.owner_id && (
+              <DatasetCard
+                key={dts.id}
+                dataset={{
+                  fileID: dts.id,
+                  originalFileName: dts.name,
+                  rowsCount: 10,
+                  createdAt: '11.11.2011',
+                  numberOfUses: 1,
+                  isBuiltIn: true,
+                  supportedPrimitives: [PrimitiveType.NAR],
+                }}
+                primitive={PrimitiveType.NAR}
+                isSelected={choosedDataset?.fileId === dts.id}
+                //choosedDataset={choosedDataset}
+                onClick={onClick}
+              />
+            ),
+        )}
       </div>
     </Collapse>
   );

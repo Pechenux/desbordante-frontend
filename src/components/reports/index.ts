@@ -6,8 +6,6 @@ export * from './AFDResult';
 // export * from './CFDResult';
 // export * from './ARResult';
 // export * from './TypoFDResult';
-export * from './Snippet';
-export * from './ChartStatisctics';
 export * from './DDResult';
 export * from './MDResult';
 export * from './NARResult';
