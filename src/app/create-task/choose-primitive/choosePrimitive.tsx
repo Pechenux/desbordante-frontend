@@ -15,27 +15,6 @@ import { TagType } from '@/constants/primitivesInfo/primitivesTags';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './choosePrimitive.module.scss';
 
-const options = [
-  {
-    label: '# ' + TagType.ApproximateAlgorithm,
-    value: TagType.ApproximateAlgorithm,
-  },
-  { label: '# ' + TagType.ExactAlgorithm, value: TagType.ExactAlgorithm },
-
-  {
-    label: '# ' + TagType.ApproximatePattern,
-    value: TagType.ApproximatePattern,
-  },
-  { label: '# ' + TagType.ExactPattern, value: TagType.ExactPattern },
-
-  { label: '# ' + TagType.Table, value: TagType.Table },
-  { label: '# ' + TagType.Transactional, value: TagType.Transactional },
-  { label: '# ' + TagType.Graph, value: TagType.Graph },
-
-  { label: '# ' + TagType.SingleSource, value: TagType.SingleSource },
-  { label: '# ' + TagType.MultiSource, value: TagType.MultiSource },
-];
-
 const ChoosePrimitive = () => {
   const [isOpenFilterModal, setOpenFilterModal] = useState<boolean>(false);
 

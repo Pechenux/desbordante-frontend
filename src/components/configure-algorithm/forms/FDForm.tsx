@@ -197,4 +197,3 @@ FDForm.mutationFn = ({ datasets, data }) =>
         },
       })
     : Promise.reject('No datasets selected');
-};

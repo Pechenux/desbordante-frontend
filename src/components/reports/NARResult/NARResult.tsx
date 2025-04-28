@@ -4,13 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
-import { createQueryFn } from '@/api/services/server';
 import {
   NarFilterOptions,
   NarSortOptions,
   SchemaNarSideItemModel,
   SortOrder,
 } from '@/api/generated/schema';
+import { createQueryFn } from '@/api/services/server';
 import {
   Button,
   FormField,

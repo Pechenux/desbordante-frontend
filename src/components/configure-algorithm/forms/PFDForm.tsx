@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaPfdTaskConfig } from '@/api/generated/schema';
+import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,
@@ -139,7 +139,7 @@ PFDForm.onSubmit = (fieldValues) => {
 PFDForm.mutationFn = ({ datasets, data }) => {
   console.log(222, datasets, data);
   return datasets.length
-    ? createMutationFn('/tasks/')({
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {

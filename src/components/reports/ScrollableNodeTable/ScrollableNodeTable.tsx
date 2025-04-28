@@ -46,7 +46,7 @@ export const Table: FC<TableProps> = ({
   }, []);
 
   const displayHeader = useMemo(
-    () => header || data[0].items.map((_, index) => `Column ${index}`),
+    () => header || data[0]?.items.map((_, index) => `Column ${index}`),
     [header, data],
   );
 
@@ -98,7 +98,7 @@ export const Table: FC<TableProps> = ({
       <table className={styles.table}>
         <thead>
           <tr className={classNames(alternateRowColors && styles.alternate)}>
-            {displayHeader.map((item, columnIndex) => (
+            {displayHeader?.map((item, columnIndex) => (
               <td
                 key={item}
                 className={classNames(

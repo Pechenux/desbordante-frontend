@@ -13,7 +13,6 @@ import {
   TaneConfigAlgo_name,
 } from '@/api/generated/schema';
 import { Option } from '@/components/common/uikit/Inputs';
-import { UnionKeys } from '@/types/unionKeys';
 
 export type FDAlgorithms = SchemaFdTaskConfig['config']['algo_name'];
 
@@ -37,7 +36,7 @@ export type FDOptionalFields =
   | 'seed'
   | 'custom_random_seed'
   | 'threads'
-  | 'is_null_equal_null'
+  | 'is_null_equal_null';
 
 // FIXME
 export const optionalFieldsByAlgorithm: Record<

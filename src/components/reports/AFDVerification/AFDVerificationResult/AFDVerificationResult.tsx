@@ -6,8 +6,8 @@ import React, { useCallback, useRef, useState } from 'react';
 //import VisibilityWindow from '@components/Filters/AFDVisibilityWindow';
 
 import { SingleValue } from 'react-select';
-import { createQueryFn } from '@/api/services/server';
 import { SortOrder, AfdVerificationSortOptions } from '@/api/generated/schema';
+import { createQueryFn } from '@/api/services/server';
 import { Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';

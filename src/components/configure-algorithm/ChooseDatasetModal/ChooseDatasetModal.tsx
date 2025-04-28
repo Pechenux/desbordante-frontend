@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FC, useMemo } from 'react';
-import { createQueryFn } from '@/api/fetchFunctions';
+import { createQueryFn } from '@/api/services/server';
 import { Collapse } from '@/components/common/layout/Collapse';
 import {
   ModalContainer,
@@ -68,8 +68,8 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   );
 
   const { data } = useQuery({
-    queryKey: [`/files`],
-    queryFn: createQueryFn('/files/', {
+    queryKey: [`/api/files`],
+    queryFn: createQueryFn('/api/files', {
       params: {
         query: {
           with_public: true,

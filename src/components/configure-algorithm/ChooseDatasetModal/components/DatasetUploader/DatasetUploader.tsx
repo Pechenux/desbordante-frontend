@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { SchemaFilePublic } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
-import { SchemaFilePublic } from '@/api/generated/schema';
 import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';
 import cardStyles from '../DatasetCard/DatasetCard.module.scss';
 import {
@@ -36,7 +36,7 @@ export const DatasetUploader: FC<Props> = ({ onUpload }) => {
       setFileUploadProgress({ state: 'complete' });
 
       if (dataset?.id) {
-        onUpload(dataset.id);
+        onUpload({ fileId: dataset.id, name: dataset.name });
       }
     },
     onError: () => setFileUploadProgress({ state: 'fail' }),

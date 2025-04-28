@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { createMutationFn } from '@/api/fetchFunctions';
 import { SchemaAcTaskConfigInput } from '@/api/generated/schema';
+import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
@@ -210,7 +210,7 @@ ACForm.onSubmit = (fieldValues) => {
 // использовать zod
 ACForm.mutationFn = ({ datasets, data }) =>
   datasets.length
-    ? createMutationFn('/tasks/')({
+    ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
           config: {
