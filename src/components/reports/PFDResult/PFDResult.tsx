@@ -75,7 +75,7 @@ export const PFDResult = () => {
             attribute_name: columns,
           }),
           sort_direction: orderDirection as SortOrder,
-          sort_option: orderBy as SortOptions,
+          sort_option: orderBy as PfdSortOptions,
         },
         path: { id: queryParams.taskID! },
       },

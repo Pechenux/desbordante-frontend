@@ -77,7 +77,7 @@ export const ACResult = () => {
             attribute_name: columns,
           }),
           sort_direction: orderDirection as SortOrder,
-          sort_option: orderBy as SortOptions,
+          sort_option: orderBy as AcSortOptions,
         },
         path: { id: queryParams.taskID! },
       },

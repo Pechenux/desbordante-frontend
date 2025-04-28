@@ -92,7 +92,7 @@ export const MDResult = () => {
             metrics: metrics,
           }),
           sort_direction: orderDirection as SortOrder,
-          sort_option: orderBy as SortOptions,
+          sort_option: orderBy as MdSortOptions,
         },
         path: { id: queryParams.taskID! },
       },

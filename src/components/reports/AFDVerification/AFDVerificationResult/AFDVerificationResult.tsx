@@ -4,13 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useCallback, useRef, useState } from 'react';
 
 //import VisibilityWindow from '@components/Filters/AFDVisibilityWindow';
-//import Pagination from '@components/Pagination/Pagination';
 
+import { SingleValue } from 'react-select';
 import { createQueryFn } from '@/api/fetchFunctions';
-import { Button, Icon, Pagination } from '@/components/common/uikit';
+import { SortOrder, AfdVerificationSortOptions } from '@/api/generated/schema';
+import { Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
-import { OrderingWindow } from '../../Filters';
+import { OrderingWindow, SortOptions } from '../../Filters';
 import { ReportFiller } from '../../ReportFiller';
 import { ScrollDirection } from '../../ScrollableNodeTable';
 import { AFDCluster } from '../AFDCluster/AFDCluster';
@@ -23,11 +24,27 @@ export const AFDVerificationResult = () => {
   // const queryParams = {
   //   taskID: '5e12f329-52f4-4463-845b-a9ec353c49ae',
   // };
-
+  const shouldIgnoreScrollEvent = useRef(false);
   const [clusterIndex, setClusterIndex] = useState(0);
   const [isOrderingShown, setIsOrderingShown] = useState(false);
+
+  const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
+    SortOrder.asc,
+  );
+  const [orderBy, setOrderBy] = useState<SingleValue<SortOptions>>(
+    AfdVerificationSortOptions.size,
+  );
+
+  const handleApplyOrdering = (
+    newDirection: SingleValue<SortOrder>,
+    newOrderBy: SingleValue<SortOptions>,
+  ) => {
+    setOrderBy(newOrderBy);
+    setOrderDirection(newDirection);
+
+    setIsOrderingShown(false);
+  };
   //const [isVisibilityShown, setIsVisibilityShown] = useState(false);
-  const shouldIgnoreScrollEvent = useRef(false);
 
   const [limit, setLimit] = useState(defaultLimit);
 
@@ -46,9 +63,13 @@ export const AFDVerificationResult = () => {
   );
 
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/tasks/${queryParams.taskID}`],
+    queryKey: [`/tasks/${queryParams.taskID}`, orderBy, orderDirection],
     queryFn: createQueryFn('/tasks/{id}', {
       params: {
+        query: {
+          sort_direction: orderDirection as SortOrder,
+          sort_option: orderBy as AfdVerificationSortOptions,
+        },
         path: { id: queryParams.taskID! },
       },
     }),
@@ -85,12 +106,12 @@ export const AFDVerificationResult = () => {
     <>
       {isOrderingShown && (
         <OrderingWindow
-          {...{
-            isOrderingShown,
-            setIsOrderingShown,
-            primitive: PrimitiveType.AFDVerification,
-            labelOrderBy: 'Order Clusters by',
-          }}
+          primitive={PrimitiveType.AFDVerification}
+          isOpen={isOrderingShown}
+          curOrderDirection={orderDirection}
+          curOrderOption={orderBy}
+          onClose={() => setIsOrderingShown(false)}
+          onApply={handleApplyOrdering}
         />
       )}
 
@@ -126,7 +147,7 @@ export const AFDVerificationResult = () => {
               </div>
 
               <div className={styles.filters}>
-                <div className={styles.buttons}>
+                {/* <div className={styles.buttons}>
                   <Button
                     variant="secondary"
                     size="md"
@@ -143,7 +164,7 @@ export const AFDVerificationResult = () => {
                   >
                     Visibility
                   </Button>
-                </div>
+                </div> */}
               </div>
               <AFDCluster
                 distinctRHSValues={curCluster.num_distinct_rhs_values}

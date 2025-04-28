@@ -6,6 +6,7 @@ import {
   AcSortOptions,
   AdcSortOptions,
   AfdSortOptions,
+  AfdVerificationSortOptions,
   DdSortOptions,
   FdSortOptions,
   MdSortOptions,
@@ -27,7 +28,8 @@ export type SortOptions =
   | NarSortOptions
   | PfdSortOptions
   | AcSortOptions
-  | AdcSortOptions;
+  | AdcSortOptions
+  | AfdVerificationSortOptions;
 
 export const optionsByPrimitive: Partial<
   Record<PrimitiveType, Option<SortOptions>[]>
