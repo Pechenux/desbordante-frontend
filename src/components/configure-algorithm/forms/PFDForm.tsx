@@ -28,7 +28,6 @@ export const PFDForm: FormComponent<PFDFormInputs> = (
   },
 ) => {
   const methods = useFormContext<PFDFormInputs>();
-  console.log(methods.getValues());
 
   useEffect(() => {
     PFDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
@@ -137,7 +136,6 @@ PFDForm.onSubmit = (fieldValues) => {
 };
 // использовать zod
 PFDForm.mutationFn = ({ datasets, data }) => {
-  console.log(222, datasets, data);
   return datasets.length
     ? createMutationFn('/api/tasks')({
         body: {

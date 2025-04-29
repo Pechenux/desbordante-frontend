@@ -67,6 +67,20 @@ export const optionsByPrimitive: Partial<
     { label: 'Attributes names', value: AdcSortOptions.attrubites_names },
     { label: 'Number of conjuncts', value: AdcSortOptions.len },
   ],
+  [PrimitiveType.AFDVerification]: [
+    {
+      label: 'Most frequent RHS value proportion',
+      value: AfdVerificationSortOptions.frequentness,
+    },
+    {
+      label: 'Distinct RHS values',
+      value: AfdVerificationSortOptions.num_distinct_rhs_values,
+    },
+    {
+      label: 'Size',
+      value: AfdVerificationSortOptions.size,
+    },
+  ],
 };
 
 const directionOptions: Option<SortOrder>[] = [

@@ -17,7 +17,7 @@ import {
   Pagination,
   Text,
 } from '@/components/common/uikit';
-// import DownloadResult from '@components/DownloadResult';
+
 import {
   OrderingWindow,
   DependencyList,
@@ -57,9 +57,7 @@ export const AFDResult = () => {
   };
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
-  // const queryParams = {
-  //   taskID: 'b122241f-c28e-4de1-9bf0-80c2b601641d',
-  // };
+
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,

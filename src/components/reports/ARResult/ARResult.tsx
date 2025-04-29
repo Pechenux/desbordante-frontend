@@ -9,7 +9,7 @@
 //   Pagination,
 //   Text,
 // } from '@/components/common/uikit';
-// // import DownloadResult from '@components/DownloadResult';
+//
 // import {
 //   FilteringWindow,
 //   OrderingWindow,

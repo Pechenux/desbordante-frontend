@@ -37,8 +37,6 @@ export const FDForm: FormComponent<FDFormInputs> = (
 
   const [options, setOptions] = useState<FDOptionalFields[]>([]);
 
-  useEffect(() => console.log(options), [options]);
-
   // useEffect(() => {
   //   setPresets(FDPresets);
   //   methods.setValue('algo_name', defaultValue['algo_name']);

@@ -42,17 +42,8 @@ export const ACInstance: FC<ACInstanceType> = ({
   intervals,
   isSelected,
 }) => {
-  //const [atom, setAtom] = useAtom(ACAtom);
   const handleSelect = () => {
     console.log('click');
-    // const instance = {
-    //   id,
-    //   attributes: attributes,
-    //   intervals: intervals,
-    //   outliers: outliers,
-    //   operation: operation,
-    // };
-    // setAtom({ ...ACAtomDefaultValuesWithParams(atom.taskID, instance) });
   };
 
   const OperationIcon = operationIcons[operation];
@@ -61,9 +52,6 @@ export const ACInstance: FC<ACInstanceType> = ({
     (acc, range) => acc + `[${range[0]}, ${range[1]}] `,
     '',
   );
-  console.log(intervalsString);
-
-  //const isSelected = atom.instanceSelected?.id === id;
 
   return (
     <div

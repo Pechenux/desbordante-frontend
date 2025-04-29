@@ -58,10 +58,6 @@ export const ACResult = () => {
     setIsFilteringShown(false);
   };
 
-  console.log(columns);
-  // const queryParams = {
-  //   taskID: '48a67b65-3911-4eab-a261-ec9bdd6f5159',
-  // };
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,
@@ -85,7 +81,6 @@ export const ACResult = () => {
     enabled: !!queryParams.taskID,
   });
 
-  console.log(data);
   if (isFetching || error) return;
 
   const deps = data?.result?.primitive_name === 'ac' && data?.result?.result;

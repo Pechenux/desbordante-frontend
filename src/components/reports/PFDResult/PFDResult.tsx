@@ -17,7 +17,7 @@ import {
   Pagination,
   Text,
 } from '@/components/common/uikit';
-// import DownloadResult from '@components/DownloadResult';
+
 import {
   DefaultFilteringWindow,
   DependencyList,
@@ -57,9 +57,7 @@ export const PFDResult = () => {
   };
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
-  // const queryParams = {
-  //   taskID: '5ee3042d-d01b-4947-99cd-ad5646eb5fe3',
-  // };
+
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,

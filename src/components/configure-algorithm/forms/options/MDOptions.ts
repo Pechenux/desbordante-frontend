@@ -16,11 +16,6 @@ export const levelDefenitionOptions: Option<HyMDConfigLevel_definition>[] = [
   { label: 'Lattice', value: HyMDConfigLevel_definition.lattice },
 ];
 
-export const pruneNondisjointOptions: Option<boolean>[] = [
-  { label: 'True', value: true },
-  { label: 'False', value: false },
-];
-
 export const MDFields = [
   'algo_name',
   'min_support',

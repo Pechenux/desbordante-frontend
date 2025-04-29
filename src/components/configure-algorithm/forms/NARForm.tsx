@@ -206,8 +206,6 @@ export const NARForm: FormComponent<NARFormInputs> = (
 };
 
 NARForm.onSubmit = (fieldValues) => {
-  //const algo_name = fieldValues.algo_name;
-  console.log(999, fieldValues);
   return _.pick(fieldValues, NARFields);
 };
 // использовать zod

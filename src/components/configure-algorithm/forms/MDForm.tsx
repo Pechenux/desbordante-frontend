@@ -7,7 +7,11 @@ import { useFormContext } from 'react-hook-form';
 import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
-import { NumberInput, Select } from '@/components/common/uikit/Inputs';
+import {
+  CheckboxGroup,
+  NumberInput,
+  Select,
+} from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
@@ -16,7 +20,6 @@ import {
   levelDefenitionOptions,
   MDAlgorithmOptions,
   MDFields,
-  pruneNondisjointOptions,
 } from './options/MDOptions';
 import { MDPresets } from './presets/MDPresets';
 
@@ -131,22 +134,6 @@ export const MDForm: FormComponent<MDFormInputs> = (
           />
         )}
       </ControlledFormField>
-      <ControlledFormField<MDFormInputs, 'prune_nondisjoint'>
-        formFieldProps={{ label: 'Prune nondisjoint' }}
-        controllerProps={{
-          name: 'prune_nondisjoint',
-          control: methods.control,
-        }}
-      >
-        {({ field: { value, onChange } }) => (
-          <Select
-            value={value}
-            //defaultValue={pruneNondisjointOptions[0]}
-            onChange={onChange}
-            options={pruneNondisjointOptions}
-          />
-        )}
-      </ControlledFormField>
       <ControlledFormField<MDFormInputs, 'threads'>
         formFieldProps={{ label: 'Thread count' }}
         controllerProps={{
@@ -168,6 +155,23 @@ export const MDForm: FormComponent<MDFormInputs> = (
           />
         )}
       </ControlledFormField>
+      <ControlledFormField<MDFormInputs, 'prune_nondisjoint'>
+        formFieldProps={{ label: 'Prune nondisjoint' }}
+        controllerProps={{
+          name: 'prune_nondisjoint',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <CheckboxGroup
+            values={value ? ['isPrune'] : []}
+            onChange={(newValue) => {
+              onChange(newValue.length > 0);
+            }}
+            options={[{ label: 'Prune', value: 'isPrune' }]}
+          />
+        )}
+      </ControlledFormField>
     </>
   );
 };
@@ -177,7 +181,6 @@ MDForm.onSubmit = (fieldValues) => {
 };
 // использовать zod
 MDForm.mutationFn = ({ datasets, data }) => {
-  console.log(4444, data);
   return datasets.length
     ? createMutationFn('/api/tasks')({
         body: {

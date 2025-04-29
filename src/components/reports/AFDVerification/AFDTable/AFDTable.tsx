@@ -9,7 +9,7 @@ export type AFDTableProps = {
   header: string[];
   clusterNumber: number;
   highlights: AFDTableRow[];
-  onScroll: (direction: ScrollDirection) => void;
+  onScroll?: (direction: ScrollDirection) => void;
   className?: string;
 };
 

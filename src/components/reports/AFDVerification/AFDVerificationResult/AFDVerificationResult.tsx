@@ -1,33 +1,32 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React, { useCallback, useRef, useState } from 'react';
-
-//import VisibilityWindow from '@components/Filters/AFDVisibilityWindow';
-
+import React, { useState } from 'react';
 import { SingleValue } from 'react-select';
-import { SortOrder, AfdVerificationSortOptions } from '@/api/generated/schema';
+import {
+  SortOrder,
+  AfdVerificationSortOptions,
+  AfdVerificationFilterOptions,
+} from '@/api/generated/schema';
 import { createQueryFn } from '@/api/services/server';
-import { Icon, Pagination } from '@/components/common/uikit';
+import { Button, Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
-import { OrderingWindow, SortOptions } from '../../Filters';
+import {
+  AFDVerificationVisibilityWindow,
+  OrderingWindow,
+  SortOptions,
+} from '../../Filters';
 import { ReportFiller } from '../../ReportFiller';
-import { ScrollDirection } from '../../ScrollableNodeTable';
 import { AFDCluster } from '../AFDCluster/AFDCluster';
 import styles from './AFDVerificationResult.module.scss';
 
 export const AFDVerificationResult = () => {
-  const defaultLimit = 150;
-  const defaultOffsetDifference = 50;
   const { queryParams } = useQueryParams<{ taskID: string }>();
-  // const queryParams = {
-  //   taskID: '5e12f329-52f4-4463-845b-a9ec353c49ae',
-  // };
-  const shouldIgnoreScrollEvent = useRef(false);
   const [clusterIndex, setClusterIndex] = useState(0);
   const [isOrderingShown, setIsOrderingShown] = useState(false);
-
+  const [isLhsRhsOnlyShown, setIsLhsRhsOnlyShown] = useState(false);
+  const [isVisibilityShown, setIsVisibilityShown] = useState(false);
   const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
     SortOrder.asc,
   );
@@ -44,31 +43,27 @@ export const AFDVerificationResult = () => {
 
     setIsOrderingShown(false);
   };
-  //const [isVisibilityShown, setIsVisibilityShown] = useState(false);
-
-  const [limit, setLimit] = useState(defaultLimit);
-
-  const onScroll = useCallback(
-    (direction: ScrollDirection) => {
-      if (!shouldIgnoreScrollEvent.current && direction === 'down') {
-        shouldIgnoreScrollEvent.current = true;
-        if (limit < maxLimit) {
-          setLimit((limit) => limit + defaultOffsetDifference);
-        } else {
-          shouldIgnoreScrollEvent.current = false;
-        }
-      }
-    },
-    [limit, defaultOffsetDifference /*maxLimit*/],
-  );
+  const handleApplyVisibility = (newValue: boolean) => {
+    setIsLhsRhsOnlyShown(newValue);
+    setIsVisibilityShown(false);
+  };
 
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/api/tasks/${queryParams.taskID}`, orderBy, orderDirection],
+    queryKey: [
+      `/api/tasks/${queryParams.taskID}`,
+      orderBy,
+      orderDirection,
+      isLhsRhsOnlyShown,
+    ],
     queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
         query: {
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as AfdVerificationSortOptions,
+          filter_options: [AfdVerificationFilterOptions.show_lhs_rhs_only],
+          filter_params: JSON.stringify({
+            show_lhs_rhs_only: isLhsRhsOnlyShown,
+          }),
         },
         path: { id: queryParams.taskID! },
       },
@@ -76,11 +71,11 @@ export const AFDVerificationResult = () => {
     enabled: !!queryParams.taskID,
   });
 
-  console.log(data, isFetching, error);
   if (isFetching || error) return;
 
   const deps =
     data?.result?.primitive_name === 'afd_verification' && data?.result?.result;
+  if (!deps) return;
 
   const {
     error: threshold,
@@ -88,14 +83,7 @@ export const AFDVerificationResult = () => {
     num_error_clusters,
     clusters,
     table_header,
-  } = deps || {
-    error: 0,
-    num_error_rows: 0,
-    num_error_clusters: 0,
-    clusters: [],
-    table_header: [],
-  };
-  const maxLimit = num_error_clusters || defaultLimit;
+  } = deps;
   const curCluster = clusters[clusterIndex] || {
     num_distinct_rhs_values: 0,
     most_frequent_rhs_value_proportion: 0,
@@ -115,9 +103,14 @@ export const AFDVerificationResult = () => {
         />
       )}
 
-      {/* {isVisibilityShown && (
-          <VisibilityWindow onCloseWindow={() => setIsVisibilityShown(false)} />
-        )} */}
+      {isVisibilityShown && (
+        <AFDVerificationVisibilityWindow
+          isOpen={isVisibilityShown}
+          curIsShowOnly={isLhsRhsOnlyShown}
+          onClose={() => setIsVisibilityShown(false)}
+          onApply={handleApplyVisibility}
+        />
+      )}
 
       {data && !data.result && <ReportFiller title={'Loading'} />}
       {data && data.result && data.result.result && (
@@ -147,7 +140,7 @@ export const AFDVerificationResult = () => {
               </div>
 
               <div className={styles.filters}>
-                {/* <div className={styles.buttons}>
+                <div className={styles.buttons}>
                   <Button
                     variant="secondary"
                     size="md"
@@ -160,11 +153,11 @@ export const AFDVerificationResult = () => {
                     variant="secondary"
                     size="md"
                     icon={<Icon name="eye" />}
-                    //onClick={() => setIsVisibilityShown(true)}
+                    onClick={() => setIsVisibilityShown(true)}
                   >
                     Visibility
                   </Button>
-                </div> */}
+                </div>
               </div>
               <AFDCluster
                 distinctRHSValues={curCluster.num_distinct_rhs_values}
@@ -173,7 +166,6 @@ export const AFDVerificationResult = () => {
                 tableData={{
                   clusterNumber: clusterIndex,
                   header: table_header,
-                  onScroll: onScroll,
                   className: styles.table,
                   highlights: curCluster.rows.map((row, indx) => ({
                     index: indx,

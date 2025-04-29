@@ -1,8 +1,6 @@
 import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import { Icon } from '@/components/common/uikit';
-import { DDResult /*, Snippet*/ } from '@/components/reports';
-// import { ChartStatistics } from '@/components/reports/ChartStatisctics';
-// import styles from './page.module.scss';
+import { DDResult } from '@/components/reports';
 
 export default async function DDReport({
   params,
@@ -16,14 +14,6 @@ export default async function DDReport({
       icon: <Icon name="listDropDown" />,
       content: <DDResult />,
     },
-    // {
-    //   name: 'snippet',
-    //   label: 'Dataset snippet',
-    //   icon: <Icon name="datatable" />,
-    //   content: <Snippet />,
-    //   pageClass: styles.page,
-    //   containerClass: styles.container,
-    // },
   ];
 
   const currentTab = (await params).tab;

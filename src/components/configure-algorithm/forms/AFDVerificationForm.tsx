@@ -122,8 +122,8 @@ AFDVerificationForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, AFDVerificationFields);
 };
 // использовать zod
-AFDVerificationForm.mutationFn = ({ datasets, data }) =>
-  datasets.length
+AFDVerificationForm.mutationFn = ({ datasets, data }) => {
+  return datasets.length
     ? createMutationFn('/api/tasks')({
         body: {
           files_ids: datasets,
@@ -134,3 +134,4 @@ AFDVerificationForm.mutationFn = ({ datasets, data }) =>
         },
       })
     : Promise.reject('No datasets selected');
+};

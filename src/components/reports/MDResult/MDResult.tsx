@@ -18,7 +18,7 @@ import {
   Pagination,
   Text,
 } from '@/components/common/uikit';
-// import DownloadResult from '@components/DownloadResult';
+
 import {
   displayedMetricsName,
   MetricsType,
@@ -67,10 +67,6 @@ export const MDResult = () => {
 
     setIsFilteringShown(false);
   };
-
-  // const queryParams = {
-  //   taskID: 'fd00d451-a3b3-4079-8124-7d6992b33166',
-  // };
 
   const { data, isFetching, error } = useQuery({
     queryKey: [

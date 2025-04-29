@@ -1,4 +1,3 @@
-// import { FDPresets } from '@constants/presets/FDPresets';
 import _ from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -33,8 +32,6 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
   },
 ) => {
   const methods = useFormContext<AFDFormInputs>();
-  //const algo_name = methods.getValues('algo_name');
-  //console.log(algo_name);
 
   const [algo_name] = useWatch<AFDFormInputs>({
     name: ['algo_name'],
@@ -58,7 +55,6 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
     if (!algo_name) {
       return;
     }
-    console.log(algo_name, methods.getValues());
 
     setOptions(optionalFields);
     const fields = [...AFDCommonFields, ...optionalFields];
@@ -204,17 +200,14 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
 
 AFDForm.onSubmit = (fieldValues) => {
   const algo_name = fieldValues.algo_name;
-  console.log(999, fieldValues);
   const fields = [
     ...AFDCommonFields,
     ...(optionalFieldsByAlgorithm[algo_name as AFDAlgorithms] ?? []),
   ];
-  console.log(fields);
   return _.pick(fieldValues, fields);
 };
 // использовать zod
 AFDForm.mutationFn = ({ datasets, data }) => {
-  console.log(222, datasets, data);
   return datasets.length
     ? createMutationFn('/api/tasks')({
         body: {
