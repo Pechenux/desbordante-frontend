@@ -213,13 +213,15 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
             max={max}
             step={step}
             className={styles.sliderTrack}
-            trackStyle={{
-              height: 2,
-              transform: 'translateY(-1px)',
-              zIndex: 1,
-              backgroundColor: colors.black[100],
+            styles={{
+              rail: { height: 1, backgroundColor: colors.black[25] },
+              track: {
+                height: 2,
+                transform: 'translateY(-1px)',
+                zIndex: 1,
+                backgroundColor: colors.black[100],
+              },
             }}
-            railStyle={{ height: 1, backgroundColor: colors.black[25] }}
             allowCross={false}
             dotStyle={{
               borderRadius: 5,
@@ -230,7 +232,12 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
               borderColor: colors.black[25],
             }}
             handleRender={(origin) => (
-              <div {...origin.props} className={styles.sliderHandle} />
+              <div
+                {...origin.props}
+                className={cn(styles.sliderHandle, {
+                  [styles.disabled!]: disabled,
+                })}
+              />
             )}
             disabled={disabled}
           />
