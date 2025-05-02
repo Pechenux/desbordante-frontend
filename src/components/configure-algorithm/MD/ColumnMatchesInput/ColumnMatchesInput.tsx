@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import { useAtom } from 'jotai';
 import { FC, useEffect, useState } from 'react';
 import {
@@ -66,7 +67,10 @@ export const ColumnMatchesInput: FC<ColumnMatchesProps> = ({
         onClose={handleClose}
       />
       <label
-        className={styles.inputContainer}
+        className={classNames(
+          styles.inputContainer,
+          disabled && styles.disabled,
+        )}
         onClick={() => setIsOpen(!disabled)}
       >
         <input

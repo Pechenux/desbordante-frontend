@@ -1,10 +1,13 @@
+import { useQuery } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaAdcTaskConfig } from '@/api/generated/schema';
-import { createMutationFn } from '@/api/services/server';
+import { createMutationFn, createQueryFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
+import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
 import { GetAllFieds } from '@/types/getAllFields';
 import {
@@ -25,6 +28,9 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
 ) => {
   const methods = useFormContext<ADCFormInputs>();
 
+  const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
+  const isDisabledInput = fileIDs['1'] === '';
+
   // const [algo_name] = useWatch<NARFormInputs>({
   //   name: ['algo_name'],
   // });
@@ -38,6 +44,17 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
     ADCFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);
 
+  const { data } = useQuery({
+    queryKey: [`/api/files/ids`, fileIDs],
+    queryFn: createQueryFn('/api/files/ids', {
+      params: {
+        query: { ids: fileIDs['1'] ? [fileIDs['1']] : undefined },
+      },
+    }),
+    enabled: true,
+  });
+
+  const numRows = data && data[0]?.num_rows;
   return (
     <>
       <ControlledFormField<ADCFormInputs, 'algo_name'>
@@ -75,16 +92,18 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
         controllerProps={{
           name: 'shard_length',
           control: methods.control,
+          disabled: isDisabledInput,
         }}
       >
         {({ field: { value, onChange } }) => (
           <NumberInput
+            disabled={isDisabledInput}
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
               defaultNum: 1,
               min: 1,
-              max: 10, // TODO: table rows
+              max: numRows,
               step: 1,
               digitsAfterDot: 0,
             }}
@@ -102,11 +121,13 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
           <NumberInput
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
+            slider
             boundaries={{
               defaultNum: 1,
-              min: 1,
-              step: 1,
-              digitsAfterDot: 0,
+              min: 0,
+              max: 1,
+              step: 0.01,
+              digitsAfterDot: 2,
             }}
           />
         )}

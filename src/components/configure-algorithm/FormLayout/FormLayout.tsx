@@ -116,11 +116,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
         />
       </div>
       <div className={styles.line} /> */}
-      <FilesSelector
-        fileIDs={fileIDs}
-        onChange={setFileIDs}
-        datasetInputs={datasetInputs}
-      />
+      <FilesSelector onChange={setFileIDs} datasetInputs={datasetInputs} />
       <FormProvider {...methods}>
         <form
           id="algorithmconfigurator"

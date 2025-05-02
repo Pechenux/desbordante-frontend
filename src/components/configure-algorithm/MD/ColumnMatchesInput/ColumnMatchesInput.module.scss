@@ -24,6 +24,9 @@
   &.error {
     border: 2px solid $error;
   }
+  &.disabled {
+    cursor: default;
+  }
 
   input[type="text"] {
     @include paragraph;
@@ -32,5 +35,8 @@
     outline: none;
     cursor: pointer;
     background: none;
+  }
+  input[type="text"]:disabled {
+    cursor: default;
   }
 }

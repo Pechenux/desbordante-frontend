@@ -14,14 +14,10 @@ import { DatasetCard } from './components/DatasetCard';
 import { DatasetUploader } from './components/DatasetUploader';
 import styles from './ChooseDatasetModal.module.scss';
 
-// заглушка
-// const builtinDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
-// заглушка
-// const userDatasets: { dataset: Dataset; primitive: PrimitiveType }[] = [];
-
 export type ChooseDatasetModalProps = ModalProps & {
   choosedDataset: ChoosedDatasetInfo | null;
   onClick: (newValue: ChoosedDatasetInfo) => void;
+  onApply: () => void;
   onCancel: () => void;
 };
 
@@ -31,6 +27,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   onCancel,
   isOpen,
   onClose,
+  onApply,
 }) => {
   const header = useMemo(
     () => (
@@ -58,7 +55,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
           disabled={false}
           variant="primary"
           icon={<Icon name="file" />}
-          onClick={onClose}
+          onClick={onApply}
         >
           Confirm
         </Button>
@@ -79,6 +76,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
     enabled: true,
   });
 
+  // TODO: FIX
   const builtinFiles = (
     <Collapse title="Built-in Datasets">
       <div className={styles.files}>
@@ -98,7 +96,6 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
                 }}
                 primitive={PrimitiveType.NAR}
                 isSelected={choosedDataset?.fileId === dts.id}
-                //choosedDataset={choosedDataset}
                 onClick={onClick}
               />
             ),
@@ -126,7 +123,6 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
                 }}
                 primitive={PrimitiveType.NAR}
                 isSelected={choosedDataset?.fileId === dts.id}
-                //choosedDataset={choosedDataset}
                 onClick={onClick}
               />
             ),

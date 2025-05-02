@@ -15,38 +15,29 @@ export type Deps<T> = {
 type Props<T> = {
   deps: Deps<T>[] | undefined;
   formatter?: (sideItem: T) => ReactNode;
-  //infoVisible?: boolean;
 };
 
 type MakeSideProps<T> = {
   side: T[] | undefined;
   formatter: (sideItem: T) => ReactNode;
-  //infoVisible?: boolean;
 };
 
 const makeSide = <T,>({ side, formatter }: MakeSideProps<T>) => {
-  // if (Array.isArray(data)) {
   return (
     <>
       {side &&
         side.map((s, index) => (
           <span className={styles.attr} key={index}>
             {formatter(s)}
-            {/* {infoVisible && e.pattern ? ' | ' + e.pattern : ''} */}
           </span>
         ))}
     </>
   );
 };
-// else {
-//   return makeSide([data], infoVisible);
-// }
-// };
 
 export const DependencyList = <T,>({
   deps,
   formatter = (sideItem: T) => sideItem as ReactNode,
-  //infoVisible = true,
 }: Props<T>) => {
   // const { selectedDependency, selectDependency, errorDependency } =
   //   useTaskContext();

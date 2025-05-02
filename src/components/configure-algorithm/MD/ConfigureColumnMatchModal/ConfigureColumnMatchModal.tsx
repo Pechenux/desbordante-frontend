@@ -33,6 +33,8 @@ export type ConfigureColumnMatchesProps = {
     currentColumnMatch: ColumnMatchType,
     newColumnMatch: ColumnMatchType,
   ) => void;
+  leftTableOptions: Option<number>[] | undefined;
+  rightTableOptions: Option<number>[] | undefined;
 };
 type ConfigureColumnMatchesModalProps = ModalProps &
   ConfigureColumnMatchesProps;
@@ -55,39 +57,32 @@ export const optionsMetrics: Option<MetricsType>[] = [
   { label: 'Monge-Elkan', value: MongeElkanConfigMetrics.mongeelkan },
 ];
 
-export const displayedMetricsName = {
-  [EqualityConfigMetrics.equality]: 'Equality',
-  [JaccardConfigMetrics.jaccard]: 'Jaccard',
-  [LVNormDateDistanceConfigMetrics.lvnormdatedistance]: 'LVNormDateDistance',
-  [LVNormNumberDistanceConfigMetrics.lvnormnumberdistance]:
-    'LVNormNumberDistance',
-  [LcsConfigMetrics.lcs]: 'LCS',
-  [LevenshteinConfigMetrics.levenshtein]: 'Levenstain',
-  [MongeElkanConfigMetrics.mongeelkan]: 'Monge-Elkan',
-};
-
-const optionsColumns = [
-  { label: 'zoo', value: 'zoo' },
-  { label: 'name', value: 'name' },
-  { label: 'animal', value: 'animal' },
-  { label: 'diet', value: 'diet' },
-];
+// const optionsColumns = [
+//   { label: 'zoo', value: 0 },
+//   { label: 'name', value: 1 },
+//   { label: 'animal', value: 2 },
+//   { label: 'diet', value: 3 },
+// ];
 
 export const ConfigureColumnMatchModal: FC<
   ConfigureColumnMatchesModalProps
-> = ({ columnMatch, isOpen, onApply, onClose, onDelete }) => {
+> = ({
+  columnMatch,
+  isOpen,
+  onApply,
+  onClose,
+  onDelete,
+  leftTableOptions,
+  rightTableOptions,
+}) => {
   const [metrics, setMetrics] = useState<MetricsType | null>(
     columnMatch.metrics ? columnMatch.metrics : optionsMetrics[0]!.value,
   );
-  const [column1, setColumn1] = useState<string | null>(
-    columnMatch.left_column
-      ? columnMatch.left_column
-      : optionsColumns[0]!.value,
+  const [column1, setColumn1] = useState<number | null>(
+    columnMatch.left_column,
   );
-  const [column2, setColumn2] = useState<string | null>(
-    columnMatch.right_column
-      ? columnMatch.right_column
-      : optionsColumns[0]!.value,
+  const [column2, setColumn2] = useState<number | null>(
+    columnMatch.right_column,
   );
   const [boundLimit, setBoundLimit] = useState<number[]>(
     'bound_number_limit' in columnMatch
@@ -134,6 +129,9 @@ export const ConfigureColumnMatchModal: FC<
     </>
   );
 
+  // console.log(!!fileIDs['1'], [fileIDs['1'], fileIDs['2'] ? fileIDs['2'] : fileIDs['1']], data);
+  // console.log(leftColumnOptions, rightColumnOptions);
+
   return (
     <>
       <ModalContainer
@@ -158,14 +156,14 @@ export const ConfigureColumnMatchModal: FC<
             <Select
               value={column1}
               onChange={setColumn1}
-              options={optionsColumns}
+              options={leftTableOptions}
             />
           </FormField>
           <FormField label="Column #2">
             <Select
               value={column2}
               onChange={setColumn2}
-              options={optionsColumns}
+              options={rightTableOptions}
             />
           </FormField>
           <FormField

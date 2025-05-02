@@ -1,11 +1,12 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
-import { createMutationFn } from '@/api/services/server';
+import { createMutationFn, createQueryFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
   CheckboxGroup,
@@ -41,6 +42,19 @@ export const MDForm: FormComponent<MDFormInputs> = (
     MDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);
 
+  const { data } = useQuery({
+    queryKey: [`/api/files/ids`, fileIDs],
+    queryFn: createQueryFn('/api/files/ids', {
+      params: {
+        query: { ids: fileIDs['1'] ? [fileIDs['1']] : undefined },
+      },
+    }),
+    enabled: !!fileIDs['1'],
+  });
+
+  const numRowsLeft = data && data[0]?.num_rows;
+  const numRowsRight = data && data[1]?.num_rows;
+
   return (
     <>
       <ControlledFormField<MDFormInputs, 'algo_name'>
@@ -60,11 +74,13 @@ export const MDForm: FormComponent<MDFormInputs> = (
         )}
       </ControlledFormField>
       <ControlledFormField<MDFormInputs, 'column_matches'>
-        formFieldProps={{ label: 'Column matches' }}
+        formFieldProps={{
+          label: 'Column matches',
+          disabled: isDisabledColumnMatches,
+        }}
         controllerProps={{
           name: 'column_matches',
           control: methods.control,
-          disabled: isDisabledColumnMatches,
         }}
       >
         {({ field: { value, onChange } }) => (
@@ -77,7 +93,10 @@ export const MDForm: FormComponent<MDFormInputs> = (
       </ControlledFormField>
 
       <ControlledFormField<MDFormInputs, 'min_support'>
-        formFieldProps={{ label: 'Minimum support' }}
+        formFieldProps={{
+          label: 'Minimum support',
+          disabled: isDisabledColumnMatches,
+        }}
         controllerProps={{
           name: 'min_support',
           control: methods.control,
@@ -85,12 +104,13 @@ export const MDForm: FormComponent<MDFormInputs> = (
       >
         {({ field: { value, onChange } }) => (
           <NumberInput
+            disabled={isDisabledColumnMatches}
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
               defaultNum: 1,
-              min: 1,
-              max: 10, //TODO: size table
+              min: 0,
+              max: (numRowsLeft ?? 1) * (numRowsRight ?? 1),
               step: 1,
               digitsAfterDot: 0,
             }}
@@ -111,7 +131,6 @@ export const MDForm: FormComponent<MDFormInputs> = (
             boundaries={{
               defaultNum: 1,
               min: -1,
-              max: 10, //TODO: size table
               step: 1,
               digitsAfterDot: 0,
             }}
@@ -145,10 +164,11 @@ export const MDForm: FormComponent<MDFormInputs> = (
           <NumberInput
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
+            slider
             boundaries={{
-              defaultNum: 0,
+              //defaultNum: 0,
               min: 0,
-              max: 65536,
+              max: 8,
               step: 1,
               digitsAfterDot: 0,
             }}

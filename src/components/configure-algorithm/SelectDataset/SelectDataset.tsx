@@ -20,22 +20,18 @@ export const SelectDataset = ({ onChange }: SelectDatasetProps) => {
   const [choosedDataset, setChoosedDataset] =
     useState<ChoosedDatasetInfo | null>(null);
 
-  const handleChangeDataset = (newValue: ChoosedDatasetInfo) => {
-    setChoosedDataset(newValue);
-    onChange(newValue.fileId);
-  };
-
-  const handleCancelDataset = () => {
-    setChoosedDataset(null);
-    onChange('');
+  const handleApplyDataset = () => {
+    onChange(choosedDataset?.fileId ?? '');
+    setIsOpen(false);
   };
 
   return (
     <>
       <ChooseDatasetModal
         choosedDataset={choosedDataset}
-        onClick={handleChangeDataset}
-        onCancel={handleCancelDataset}
+        onClick={setChoosedDataset}
+        onCancel={() => setChoosedDataset(null)}
+        onApply={handleApplyDataset}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />

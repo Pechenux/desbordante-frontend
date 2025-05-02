@@ -21,29 +21,15 @@ export const MDPresets: Presets<MDFormInputs> = {
         column_matches: [
           {
             metrics: LevenshteinConfigMetrics.levenshtein,
-            left_column: 'zoo',
-            right_column: 'zoo',
+            left_column: 1,
+            right_column: 1,
             minimum_similarity: 0.7,
             bound_number_limit: 0,
           },
           {
             metrics: LevenshteinConfigMetrics.levenshtein,
-            left_column: 'name',
-            right_column: 'name',
-            minimum_similarity: 0.7,
-            bound_number_limit: 0,
-          },
-          {
-            metrics: LevenshteinConfigMetrics.levenshtein,
-            left_column: 'animal',
-            right_column: 'animal',
-            minimum_similarity: 0.7,
-            bound_number_limit: 0,
-          },
-          {
-            metrics: LevenshteinConfigMetrics.levenshtein,
-            left_column: 'diet',
-            right_column: 'diet',
+            left_column: 2,
+            right_column: 2,
             minimum_similarity: 0.7,
             bound_number_limit: 0,
           },

@@ -15,13 +15,6 @@ import styles from './ColumnMatchesModal.module.scss';
 type ColumnMatchesModalProps = ModalProps & {
   value: ColumnMatchType[];
   onChange: (newValue: ColumnMatchType[]) => void;
-  // isDisabledAdding: boolean;
-  // onAddingColumnMatch: () => void;
-  // onDelete: (currentColumnMatch: ColumnMatchType) => void;
-  // onApply: (
-  //   currentColumnMatch: ColumnMatchType,
-  //   newColumnMatch: ColumnMatchType,
-  // ) => void;
 };
 export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
   value,
