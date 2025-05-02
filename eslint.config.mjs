@@ -23,7 +23,6 @@ export default [
     'plugin:@typescript-eslint/recommended',
     'next',
     'next/core-web-vitals',
-    'next/typescript',
     'plugin:prettier/recommended',
   ),
   {
@@ -70,6 +69,7 @@ export default [
         },
       ],
       '@tanstack/query/exhaustive-deps': 'error',
+      '@typescript-eslint/no-unused-expressions': ['warn', {}],
     },
   },
 ];

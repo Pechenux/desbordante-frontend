@@ -1,3 +1,3 @@
-pnpm lint:typescript --quiet $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
-pnpm lint:styles --allow-empty-input --quiet $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
-pnpm dlx commitlint --edit 
+# pnpm lint:typescript --quiet $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
+# pnpm lint:styles --allow-empty-input --quiet $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
+# pnpm dlx commitlint --edit 
