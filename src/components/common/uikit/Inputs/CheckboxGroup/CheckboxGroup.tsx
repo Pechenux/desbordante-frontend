@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useCallback, useMemo } from 'react';
 import styles from './CheckboxGroup.module.scss';
 
-type CheckboxProps<> = {
+type CheckboxProps = {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;

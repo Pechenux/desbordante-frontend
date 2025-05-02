@@ -1,4 +1,4 @@
-@import "common";
+@use "styles/common" as *;
 
 .container {
   height: calc(100vh - 2 * 86px);

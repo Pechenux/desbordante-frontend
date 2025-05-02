@@ -1,4 +1,4 @@
-import variables from '@/styles/common/variables.module.scss';
+import variables from '@/styles/common/_variables.module.scss';
 
 const colors = {
   primary: {

@@ -7,7 +7,7 @@ import {
 import Cross from '@/assets/icons/white-cross.svg?component';
 import styles from './ToastContainer.module.scss';
 
-const CloseButton: FC<CloseButtonProps> = ({ closeToast, ariaLabel }) => (
+const CloseButton = ({ closeToast, ariaLabel }: CloseButtonProps) => (
   <button onClick={closeToast} aria-label={ariaLabel} className={styles.close}>
     <Cross />
   </button>

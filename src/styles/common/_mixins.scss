@@ -1,7 +1,7 @@
-@import "variables.module";
+@use "variables.module";
 
 @mixin heading-1 {
-  font-family: $font-display;
+  font-family: variables.$font-display;
   font-size: 5.6rem;
   line-height: 110%;
   letter-spacing: -0.01em;
@@ -9,7 +9,7 @@
 }
 
 @mixin heading-2 {
-  font-family: $font-display;
+  font-family: variables.$font-display;
   font-size: 4.2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -17,7 +17,7 @@
 }
 
 @mixin heading-3 {
-  font-family: $font-display;
+  font-family: variables.$font-display;
   font-size: 3.15rem;
   line-height: 130%;
   font-weight: 400;
@@ -25,7 +25,7 @@
 }
 
 @mixin heading-4 {
-  font-family: $font-display;
+  font-family: variables.$font-display;
   font-size: 2.35rem;
   font-weight: 700;
   line-height: 130%;
@@ -33,21 +33,21 @@
 }
 
 @mixin heading-5 {
-  font-family: $font-display;
+  font-family: variables.$font-display;
   font-size: 1.8rem;
   line-height: 120%;
   font-weight: 700;
 }
 
 @mixin heading-6 {
-  font-family: $font-display;
+  font-family: variables.$font-display;
   font-size: 1.35rem;
   font-weight: 400;
   line-height: 120%;
 }
 
 @mixin paragraph {
-  font-family: $font-content;
+  font-family: variables.$font-content;
   font-style: normal;
   font-weight: 400;
   font-size: 1rem;
@@ -83,11 +83,11 @@
 /* stylelint-enable declaration-colon-space-after */
 
 @mixin clear-link {
-  color: $black;
+  color: variables.$black;
   text-decoration: none;
 
   &:hover {
-    color: $primary-0;
+    color: variables.$primary-0;
     text-decoration: underline;
   }
 }
@@ -103,13 +103,13 @@
 
 // Small devices
 @mixin sm {
-  @media (max-width: #{$screen-sm-max}) {
+  @media (max-width: #{variables.$screen-sm-max}) {
     @content;
   }
 }
 
 @mixin sm-up {
-  @media (min-width: #{$screen-md-min}) {
+  @media (min-width: #{variables.$screen-md-min}) {
     @content;
   }
 }
