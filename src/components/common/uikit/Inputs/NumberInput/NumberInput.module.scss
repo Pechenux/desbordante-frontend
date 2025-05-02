@@ -26,6 +26,11 @@
     cursor: grab;
     touch-action: pan-x;
 
+    &.disabled {
+      border-color: $black-25;
+      background-color: unset;
+    }
+
     &::before {
       content: "";
       position: absolute;

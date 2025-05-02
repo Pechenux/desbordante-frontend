@@ -9,6 +9,11 @@
   border-radius: 8px;
   background: $white-25;
 
+  &:disabled {
+    color: $black-50;
+    border: 1px solid $black-25;
+  }
+
   &:focus {
     outline: none;
     border: 1px solid $primary-0;

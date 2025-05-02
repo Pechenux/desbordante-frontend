@@ -49,3 +49,15 @@ main {
   height: 100%;
   padding: $header-heigth 0 0;
 }
+
+.rc-slider-disabled {
+  background-color: transparent !important;
+
+  > .rc-slider-rail {
+    background-color: $black-25 !important;
+  }
+
+  > .rc-slider-track {
+    background-color: $black-50 !important;
+  }
+}
