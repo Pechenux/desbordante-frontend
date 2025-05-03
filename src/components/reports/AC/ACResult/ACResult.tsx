@@ -10,13 +10,7 @@ import {
   SortOrder,
 } from '@/api/generated/schema';
 import { createQueryFn } from '@/api/services/server';
-import {
-  Button,
-  FormField,
-  Icon,
-  Text,
-  Pagination,
-} from '@/components/common/uikit';
+import { Button, Icon, Pagination } from '@/components/common/uikit';
 import {
   DefaultFilteringWindow,
   OrderingWindow,
@@ -122,27 +116,22 @@ export const ACResult = () => {
       <h5>Instance List</h5>
 
       <div className={styles.filters}>
-        <FormField label="Search">
-          <Text placeholder="Attribute name or regex" />
-        </FormField>
-        <div className={styles.buttons}>
-          <Button
-            variant="secondary"
-            size="md"
-            icon={<Icon name="filter" />}
-            onClick={() => setIsFilteringShown(true)}
-          >
-            Filters
-          </Button>
-          <Button
-            variant="secondary"
-            size="md"
-            icon={<Icon name="ordering" />}
-            onClick={() => setIsOrderingShown(true)}
-          >
-            Ordering
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          size="md"
+          icon={<Icon name="filter" />}
+          onClick={() => setIsFilteringShown(true)}
+        >
+          Filters
+        </Button>
+        <Button
+          variant="secondary"
+          size="md"
+          icon={<Icon name="ordering" />}
+          onClick={() => setIsOrderingShown(true)}
+        >
+          Ordering
+        </Button>
       </div>
 
       <div className={styles.rows}>
