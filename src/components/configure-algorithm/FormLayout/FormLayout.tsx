@@ -6,11 +6,12 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { datasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
+import { DatasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent, FormData, Presets } from '@/types/form';
@@ -24,7 +25,7 @@ import styles from './FormLayout.module.scss';
 
 export type FormLayoutProps = {
   FormComponent: FormComponent;
-  datasetInputs: datasetInputInfo[];
+  datasetInputs: DatasetInputInfo[];
   startValues?: FormData;
 };
 
@@ -35,13 +36,20 @@ export const FormLayout: FC<FormLayoutProps> = ({
 }) => {
   const { setQueryParams } = useQueryParams();
 
-  const startInputsValues: Record<string, string> = datasetInputs.reduce(
-    (acc, input) => ({ ...acc, [input.inputId]: input.datasetId }),
-    {},
+  const startInputsValues: Record<string, string> = useMemo(
+    () =>
+      datasetInputs.reduce(
+        (acc, input) => ({ ...acc, [input.inputId]: input.datasetId }),
+        {},
+      ),
+    [datasetInputs],
   );
   const [fileIDs, setFileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
 
-  useEffect(() => setFileIDs(startInputsValues), [datasetInputs]);
+  useEffect(
+    () => setFileIDs(startInputsValues),
+    [startInputsValues, setFileIDs],
+  );
 
   const methods = useForm<FormData>({
     mode: 'all',
@@ -97,25 +105,14 @@ export const FormLayout: FC<FormLayoutProps> = ({
   );
 
   const [presets, setPresets] = useState<Presets>();
+  console.log('Presets', presets);
   const formRef = useRef<HTMLFormElement>(null);
   const [inputCount, setInputCount] = useState<number>(0);
   useLayoutEffect(() => {
     setInputCount(formRef.current!.children.length);
   }, []);
-
-  useEffect(() => console.log('Presets', presets), [presets]);
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>
-      {/* <div className={styles.presetSelectorContainer}>
-        <PresetSelector
-          fileID={fileID}
-          isCustom={methods.formState.isDirty}
-          formReset={methods.reset}
-          formTrigger={methods.trigger}
-          presets={presets}
-        />
-      </div>
-      <div className={styles.line} /> */}
       <FilesSelector onChange={setFileIDs} datasetInputs={datasetInputs} />
       <FormProvider {...methods}>
         <form

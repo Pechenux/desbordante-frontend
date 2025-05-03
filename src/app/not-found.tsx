@@ -1,8 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Background from '@/assets/backgrounds/404.svg?component';
-import { Button } from '@/components/common/uikit';
+import { Button, Icon } from '@/components/common/uikit';
 import styles from './not-found.module.scss';
 
 export default function NotFound() {
@@ -10,10 +9,7 @@ export default function NotFound() {
 
   return (
     <div className={styles.wrapper}>
-      <Background
-        className={styles.background}
-        preserveAspectRatio="xMidYMid slice"
-      />
+      <Icon name="background404" className={styles.background} />
       <div className={styles.inner}>
         <h1>404</h1>
         <h5>Page not found</h5>

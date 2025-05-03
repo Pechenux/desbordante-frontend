@@ -43,14 +43,6 @@ export const ConfigureColumnMatchInput: FC<ConfigureColumnMatchInputProps> = ({
   const [isOpen, setIsOpen] = useState(!columnMatch);
   const [inputValue, setInputValue] = useState<string>('');
 
-  useEffect(() => {
-    setInputValue(
-      columnMatch.metrics && columnMatch.left_column && columnMatch.right_column
-        ? `${displayedMetricsName[columnMatch.metrics]} ( ${leftColumnOptions![columnMatch.left_column]?.label}, ${rightColumnOptions![columnMatch.right_column]?.label} )`
-        : '',
-    );
-  }, [columnMatch]);
-
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
 
   const { data } = useQuery({
@@ -96,6 +88,18 @@ export const ConfigureColumnMatchInput: FC<ConfigureColumnMatchInputProps> = ({
             value: i,
           })))) ||
     undefined;
+
+  useEffect(() => {
+    setInputValue(
+      leftColumnOptions &&
+        rightColumnOptions &&
+        columnMatch.metrics &&
+        columnMatch.left_column &&
+        columnMatch.right_column
+        ? `${displayedMetricsName[columnMatch.metrics]} ( ${leftColumnOptions[columnMatch.left_column]?.label}, ${rightColumnOptions[columnMatch.right_column]?.label} )`
+        : '',
+    );
+  }, [columnMatch, leftColumnOptions, rightColumnOptions]);
 
   return (
     <>

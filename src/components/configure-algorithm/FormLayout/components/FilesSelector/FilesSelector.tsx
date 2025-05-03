@@ -1,12 +1,12 @@
 import { useAtom } from 'jotai';
-import { datasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
+import { DatasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
 import { FormField } from '@/components/common/uikit';
 import { SelectDataset } from '@/components/configure-algorithm/SelectDataset';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import styles from './FilesSelector.module.scss';
 
 export type FilesSelectorProps = {
-  datasetInputs: datasetInputInfo[];
+  datasetInputs: DatasetInputInfo[];
   onChange: (newFileIDs: Record<string, string>) => void;
 };
 

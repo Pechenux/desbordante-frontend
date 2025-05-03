@@ -39,7 +39,7 @@ export const ColumnMatchesInput: FC<ColumnMatchesProps> = ({
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   useEffect(() => {
     onChange([]);
-  }, [fileIDs]);
+  }, [fileIDs, disabled, onChange]);
 
   useEffect(() => {
     setInputValue(
@@ -48,10 +48,6 @@ export const ColumnMatchesInput: FC<ColumnMatchesProps> = ({
         : '',
     );
   }, [value]);
-
-  useEffect(() => {
-    onChange([]);
-  }, [disabled]);
 
   const handleClose = () => {
     setIsOpen(false);

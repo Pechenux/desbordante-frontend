@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
 import {
@@ -18,8 +17,8 @@ import {
   OrderingWindow,
   SortOptions,
 } from '@/components/reports';
-import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import { extractShownDeps } from '@/utils/extractShownDeps';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './PFDResult.module.scss';
 
@@ -91,7 +90,6 @@ export const PFDResult = () => {
 
   return (
     <>
-      <NextSeo title="Discovered functional dependencies" />
       {isOrderingShown && (
         <OrderingWindow
           primitive={PrimitiveType.PFD}

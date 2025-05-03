@@ -16,8 +16,8 @@ import {
   OrderingWindow,
   SortOptions,
 } from '@/components/reports';
-import { extractShownDeps } from '@/constants/extractShownDeps';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
+import { extractShownDeps } from '@/utils/extractShownDeps';
 import { useQueryParams } from '@/utils/useQueryParams';
 import { ACInstance } from '../ACInstance';
 import styles from './ACResult.module.scss';

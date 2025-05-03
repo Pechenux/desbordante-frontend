@@ -40,6 +40,10 @@
     &.error {
       border: 2px solid $error;
     }
+
+    input {
+      background-color: transparent;
+    }
   }
 
   .errorMessage {

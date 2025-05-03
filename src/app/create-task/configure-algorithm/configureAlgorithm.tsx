@@ -3,15 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { FormLayout } from '@/components/configure-algorithm/FormLayout';
-// import {
-//   ARForm,
-//   CFDForm,
-//   FDForm,
-//   MFDForm,
-//   TypoFDForm,
-// } from '@/components/configure-algorithm/forms';
-//import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
 import {
+  FDForm,
+  PFDForm,
   DDForm,
   MDForm,
   NARForm,
@@ -20,14 +14,12 @@ import {
   AFDVerificationForm,
   AFDForm,
 } from '@/components/configure-algorithm/forms';
-import { FDForm } from '@/components/configure-algorithm/forms/FDForm';
-import { PFDForm } from '@/components/configure-algorithm/forms/PFDForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './configureAlgorithm.module.scss';
 
-export interface datasetInputInfo {
+export interface DatasetInputInfo {
   label: string;
   inputId: string;
   datasetId: string;
@@ -38,7 +30,7 @@ const forms: Partial<
     PrimitiveType,
     {
       formComponent: FormComponent;
-      datasetInputs: datasetInputInfo[];
+      datasetInputs: DatasetInputInfo[];
     }
   >
 > = {
@@ -88,11 +80,6 @@ const forms: Partial<
     formComponent: AFDForm,
     datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
-  // FD: FDForm,
-  // AR: ARForm,
-  // CFD: CFDForm,
-  // MFD: MFDForm,
-  // TypoFD: TypoFDForm,
 };
 
 const ConfigurePrimitive = () => {

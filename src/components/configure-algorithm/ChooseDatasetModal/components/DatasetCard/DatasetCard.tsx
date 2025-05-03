@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-//import { formatDistance } from 'date-fns';
 import { FC, PropsWithChildren, useCallback, useState } from 'react';
 import { ModalContainer } from '@/components/common/layout';
 import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';
@@ -28,9 +27,6 @@ const getFileDescription = (file: Dataset) => {
   const formatter = new Intl.NumberFormat('en', { notation: 'compact' });
   const rowsCount = formatter.format(file.rowsCount);
   const countOfColumns = formatter.format(file.countOfColumns || 0);
-  // const range = formatDistance(new Date(+file.createdAt), new Date(), {
-  //   addSuffix: true,
-  // });
   const range = file.createdAt;
   const usedTimes = file.numberOfUses;
   return [
@@ -67,7 +63,6 @@ const BaseCard: FC<BaseCardProps> = ({
 interface DatasetCardProps {
   dataset: Dataset;
   primitive: PrimitiveType; // TODO: remove
-  //choosedDataset: string;
   isSelected: boolean;
   onClick: (selectedDataset: ChoosedDatasetInfo) => void;
 }
@@ -76,7 +71,6 @@ export const DatasetCard: FC<DatasetCardProps> = ({
   dataset,
   primitive,
   isSelected,
-  //choosedDataset,
   onClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,7 +88,6 @@ export const DatasetCard: FC<DatasetCardProps> = ({
 
   return (
     <BaseCard
-      //isSelected={dataset.fileID === choosedDataset}
       isSelected={isSelected}
       onClick={
         isDisabled

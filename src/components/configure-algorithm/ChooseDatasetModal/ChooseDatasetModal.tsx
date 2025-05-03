@@ -61,7 +61,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
         </Button>
       </>
     ),
-    [onClose, onCancel],
+    [onCancel, onApply],
   );
 
   const { data } = useQuery({
@@ -76,7 +76,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
     enabled: true,
   });
 
-  // TODO: FIX
+  // TODO: FIX [заглушка]
   const builtinFiles = (
     <Collapse title="Built-in Datasets">
       <div className={styles.files}>

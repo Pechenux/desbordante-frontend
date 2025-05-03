@@ -2,9 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useLayoutEffect } from 'react';
-import HomeBackground from '@/assets/backgrounds/home.svg?component';
 import UnidataLogo from '@/assets/images/unidata-logo.svg?component';
-import { Button, ExternalLink } from '@/components/common/uikit';
+import { Button, ExternalLink, Icon } from '@/components/common/uikit';
 import styles from './home.module.scss';
 
 export default function Home() {
@@ -23,12 +22,7 @@ export default function Home() {
 
   return (
     <div className={styles.root}>
-      <HomeBackground
-        className={styles.background}
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-      />
+      <Icon name="backgroundHome" className={styles.background} />
       <div className={styles.hero}>
         <div className={styles.content}>
           <h1 className={styles.name}>Desbordante</h1>

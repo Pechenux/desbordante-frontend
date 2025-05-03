@@ -1,5 +1,5 @@
 import { cmsFetchClient } from '@/api/services/cms';
-import HomeBackground from '@/assets/backgrounds/home.svg?component';
+import { Icon } from '@/components/common/uikit';
 import { TeamMemberBadge } from '@/components/team/TeamMemberBadge';
 import styles from './team.module.scss';
 
@@ -17,12 +17,7 @@ export async function Team() {
 
   return (
     <div className={styles.teamPage}>
-      <HomeBackground
-        className={styles.background}
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-      />
+      <Icon name="backgroundHome" className={styles.background} />
 
       {teamMembers && teamMembers.length > 0 && (
         <ol className={styles.teamCardsContainer}>
