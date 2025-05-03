@@ -57,13 +57,6 @@ export const optionsMetrics: Option<MetricsType>[] = [
   { label: 'Monge-Elkan', value: MongeElkanConfigMetrics.mongeelkan },
 ];
 
-// const optionsColumns = [
-//   { label: 'zoo', value: 0 },
-//   { label: 'name', value: 1 },
-//   { label: 'animal', value: 2 },
-//   { label: 'diet', value: 3 },
-// ];
-
 export const ConfigureColumnMatchModal: FC<
   ConfigureColumnMatchesModalProps
 > = ({
@@ -128,9 +121,6 @@ export const ConfigureColumnMatchModal: FC<
       <Button onClick={handleApply}>Apply</Button>
     </>
   );
-
-  // console.log(!!fileIDs['1'], [fileIDs['1'], fileIDs['2'] ? fileIDs['2'] : fileIDs['1']], data);
-  // console.log(leftColumnOptions, rightColumnOptions);
 
   return (
     <>

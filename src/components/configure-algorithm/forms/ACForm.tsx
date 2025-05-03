@@ -26,15 +26,6 @@ export const ACForm: FormComponent<ACFormInputs> = (
 ) => {
   const methods = useFormContext<ACFormInputs>();
 
-  // const [algo_name] = useWatch<NARFormInputs>({
-  //   name: ['algo_name'],
-  // });
-
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   useEffect(() => {
     ACFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);

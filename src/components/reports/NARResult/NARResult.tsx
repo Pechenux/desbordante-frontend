@@ -147,7 +147,6 @@ export const NARResult = () => {
           >
             Ordering
           </Button>
-          {/* <DownloadResult filter={filter} disabled={!deps.length} /> */}
         </div>
       </div>
 

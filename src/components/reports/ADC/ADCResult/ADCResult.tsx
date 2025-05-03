@@ -144,7 +144,6 @@ export const ADCResult = () => {
           >
             Ordering
           </Button>
-          {/* <DownloadResult filter={filter} disabled={!deps.length} /> */}
         </div>
       </div>
 

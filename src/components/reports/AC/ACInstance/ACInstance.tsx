@@ -1,25 +1,16 @@
 import cn from 'classnames';
-//import { useAtom } from 'jotai';
 import { FC } from 'react';
 import { OperationType, SchemaAcModel } from '@/api/generated/schema';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
-//import ACAtom, { ACAtomDefaultValuesWithParams } from '@/store/ACTaskAtom';
-
 import { CollapsableView } from '../CollapsableView';
 import styles from './ACInstance.module.scss';
 
 export type ACInstanceType = SchemaAcModel & {
   isSelected: boolean;
   operation: OperationType;
+  onClick: () => void;
 };
-
-// export enum Operation {
-//   ADDITION = 'ADDITION',
-//   MULTIPLICATION = 'MULTIPLICATION',
-//   DIVISION = 'DIVISION',
-//   SUBTRACTION = 'SUBTRACTION',
-// }
 
 export const operationIcons = {
   [OperationType['+']]: <Icon name="plus" size={16} color={colors.black[75]} />,
@@ -41,11 +32,8 @@ export const ACInstance: FC<ACInstanceType> = ({
   outliers,
   intervals,
   isSelected,
+  onClick,
 }) => {
-  const handleSelect = () => {
-    console.log('click');
-  };
-
   const OperationIcon = operationIcons[operation];
   const outliersString = outliers.join(' ');
   const intervalsString = intervals.reduce(
@@ -56,7 +44,7 @@ export const ACInstance: FC<ACInstanceType> = ({
   return (
     <div
       className={cn(styles.containerOuter, isSelected && styles.selected)}
-      onClick={handleSelect}
+      onClick={onClick}
     >
       <div className={styles.containerInner}>
         Operation

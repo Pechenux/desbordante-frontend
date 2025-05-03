@@ -67,7 +67,6 @@ export const MDForm: FormComponent<MDFormInputs> = (
         {({ field: { value, onChange } }) => (
           <Select
             value={value}
-            //defaultValue={MDAlgorithmOptions[0]}
             onChange={onChange}
             options={MDAlgorithmOptions}
           />
@@ -147,7 +146,6 @@ export const MDForm: FormComponent<MDFormInputs> = (
         {({ field: { value, onChange } }) => (
           <Select
             value={value}
-            //defaultValue={levelDefenitionOptions[0]}
             onChange={onChange}
             options={levelDefenitionOptions}
           />
@@ -166,7 +164,7 @@ export const MDForm: FormComponent<MDFormInputs> = (
             onChange={([newValue]) => onChange(newValue)}
             slider
             boundaries={{
-              //defaultNum: 0,
+              defaultNum: 0,
               min: 0,
               max: 8,
               step: 1,

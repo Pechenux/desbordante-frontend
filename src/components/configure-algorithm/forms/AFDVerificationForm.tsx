@@ -30,11 +30,6 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnSelect = fileIDs['1'] === '';
 
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   useEffect(() => {
     AFDVerificationFields.forEach((key) =>
       methods.setValue(key, defaultValue[key]),

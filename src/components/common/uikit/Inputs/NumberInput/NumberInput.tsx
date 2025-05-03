@@ -53,8 +53,6 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     step = 1e-2,
   } = boundaries || {};
 
-  //const range = value.length === 2;
-
   let firstRawValue = value[0] ?? defaultNum;
   let secondRawValue = value[1] ?? defaultNum;
 
@@ -63,9 +61,6 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
   } else if (range && firstRawValue === secondRawValue) {
     value.pop();
   }
-  // else if (range && firstRawValue === secondRawValue) {
-  //   value.pop();
-  // }
 
   const [firstValue, setFirstValue] = useState(firstRawValue);
   const [secondValue, setSecondValue] = useState(secondRawValue);

@@ -32,6 +32,7 @@ export const ACResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
+  const [selectedInstance, setSelectedInstace] = useState<string>('');
 
   const [pageIndex, setPageIndex] = useState(1);
   const [columns, setColumns] = useState<MultiValue<string>>([]);
@@ -148,7 +149,7 @@ export const ACResult = () => {
         {shownData &&
           shownData.map((value) => {
             const id = `${value.left_column} ${value.right_column}`;
-            const isSelected = false;
+            const isSelected = id === selectedInstance;
             return (
               <ACInstance
                 key={id}
@@ -158,6 +159,7 @@ export const ACResult = () => {
                 operation={operation || OperationType.ValueMinus}
                 intervals={value.intervals}
                 outliers={value.outliers}
+                onClick={() => setSelectedInstace(id)}
               />
             );
           })}

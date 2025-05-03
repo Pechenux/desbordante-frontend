@@ -39,13 +39,6 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
 
   const [options, setOptions] = useState<AFDOptionalFields[]>([]);
 
-  useEffect(() => console.log(options), [options]);
-
-  // useEffect(() => {
-  //   setPresets(AFDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   const optionalFields = useMemo(
     () => optionalFieldsByAlgorithm[algo_name as AFDAlgorithms] ?? [],
     [algo_name],

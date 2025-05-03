@@ -39,9 +39,6 @@ export const DependencyList = <T,>({
   deps,
   formatter = (sideItem: T) => sideItem as ReactNode,
 }: Props<T>) => {
-  // const { selectedDependency, selectDependency, errorDependency } =
-  //   useTaskContext();
-
   const [selectedDependency, setSelectedDependency] = useState<string>();
   const errorDependency = '';
 

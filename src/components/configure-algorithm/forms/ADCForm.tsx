@@ -31,15 +31,6 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledInput = fileIDs['1'] === '';
 
-  // const [algo_name] = useWatch<NARFormInputs>({
-  //   name: ['algo_name'],
-  // });
-
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   useEffect(() => {
     ADCFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);

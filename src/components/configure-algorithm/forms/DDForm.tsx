@@ -27,11 +27,6 @@ export const DDForm: FormComponent<DDFormInputs> = (
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledInputs = !fileIDs['1'] || !fileIDs['2'];
 
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   useEffect(() => {
     DDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);
@@ -79,7 +74,7 @@ export const DDForm: FormComponent<DDFormInputs> = (
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
-              //defaultNum: 0,
+              defaultNum: 0,
               min: 0,
               max: numRows,
               step: 1,
@@ -104,7 +99,7 @@ export const DDForm: FormComponent<DDFormInputs> = (
             value={[value ?? 1]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
-              // defaultNum: 1,
+              defaultNum: 1,
               min: 0,
               max: numColumns,
               step: 1,

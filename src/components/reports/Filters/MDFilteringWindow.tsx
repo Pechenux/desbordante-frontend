@@ -20,13 +20,6 @@ type MDFilteringProps = ModalProps & {
   tableHeader: string[];
 };
 
-// const options: Option<string>[] = [
-//   { label: 'zoo', value: 'zoo' },
-//   { label: 'name', value: 'name' },
-//   { label: 'animal', value: 'animal' },
-//   { label: 'diet', value: 'diet' },
-// ];
-
 export const MDFilteringWindow: FC<MDFilteringProps> = ({
   isOpen = false,
   onClose,

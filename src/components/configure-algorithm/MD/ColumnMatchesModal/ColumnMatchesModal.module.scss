@@ -1,9 +1,5 @@
 @import "common";
 
-// .description {
-//   margin-top: 16px;
-// }
-
 .title {
   margin-bottom: 24px;
   text-align: center;
@@ -13,14 +9,6 @@
   padding: 0;
 }
 
-// .content {
-//   align-items: stretch;
-//   width: 100%;
-
-//   &.reversed {
-//     flex-direction: column-reverse;
-//   }
-// }
 .container {
   margin: auto;
   flex-direction: column;
@@ -29,11 +17,3 @@
   width: 466px;
   align-items: stretch;
 }
-
-// .filler {
-//   height: 80px;
-//   width: fit-content;
-//   margin: auto;
-//   display: flex;
-//   align-items: center;
-// }

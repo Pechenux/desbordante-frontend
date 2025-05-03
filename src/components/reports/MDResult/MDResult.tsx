@@ -19,10 +19,8 @@ import {
   Text,
 } from '@/components/common/uikit';
 
-import {
-  displayedMetricsName,
-  MetricsType,
-} from '@/components/configure-algorithm/MD/ConfigureColumnMatchModal';
+import { displayedMetricsName } from '@/components/configure-algorithm/MD';
+import { MetricsType } from '@/components/configure-algorithm/MD/ConfigureColumnMatchModal';
 import {
   DependencyList,
   MDFilteringWindow,
@@ -174,7 +172,6 @@ export const MDResult = () => {
           >
             Ordering
           </Button>
-          {/* <DownloadResult filter={filter} disabled={!deps.length} /> */}
         </div>
       </div>
 

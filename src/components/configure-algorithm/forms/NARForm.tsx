@@ -2,7 +2,6 @@
 
 import _ from 'lodash';
 import { useEffect } from 'react';
-//import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaNarTaskConfig } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
@@ -23,15 +22,6 @@ export const NARForm: FormComponent<NARFormInputs> = (
   },
 ) => {
   const methods = useFormContext<NARFormInputs>();
-
-  // const [algo_name] = useWatch<NARFormInputs>({
-  //   name: ['algo_name'],
-  // });
-
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
 
   useEffect(() => {
     NARFields.forEach((key) => methods.setValue(key, defaultValue[key]));

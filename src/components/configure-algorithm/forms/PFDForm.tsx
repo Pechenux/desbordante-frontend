@@ -33,11 +33,6 @@ export const PFDForm: FormComponent<PFDFormInputs> = (
     PFDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
   }, [methods]);
 
-  // useEffect(() => {
-  //   setPresets(FDPresets);
-  //   methods.setValue('algo_name', defaultValue['algo_name']);
-  // }, [methods, setPresets]);
-
   return (
     <>
       <ControlledFormField<PFDFormInputs, 'algo_name'>
