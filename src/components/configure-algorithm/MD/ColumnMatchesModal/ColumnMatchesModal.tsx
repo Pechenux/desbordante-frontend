@@ -15,15 +15,19 @@ import styles from './ColumnMatchesModal.module.scss';
 type ColumnMatchesModalProps = ModalProps & {
   value: ColumnMatchType[];
   onChange: (newValue: ColumnMatchType[]) => void;
+  onApply: () => void;
 };
 export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
   value,
   onChange,
   isOpen,
   onClose,
+  onApply,
 }) => {
   const isDisabledAdding =
-    value && !value[value.length - 1]?.left_column && value.length !== 0;
+    value &&
+    value[value.length - 1] === defaultColumnMatch &&
+    value.length !== 0;
   const handleAddColumnMatch = () => {
     onChange([...value, defaultColumnMatch]);
   };
@@ -45,16 +49,14 @@ export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
   );
 
   const footer = (
-    <Button
-      disabled={isDisabledAdding}
-      variant="secondary"
-      icon={<Icon name="plus" />}
-      onClick={() => {
-        handleAddColumnMatch();
-      }}
-    >
-      Add column match
-    </Button>
+    <>
+      <Button variant="secondary" onClick={onClose}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={onApply}>
+        Apply
+      </Button>
+    </>
   );
 
   return (
@@ -79,6 +81,15 @@ export const ColumnMatchesModal: FC<ColumnMatchesModalProps> = ({
                 columnMatch={cm}
               />
             ))}
+          <Button
+            disabled={isDisabledAdding}
+            variant="secondary"
+            className={styles.addButton}
+            icon={<Icon name="plus" />}
+            onClick={handleAddColumnMatch}
+          >
+            Add column match
+          </Button>
         </WizardLayout>
       </ModalContainer>
     </>

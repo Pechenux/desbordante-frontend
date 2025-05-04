@@ -16,13 +16,18 @@ import { createQueryFn } from '@/api/services/server';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
-import {
-  ConfigureColumnMatchesProps,
-  ConfigureColumnMatchModal,
-} from '../ConfigureColumnMatchModal';
+import { ColumnMatchType } from '../ColumnMatchesInput';
+import { ConfigureColumnMatchModal } from '../ConfigureColumnMatchModal';
 import styles from './ConfigureColumnMatchInput.module.scss';
 
-type ConfigureColumnMatchInputProps = ConfigureColumnMatchesProps;
+type ConfigureColumnMatchInputProps = {
+  columnMatch: ColumnMatchType;
+  onDelete: (currentColumnMatch: ColumnMatchType) => void;
+  onApply: (
+    currentColumnMatch: ColumnMatchType,
+    newColumnMatch: ColumnMatchType,
+  ) => void;
+};
 
 export const displayedMetricsName = {
   [EqualityConfigMetrics.equality]: 'Equality',
@@ -62,40 +67,27 @@ export const ConfigureColumnMatchInput: FC<ConfigureColumnMatchInputProps> = ({
   const leftFileInfo = data && data[0];
   const leftColumnOptions =
     (leftFileInfo &&
-      leftFileInfo.num_columns &&
-      (leftFileInfo.with_header
-        ? leftFileInfo.header?.map((column, i) => ({
-            label: column,
-            value: i,
-          }))
-        : [...Array(leftFileInfo.num_columns).keys()].map((i) => ({
-            label: `Column ${i + 1}`,
-            value: i,
-          })))) ||
+      leftFileInfo.header?.map((column, i) => ({
+        label: leftFileInfo.with_header ? column : `Column ${i}`,
+        value: i,
+      }))) ||
     undefined;
 
   const rightFileInfo = data && data[1];
   const rightColumnOptions =
     (rightFileInfo &&
-      rightFileInfo.num_columns &&
-      (rightFileInfo.with_header
-        ? rightFileInfo.header?.map((column, i) => ({
-            label: column,
-            value: i,
-          }))
-        : [...Array(rightFileInfo.num_columns).keys()].map((i) => ({
-            label: `Column ${i + 1}`,
-            value: i,
-          })))) ||
+      rightFileInfo.header?.map((column, i) => ({
+        label: rightFileInfo.with_header ? column : `Column ${i}`,
+        value: i,
+      }))) ||
     undefined;
 
   useEffect(() => {
     setInputValue(
       leftColumnOptions &&
         rightColumnOptions &&
-        columnMatch.metrics &&
-        columnMatch.left_column &&
-        columnMatch.right_column
+        columnMatch.left_column > -1 &&
+        columnMatch.right_column > -1
         ? `${displayedMetricsName[columnMatch.metrics]} ( ${leftColumnOptions[columnMatch.left_column]?.label}, ${rightColumnOptions[columnMatch.right_column]?.label} )`
         : '',
     );

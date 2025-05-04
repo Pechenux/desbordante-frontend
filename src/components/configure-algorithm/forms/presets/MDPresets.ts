@@ -12,7 +12,7 @@ export const MDPresets: Presets<MDFormInputs> = {
       displayName: 'Default',
       preset: {
         algo_name: HyMDConfigAlgo_name.hymd,
-        min_support: 1,
+        min_support: 0,
         prune_nondisjoint: true,
         max_cardinality: -1,
         threads: 0,
