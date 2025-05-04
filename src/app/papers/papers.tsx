@@ -1,5 +1,5 @@
 import { cmsFetchClient } from '@/api/services/cms';
-import HomeBackground from '@/assets/backgrounds/home.svg?component';
+import { Icon } from '@/components/common/uikit';
 import { PrPublicationCard } from '../../components/papers/PrPublicationCard';
 import { SciencePublicationCard } from '../../components/papers/SciencePublicationCard';
 import styles from './papers.module.scss';
@@ -35,12 +35,7 @@ export async function Papers() {
 
   return (
     <div className={styles.papersPage}>
-      <HomeBackground
-        className={styles.background}
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-      />
+      <Icon name="backgroundHome" className={styles.background} />
 
       {prPublications && prPublications.length > 0 && (
         <section className={styles.prPublications}>

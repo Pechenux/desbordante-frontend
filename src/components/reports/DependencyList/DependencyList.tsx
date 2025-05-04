@@ -1,88 +1,78 @@
 'use client';
 
 import classNames from 'classnames';
-import _ from 'lodash';
-import { FC, ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Icon } from '@/components/common/uikit';
 import styles from './DependencyList.module.scss';
 
-// interface Column {
-//   name: string;
-//   index: number;
-// }
-
-export type GeneralColumn = number;
-
-type Props = {
-  deps: {
-    confidence?: number;
-    rhs_index: GeneralColumn;
-    lhs_indices: GeneralColumn[];
-  }[];
-  infoVisible?: boolean;
+export type Deps<T> = {
+  lhs: T[];
+  rhs: T[];
+  confidence?: number;
+  support?: number;
 };
 
-const makeSide: (
-  data: GeneralColumn | GeneralColumn[],
-  infoVisible: boolean,
-) => ReactElement = (data, infoVisible) => {
-  if (Array.isArray(data)) {
-    return (
-      <>
-        {data.map((e) => (
-          <span className={styles.attr} key={e}>
-            {e}
-            {/* {infoVisible && e.pattern ? ' | ' + e.pattern : ''} */}
+type Props<T> = {
+  deps: Deps<T>[] | undefined;
+  formatter?: (sideItem: T) => ReactNode;
+};
+
+type MakeSideProps<T> = {
+  side: T[] | undefined;
+  formatter: (sideItem: T) => ReactNode;
+};
+
+const makeSide = <T,>({ side, formatter }: MakeSideProps<T>) => {
+  return (
+    <>
+      {side &&
+        side.map((s, index) => (
+          <span className={styles.attr} key={index}>
+            {formatter(s)}
           </span>
         ))}
-      </>
-    );
-  } else {
-    return makeSide([data], infoVisible);
-  }
+    </>
+  );
 };
 
-export const DependencyList: FC<Props> = ({ deps, infoVisible = true }) => {
-  // const { selectedDependency, selectDependency, errorDependency } =
-  //   useTaskContext();
-
-  const [selectedDependency, setSelectedDependency] = useState<GeneralColumn[]>(
-    [],
-  );
-  const errorDependency = [] as GeneralColumn[];
+export const DependencyList = <T,>({
+  deps,
+  formatter = (sideItem: T) => sideItem as ReactNode,
+}: Props<T>) => {
+  const [selectedDependency, setSelectedDependency] = useState<string>();
+  const errorDependency = '';
 
   return (
     <div className={styles.dependencyListContainer}>
-      {_.map(deps, (row, i) => {
-        const fullDependency = row.lhs_indices.concat(row.rhs_index);
-        const isError =
-          JSON.stringify(errorDependency) === JSON.stringify(fullDependency);
-        const isSelected =
-          JSON.stringify(selectedDependency) === JSON.stringify(fullDependency);
+      {deps &&
+        deps.map((row, i) => {
+          const fullDependency = JSON.stringify(row);
+          const isError = errorDependency === fullDependency;
+          const isSelected = selectedDependency === fullDependency;
 
-        return (
-          <div
-            key={i}
-            className={classNames(
-              styles.row,
-              isSelected && styles.selectedRow,
-              isError && styles.errorRow,
-            )}
-            onClick={() =>
-              setSelectedDependency(isSelected ? [] : fullDependency)
-            }
-          >
-            {makeSide(row.lhs_indices, infoVisible)}
-            <div className={styles.arrowContainer}>
-              <Icon name="longArrow" />
-              {row.confidence !== undefined && (
-                <small>{row.confidence * 100}%</small>
+          return (
+            <div
+              key={i}
+              className={classNames(
+                styles.row,
+                isSelected && styles.selectedRow,
+                isError && styles.errorRow,
               )}
+              onClick={() =>
+                setSelectedDependency(isSelected ? '' : fullDependency)
+              }
+            >
+              {makeSide({ side: row.lhs, formatter })}
+              <div className={styles.arrowContainer}>
+                <Icon name="longArrow" />
+                {row.confidence && (
+                  <small>{Math.round(row.confidence * 100)}%</small>
+                )}
+              </div>
+              {makeSide({ side: row.rhs, formatter })}
             </div>
-            {makeSide(row.rhs_index, infoVisible)}
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   );
 };

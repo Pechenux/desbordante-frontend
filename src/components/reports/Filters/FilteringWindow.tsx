@@ -1,29 +1,28 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { PropertiesModal } from '@/components/common/layout';
+import { WithChildren } from '@/types/withChildren';
 
-type FilteringProps = {
-  isFilteringShown: boolean;
-  setIsFilteringShown: Dispatch<SetStateAction<boolean>>;
+type FilteringProps = WithChildren & {
+  isOpen: boolean;
+  onClose: () => void;
+  onApply: () => void;
 };
 
 export const FilteringWindow: FC<FilteringProps> = ({
-  isFilteringShown,
-  setIsFilteringShown,
+  isOpen,
+  onClose,
+  onApply,
+  children,
 }) => {
   return (
     <PropertiesModal
-      isOpen={isFilteringShown}
+      isOpen={isOpen}
       name="Filters"
-      onClose={() => {
-        setIsFilteringShown(false);
-      }}
-      onApply={() => {
-        setIsFilteringShown(false);
-      }}
+      onClose={onClose}
+      onApply={onApply}
     >
       Checkbox
+      {children}
     </PropertiesModal>
   );
 };
-
-export default FilteringWindow;

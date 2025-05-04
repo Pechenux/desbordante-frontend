@@ -1,0 +1,37 @@
+@import "common";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.collabsableOutput {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buttonShow {
+  @include paragraph-small;
+  margin-left: 4px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  color: $primary-0;
+}
+
+.withShowAll {
+  display: flex;
+  white-space: nowrap;
+}
+
+.whenShowAll {
+  white-space: normal;
+}
+
+.withoutMargin {
+  margin-left: 0;
+}

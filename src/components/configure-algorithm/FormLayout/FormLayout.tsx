@@ -1,15 +1,19 @@
 import { useMutation } from '@tanstack/react-query';
 import cn from 'classnames';
+import { useAtom } from 'jotai';
 import {
   FC,
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { DatasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
+import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent, FormData, Presets } from '@/types/form';
 import { showError } from '@/utils/toasts';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -21,7 +25,7 @@ import styles from './FormLayout.module.scss';
 
 export type FormLayoutProps = {
   FormComponent: FormComponent;
-  datasetInputs: { label: string; inputName: string }[];
+  datasetInputs: DatasetInputInfo[];
   startValues?: FormData;
 };
 
@@ -31,7 +35,22 @@ export const FormLayout: FC<FormLayoutProps> = ({
   startValues,
 }) => {
   const { setQueryParams } = useQueryParams();
-  const [fileIDs, setFileIDs] = useState<Record<string, string>>({});
+
+  const startInputsValues: Record<string, string> = useMemo(
+    () =>
+      datasetInputs.reduce(
+        (acc, input) => ({ ...acc, [input.inputId]: input.datasetId }),
+        {},
+      ),
+    [datasetInputs],
+  );
+  const [fileIDs, setFileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
+
+  useEffect(
+    () => setFileIDs(startInputsValues),
+    [startInputsValues, setFileIDs],
+  );
+
   const methods = useForm<FormData>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -71,10 +90,9 @@ export const FormLayout: FC<FormLayoutProps> = ({
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      console.log(datasetInputs, fileIDs);
       mutator.mutate({
-        datasets: datasetInputs.reduce((acc, { inputName }) => {
-          const inputData = fileIDs[inputName];
+        datasets: datasetInputs.reduce((acc, { inputId }) => {
+          const inputData = fileIDs[inputId];
           if (inputData) {
             acc.push(inputData);
           }
@@ -87,31 +105,15 @@ export const FormLayout: FC<FormLayoutProps> = ({
   );
 
   const [presets, setPresets] = useState<Presets>();
+  console.log('Presets', presets);
   const formRef = useRef<HTMLFormElement>(null);
   const [inputCount, setInputCount] = useState<number>(0);
   useLayoutEffect(() => {
     setInputCount(formRef.current!.children.length);
   }, []);
-
-  useEffect(() => console.log(presets), [presets]);
-
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>
-      {/* <div className={styles.presetSelectorContainer}>
-        <PresetSelector
-          fileID={fileID}
-          isCustom={methods.formState.isDirty}
-          formReset={methods.reset}
-          formTrigger={methods.trigger}
-          presets={presets}
-        />
-      </div>
-      <div className={styles.line} /> */}
-      <FilesSelector
-        fileIDs={fileIDs}
-        onChange={setFileIDs}
-        datasetInputs={datasetInputs}
-      />
+      <FilesSelector onChange={setFileIDs} datasetInputs={datasetInputs} />
       <FormProvider {...methods}>
         <form
           id="algorithmconfigurator"

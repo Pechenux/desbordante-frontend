@@ -1,12 +1,12 @@
 import cn from 'classnames';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { WithChildren } from '@/types/withChildren';
 import { Tooltip } from '../Tooltip';
 import styles from './FormField.module.scss';
 
 export type FormFieldParams = {
   label?: string;
-  tooltip?: string;
+  tooltip?: ReactNode;
   id?: string;
   error?: string;
   disabled?: boolean;

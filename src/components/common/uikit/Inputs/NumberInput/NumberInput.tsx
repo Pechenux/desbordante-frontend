@@ -15,7 +15,7 @@ export type BoundariesType = {
   includingMin?: boolean;
   max?: number;
   includingMax?: boolean;
-  digits?: number;
+  digitsAfterDot?: number;
   step?: number;
 };
 
@@ -24,12 +24,13 @@ export type NumberInputProps = WithError & {
   onChange: (newValue: number[]) => void;
   boundaries?: BoundariesType;
   slider?: boolean;
+  range?: boolean;
   showBoundariesToolTip?: boolean;
   disabled?: boolean;
 };
 
-const toFixed = (num: number, digits: number) =>
-  Math.trunc(num * Math.pow(10, digits)) / Math.pow(10, digits);
+const toFixed = (num: number, digitsAfterDot: number) =>
+  Math.trunc(num * Math.pow(10, digitsAfterDot)) / Math.pow(10, digitsAfterDot);
 
 export const NumberInput: FC<NumberInputProps> = (props) => {
   const {
@@ -37,6 +38,7 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     onChange,
     boundaries,
     slider = false,
+    range = false,
     error,
     disabled,
   } = props;
@@ -47,16 +49,17 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     includingMin = true,
     max,
     includingMax = true,
-    digits = 2,
+    digitsAfterDot = 2,
     step = 1e-2,
   } = boundaries || {};
 
-  const range = value.length === 2;
-
   let firstRawValue = value[0] ?? defaultNum;
   let secondRawValue = value[1] ?? defaultNum;
+
   if (range && firstRawValue < secondRawValue) {
     [firstRawValue, secondRawValue] = [secondRawValue, firstRawValue];
+  } else if (range && firstRawValue === secondRawValue) {
+    value.pop();
   }
 
   const [firstValue, setFirstValue] = useState(firstRawValue);
@@ -95,11 +98,11 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     (s: string): number => {
       const parsed = placeInsideBorders(s);
       if (step) {
-        return toFixed(parsed, digits);
+        return toFixed(parsed, digitsAfterDot);
       }
       return parsed;
     },
-    [digits, placeInsideBorders, step],
+    [digitsAfterDot, placeInsideBorders, step],
   );
 
   const handleFirstInputChange = useCallback(
@@ -171,7 +174,7 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
     throw new Error('Step incorrect');
   }
 
-  if (step && digits < Math.log10(1 / step)) {
+  if (step && digitsAfterDot < Math.log10(1 / step)) {
     throw new Error('Numbers after dot incorrect');
   }
 
@@ -264,7 +267,9 @@ export const NumberInput: FC<NumberInputProps> = (props) => {
         {max !== undefined ? max : '+∞'}
         {max !== undefined && includingMax ? ']' : ')'}
         {step !== undefined && slider && `, step: ${step}`}
-        {digits !== undefined && !slider && `, precision: ${digits} digits`}
+        {digitsAfterDot !== undefined &&
+          !slider &&
+          `, precision: ${digitsAfterDot} digits`}
       </div>
     </div>
   );

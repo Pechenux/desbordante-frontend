@@ -13,6 +13,7 @@
 
 .tagsContainer {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -32,9 +33,9 @@
 .description {
   @include paragraph-small;
   color: $black-75;
+  overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  overflow: hidden;
   -webkit-line-clamp: 2;
 }
 
@@ -52,4 +53,8 @@
 .fullDescription {
   @include paragraph;
   color: $black;
+  ol {
+    list-style: disc;
+    margin-left: 24px;
+  }
 }
