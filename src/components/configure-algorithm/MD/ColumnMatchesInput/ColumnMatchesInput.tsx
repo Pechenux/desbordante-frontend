@@ -22,8 +22,8 @@ export type ColumnMatchesProps = {
 
 export const defaultColumnMatch = {
   metrics: EqualityConfigMetrics.equality,
-  left_column: '',
-  right_column: '',
+  left_column: -1,
+  right_column: -1,
   minimum_similarity: 0.7,
   bound_number_limit: 0,
 };
@@ -35,6 +35,7 @@ export const ColumnMatchesInput: FC<ColumnMatchesProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState<string>('');
+  const [tempValue, setTempValue] = useState<ColumnMatchType[]>(value ?? []);
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   useEffect(() => {
@@ -43,24 +44,28 @@ export const ColumnMatchesInput: FC<ColumnMatchesProps> = ({
 
   useEffect(() => {
     setInputValue(
-      value && value.length > 0 && value[0]?.left_column
-        ? `${value.length} column match(es)`
-        : '',
+      value && value.length > 0 ? `${value.length} column match(es)` : '',
     );
   }, [value]);
 
   const handleClose = () => {
     setIsOpen(false);
-    onChange(value.filter((cm) => cm.left_column));
+    setTempValue(value);
+  };
+
+  const handleApply = () => {
+    onChange(tempValue.filter((cm) => cm.left_column > -1));
+    handleClose();
   };
 
   return (
     <>
       <ColumnMatchesModal
-        value={value}
-        onChange={onChange}
+        value={tempValue}
+        onChange={setTempValue}
         isOpen={isOpen}
         onClose={handleClose}
+        onApply={handleApply}
       />
       <label
         className={classNames(

@@ -199,6 +199,7 @@ MDForm.onSubmit = (fieldValues) => {
 };
 // использовать zod
 MDForm.mutationFn = ({ datasets, data }) => {
+  console.log(222, data);
   return datasets.length
     ? createMutationFn('/api/tasks')({
         body: {

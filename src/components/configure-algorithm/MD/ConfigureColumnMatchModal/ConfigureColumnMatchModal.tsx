@@ -26,7 +26,7 @@ import { Button } from '@/components/common/uikit/Button';
 import { ColumnMatchType } from '../ColumnMatchesInput';
 import styles from './ConfigureColumnMatchModal.module.scss';
 
-export type ConfigureColumnMatchesProps = {
+type ConfigureColumnMatchesModalProps = ModalProps & {
   columnMatch: ColumnMatchType;
   onDelete: (currentColumnMatch: ColumnMatchType) => void;
   onApply: (
@@ -36,8 +36,6 @@ export type ConfigureColumnMatchesProps = {
   leftTableOptions: Option<number>[] | undefined;
   rightTableOptions: Option<number>[] | undefined;
 };
-type ConfigureColumnMatchesModalProps = ModalProps &
-  ConfigureColumnMatchesProps;
 
 export type MetricsType = ColumnMatchType['metrics'];
 
@@ -72,10 +70,10 @@ export const ConfigureColumnMatchModal: FC<
     columnMatch.metrics ? columnMatch.metrics : optionsMetrics[0]!.value,
   );
   const [column1, setColumn1] = useState<number | null>(
-    columnMatch.left_column,
+    columnMatch.left_column > -1 ? columnMatch.left_column : 0,
   );
   const [column2, setColumn2] = useState<number | null>(
-    columnMatch.right_column,
+    columnMatch.right_column > -1 ? columnMatch.right_column : 0,
   );
   const [boundLimit, setBoundLimit] = useState<number[]>(
     'bound_number_limit' in columnMatch
