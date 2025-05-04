@@ -6,10 +6,10 @@ import { FC, useEffect, useState } from 'react';
 import {
   EqualityConfigMetrics,
   JaccardConfigMetrics,
-  LVNormDateDistanceConfigMetrics,
-  LVNormNumberDistanceConfigMetrics,
   LcsConfigMetrics,
   LevenshteinConfigMetrics,
+  LVNormDateDistanceConfigMetrics,
+  LVNormNumberDistanceConfigMetrics,
   MongeElkanConfigMetrics,
 } from '@/api/generated/schema';
 import { createQueryFn } from '@/api/services/server';

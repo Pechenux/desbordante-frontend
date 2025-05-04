@@ -9,6 +9,13 @@ import { AFDFormInputs } from '../AFDForm';
 export const AFDPresets: Presets<AFDFormInputs> = {
   common: [
     {
+      name: 'tane-default',
+      displayName: 'Tane Default',
+      preset: {
+        algo_name: AFDTaneConfigAlgo_name.tane,
+      },
+    },
+    {
       name: 'default',
       displayName: 'Default',
       preset: {
@@ -16,19 +23,9 @@ export const AFDPresets: Presets<AFDFormInputs> = {
         max_lhs: 0,
         error: 0.3,
         is_null_equal_null: false,
+        afd_error_measure: AFDTaneConfigAfd_error_measure.g1,
         threads: 0,
         seed: 0,
-      },
-    },
-    {
-      name: 'default',
-      displayName: 'Tane Default',
-      preset: {
-        algo_name: AFDTaneConfigAlgo_name.tane,
-        max_lhs: 0,
-        error: 0.3,
-        is_null_equal_null: false,
-        afd_error_measure: AFDTaneConfigAfd_error_measure.g1,
       },
     },
   ],

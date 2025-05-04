@@ -38,9 +38,8 @@ export type FormProps<FormInputs extends object = FieldValues> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type FormComponent<FormInputs extends object = any> = FC<
-  FormProps<FormInputs>
-> & {
+export type FormComponent<FormInputs extends object = any> = FC & {
+  presets: Presets<FormInputs>;
   onSubmit: (data: FormInputs) => FormData;
   mutationFn: MutationFunction<
     SchemaTaskPublic | undefined,

@@ -9,9 +9,11 @@ export const FDPresets: Presets<FDFormInputs> = {
       displayName: 'Default',
       preset: {
         algo_name: HyFDConfigAlgo_name.hyfd,
-        max_lhs: 0,
-        threads: 0,
+        max_lhs: 1,
+        threads: 1,
         is_null_equal_null: false,
+        seed: 0,
+        custom_random_seed: 0,
       },
     },
   ],

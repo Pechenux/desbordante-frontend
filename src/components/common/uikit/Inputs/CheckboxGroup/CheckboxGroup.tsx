@@ -25,6 +25,7 @@ const Checkbox = ({
       <input
         type="checkbox"
         checked={checked}
+        onChange={() => onChange(!checked)}
         className={cn(styles.checkboxInput, {
           [styles.checkboxError!]: error,
           [styles.simple!]: variant === 'simple',

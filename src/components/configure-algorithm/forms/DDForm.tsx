@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaDdTaskConfig } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -9,27 +8,16 @@ import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import { DDAlgorithmOptions, DDFields } from './options/DDOptions';
 import { DDPresets } from './presets/DDPresets';
 
 export type DDFormInputs = SchemaDdTaskConfig['config'];
-const defaultValue = DDPresets.common.at(-1)
-  ?.preset as GetAllFieds<DDFormInputs>;
 
-export const DDForm: FormComponent<DDFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const DDForm: FormComponent<DDFormInputs> = () => {
   const methods = useFormContext<DDFormInputs>();
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledInputs = !fileIDs['1'] || !fileIDs['2'];
-
-  useEffect(() => {
-    DDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  }, [methods]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -112,10 +100,10 @@ export const DDForm: FormComponent<DDFormInputs> = (
   );
 };
 
+DDForm.presets = DDPresets;
 DDForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, DDFields);
 };
-// использовать zod
 DDForm.mutationFn = ({ datasets, data }) =>
   datasets.length
     ? createMutationFn('/api/tasks')({

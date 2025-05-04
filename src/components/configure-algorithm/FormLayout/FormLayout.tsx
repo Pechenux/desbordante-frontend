@@ -14,13 +14,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { DatasetInputInfo } from '@/app/create-task/configure-algorithm/configureAlgorithm';
 import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
-import { FormComponent, FormData, Presets } from '@/types/form';
+import { FormComponent, FormData } from '@/types/form';
 import { showError } from '@/utils/toasts';
 import { useQueryParams } from '@/utils/useQueryParams';
 import { FilesSelector } from './components/FilesSelector';
 import { FormFooter } from './components/FormFooter';
 import { FormHeader } from './components/FormHeader';
-// import { PresetSelector } from './components/PresetSelector';
+import { PresetSelector } from './components/PresetSelector/PresetSelector';
 import styles from './FormLayout.module.scss';
 
 export type FormLayoutProps = {
@@ -51,10 +51,16 @@ export const FormLayout: FC<FormLayoutProps> = ({
     [startInputsValues, setFileIDs],
   );
 
+  const defaultPreset = useMemo(
+    () => FormComponent.presets?.common?.at(-1)?.preset ?? {},
+    [FormComponent],
+  );
+
   const methods = useForm<FormData>({
     mode: 'all',
     reValidateMode: 'onChange',
     values: startValues,
+    defaultValues: defaultPreset,
   });
   const mutator = useMutation({
     mutationFn: FormComponent.mutationFn,
@@ -66,7 +72,6 @@ export const FormLayout: FC<FormLayoutProps> = ({
       }),
     onError: (error) => {
       if (typeof error === 'string') {
-        console.log('test2');
         showError(error, 'Internal error occurred. Please try later.');
       }
 
@@ -104,8 +109,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
     [FormComponent, datasetInputs, fileIDs, mutator],
   );
 
-  const [presets, setPresets] = useState<Presets>();
-  console.log('Presets', presets);
+  const presets = useMemo(() => FormComponent.presets, [FormComponent]);
   const formRef = useRef<HTMLFormElement>(null);
   const [inputCount, setInputCount] = useState<number>(0);
   useLayoutEffect(() => {
@@ -114,6 +118,17 @@ export const FormLayout: FC<FormLayoutProps> = ({
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>
       <FilesSelector onChange={setFileIDs} datasetInputs={datasetInputs} />
+      <div className={styles.presetSelectorContainer}>
+        <PresetSelector
+          fileIDs={Object.values(fileIDs)}
+          defaultPreset={defaultPreset}
+          isCustom={methods.formState.isDirty}
+          formReset={methods.reset}
+          formTrigger={methods.trigger}
+          presets={presets}
+        />
+      </div>
+      <div className={styles.line} />
       <FormProvider {...methods}>
         <form
           id="algorithmconfigurator"
@@ -124,7 +139,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
           )}
           onSubmit={methods.handleSubmit(onSubmit)}
         >
-          <FormComponent setPresets={setPresets} />
+          <FormComponent />
         </form>
       </FormProvider>
     </WizardLayout>

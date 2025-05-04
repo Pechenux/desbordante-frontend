@@ -1,142 +1,135 @@
-// import { useQuery } from '@apollo/client';
-// import { useCallback, useEffect, useMemo, useState } from 'react';
-// import { Controller, useForm, useWatch, FieldValues } from 'react-hook-form';
-// import { Select } from '@components/common/uikit/Inputs';
-// import {
-//   getFileName,
-//   getFileNameVariables,
-// } from '@graphql/operations/queries/__generated__/getFileName';
-// import { GET_FILE_NAME } from '@graphql/operations/queries/getFileName';
-// import { showError } from '@utils/toasts';
-// import { Presets } from 'types/form';
-// import { OptionWithBadges } from 'types/multiSelect';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FieldValues } from 'react-hook-form';
+import { createQueryFn } from '@/api/services/server';
+import { FormField, Select } from '@/components/common/uikit';
+import { Presets } from '@/types/form';
 
-// type PresetSelectorProps = {
-//   fileIDs?: string[];
-//   isLoading: boolean;
-//   isCustom: boolean;
-//   formReset: (preset: FieldValues) => void;
-//   formTrigger: () => void;
-//   presets: Presets | undefined;
-// };
+type PresetSelectorProps = {
+  fileIDs?: string[];
+  defaultPreset: Partial<FieldValues>;
+  isCustom: boolean;
+  formReset: (preset: FieldValues) => void;
+  formTrigger: () => void;
+  presets: Presets | undefined;
+};
 
-// const CUSTOM_PRESET_INDEX = -1;
-// export { CUSTOM_PRESET_INDEX };
+const CUSTOM_PRESET_INDEX = -1;
+export { CUSTOM_PRESET_INDEX };
 
-// export const PresetSelector = ({
-//   fileIDs,
-//   isLoading = false,
-//   isCustom,
-//   formReset,
-//   formTrigger,
-//   presets,
-// }: PresetSelectorProps) => {
-//   const { control, setValue } = useForm<{ presetIndex?: number }>();
+export const PresetSelector = ({
+  fileIDs: files,
+  defaultPreset,
+  isCustom,
+  formReset,
+  formTrigger,
+  presets,
+}: PresetSelectorProps) => {
+  const [presetIndex, setPresetIndex] = useState<number | undefined>(undefined);
 
-//   const presetNameWatch = useWatch({
-//     control,
-//     name: 'presetIndex',
-//   });
+  const { data, isLoading } = useQuery({
+    queryKey: [`/api/files`],
+    queryFn: createQueryFn('/api/files', {
+      params: {
+        query: {
+          with_public: true,
+        },
+      },
+    }),
+    enabled: true,
+  });
 
-//   const defaultPreset = useMemo(
-//     () => presets?.common?.at(-1)?.preset ?? {},
-//     [presets],
-//   );
+  const fromPresets = useMemo(() => {
+    if (isLoading) {
+      return [];
+    }
 
-//   const fromPresets = useMemo(() => {
-//     if (isLoading) {
-//       return [];
-//     }
+    if (presets === undefined) {
+      return [];
+    }
 
-//     if (presets === undefined) {
-//       return [];
-//     }
+    if (
+      presets.fileSpecific === undefined ||
+      files === undefined ||
+      files.length === 0
+    ) {
+      return presets.common;
+    }
 
-//     if (
-//       presets.fileSpecific === undefined ||
-//       fileNameData?.datasetInfo?.fileName === undefined
-//     ) {
-//       return presets.common;
-//     }
+    const fileNames = files.map(
+      (fileId) => data?.find((file) => file.id === fileId)?.name ?? fileId,
+    );
 
-//     const fileName = fileNameData?.datasetInfo?.fileName;
+    const fileSpecificPresets = presets.fileSpecific
+      .filter((preset) =>
+        fileNames.every((fileName) => preset.fileNames.includes(fileName)),
+      )
+      .map((entry) => entry.presets)
+      .flat();
 
-//     const fileSpecificPresets = presets.fileSpecific
-//       .filter((preset) => preset.fileNames.includes(fileName))
-//       .map((entry) => entry.presets)
-//       .flat();
+    return [...fileSpecificPresets, ...presets.common];
+  }, [data, files, isLoading, presets]);
 
-//     return [...fileSpecificPresets, ...presets.common];
-//   }, [isLoading, presets, fileNameData]);
+  const presetOptions = useMemo(
+    () =>
+      fromPresets
+        .map((preset, index) => ({
+          label: preset.displayName,
+          value: index,
+        }))
+        .concat([{ label: 'Custom', value: CUSTOM_PRESET_INDEX }]),
+    [fromPresets],
+  );
 
-//   const presetOptions = useMemo(
-//     () =>
-//       fromPresets
-//         .map((preset, index) => ({
-//           label: preset.displayName,
-//           value: index,
-//         }))
-//         .concat([{ label: 'Custom', value: CUSTOM_PRESET_INDEX }]),
-//     [fromPresets],
-//   );
+  useEffect(() => {
+    if (!isLoading) {
+      if (presetOptions.length > 1) {
+        // set default preset to first one
+        setPresetIndex(0);
+      } else {
+        setPresetIndex(CUSTOM_PRESET_INDEX);
+      }
+    }
+  }, [isLoading, presetOptions]);
 
-//   useEffect(() => {
-//     if (!isLoading) {
-//       if (presetOptions.length > 0) {
-//         setValue('presetIndex', 0);
-//       } else {
-//         setValue('presetIndex', CUSTOM_PRESET_INDEX);
-//       }
-//     }
-//   }, [isLoading, presetOptions, setValue]);
+  const [needTrigger, setNeedTrigger] = useState(false);
 
-//   const [needTrigger, setNeedTrigger] = useState(false);
+  useEffect(() => {
+    if (needTrigger) {
+      setNeedTrigger(false);
+      formTrigger();
+    }
+  }, [formTrigger, needTrigger]);
 
-//   useEffect(() => {
-//     if (needTrigger) {
-//       setNeedTrigger(false);
-//       formTrigger();
-//     }
-//   }, [formTrigger, needTrigger]);
+  const changePreset = useCallback(
+    (presetIndex: number | undefined) => {
+      setPresetIndex(presetIndex);
+      if (presetIndex !== undefined && presetIndex !== CUSTOM_PRESET_INDEX) {
+        formReset({
+          ...defaultPreset,
+          ...fromPresets[presetIndex]?.preset,
+        });
+        setNeedTrigger(true);
+      }
+    },
+    [defaultPreset, formReset, fromPresets],
+  );
 
-//   const changePreset = useCallback(
-//     (presetIndex: number | undefined) => {
-//       if (presetIndex !== undefined && presetIndex !== CUSTOM_PRESET_INDEX) {
-//         formReset({
-//           ...defaultPreset,
-//           ...fromPresets[presetIndex].preset,
-//         });
-//         setNeedTrigger(true);
-//       }
-//     },
-//     [defaultPreset, formReset, fromPresets],
-//   );
+  useEffect(() => {
+    if (isCustom) {
+      changePreset(CUSTOM_PRESET_INDEX);
+    }
+  }, [isCustom, changePreset]);
 
-//   useEffect(() => {
-//     changePreset(presetNameWatch);
-//   }, [changePreset, presetNameWatch]);
-
-//   useEffect(() => {
-//     if (isCustom) {
-//       setValue('presetIndex', CUSTOM_PRESET_INDEX);
-//     }
-//   }, [isCustom, setValue]);
-
-//   return (
-//     <Controller
-//       name="presetIndex"
-//       control={control}
-//       render={({ field: { onChange, value, ...field } }) => (
-//         <Select
-//           {...field}
-//           value={presetOptions.find((option) => option.value === value)}
-//           onChange={(e) => onChange((e as OptionWithBadges).value)}
-//           label={'Preset'}
-//           options={presetOptions}
-//           filterOption={(option) => option.label !== 'Custom'}
-//           isLoading={isLoading}
-//         />
-//       )}
-//     />
-//   );
-// };
+  return (
+    <FormField label="Preset">
+      <Select
+        value={presetIndex}
+        onChange={(e) => changePreset(e as number)}
+        options={presetOptions}
+        filterOption={(option) => option.label !== 'Custom'}
+        isLoading={isLoading}
+      />
+    </FormField>
+  );
+};

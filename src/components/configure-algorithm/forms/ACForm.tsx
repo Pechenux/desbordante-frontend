@@ -1,12 +1,10 @@
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaAcTaskConfigInput } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import { SeedRandomInput } from '../SeedRandomomInput';
 import {
   ACAlgorithmOptions,
@@ -16,19 +14,9 @@ import {
 import { ACPresets } from './presets/ACPresets';
 
 export type ACFormInputs = SchemaAcTaskConfigInput['config'];
-const defaultValue = ACPresets.common.at(-1)
-  ?.preset as GetAllFieds<ACFormInputs>;
 
-export const ACForm: FormComponent<ACFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const ACForm: FormComponent<ACFormInputs> = () => {
   const methods = useFormContext<ACFormInputs>();
-
-  useEffect(() => {
-    ACFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  }, [methods]);
 
   return (
     <>
@@ -195,10 +183,10 @@ export const ACForm: FormComponent<ACFormInputs> = (
   );
 };
 
+ACForm.presets = ACPresets;
 ACForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, ACFields);
 };
-// использовать zod
 ACForm.mutationFn = ({ datasets, data }) =>
   datasets.length
     ? createMutationFn('/api/tasks')({
