@@ -1,20 +1,16 @@
 'use client';
 
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaNarTaskConfig } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import { NARAlgorithmOptions, NARFields } from './options/NAROptions';
 import { NARPresets } from './presets/NARPresets';
 
 export type NARFormInputs = SchemaNarTaskConfig['config'];
-const defaultValue = NARPresets.common.at(-1)
-  ?.preset as GetAllFieds<NARFormInputs>;
 
 export const NARForm: FormComponent<NARFormInputs> = (
   {
@@ -22,10 +18,6 @@ export const NARForm: FormComponent<NARFormInputs> = (
   },
 ) => {
   const methods = useFormContext<NARFormInputs>();
-
-  useEffect(() => {
-    NARFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  }, [methods]);
 
   return (
     <>
@@ -195,10 +187,10 @@ export const NARForm: FormComponent<NARFormInputs> = (
   );
 };
 
+NARForm.presets = NARPresets;
 NARForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, NARFields);
 };
-// использовать zod
 NARForm.mutationFn = ({ datasets, data }) =>
   datasets.length
     ? createMutationFn('/api/tasks')({

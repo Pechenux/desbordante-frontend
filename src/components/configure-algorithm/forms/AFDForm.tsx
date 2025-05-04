@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { SchemaAfdTaskConfig } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
@@ -10,49 +10,29 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 
 import {
   AFDAlgorithmOptions,
   AFDAlgorithms,
   AFDCommonFields,
-  AFDOptionalFields,
   ErrorMeasuresOptions,
   optionalFieldsByAlgorithm,
 } from './options/AFDOptions';
 import { AFDPresets } from './presets/AFDPresets';
 
 export type AFDFormInputs = SchemaAfdTaskConfig['config'];
-const defaultValue = AFDPresets.common.at(-1)
-  ?.preset as GetAllFieds<AFDFormInputs>;
 
-export const AFDForm: FormComponent<AFDFormInputs> = (
-  {
-    /* setPresets*/
-  },
-) => {
+export const AFDForm: FormComponent<AFDFormInputs> = () => {
   const methods = useFormContext<AFDFormInputs>();
 
   const [algo_name] = useWatch<AFDFormInputs>({
     name: ['algo_name'],
   });
 
-  const [options, setOptions] = useState<AFDOptionalFields[]>([]);
-
   const optionalFields = useMemo(
     () => optionalFieldsByAlgorithm[algo_name as AFDAlgorithms] ?? [],
     [algo_name],
   );
-
-  useEffect(() => {
-    if (!algo_name) {
-      return;
-    }
-
-    setOptions(optionalFields);
-    const fields = [...AFDCommonFields, ...optionalFields];
-    fields.forEach((key) => methods.setValue(key, defaultValue[key]!));
-  }, [algo_name, methods, optionalFields]);
 
   return (
     <>
@@ -129,7 +109,7 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
           />
         )}
       </ControlledFormField>
-      {options.includes('afd_error_measure') && (
+      {optionalFields.includes('afd_error_measure') && (
         <ControlledFormField<AFDFormInputs, 'afd_error_measure'>
           formFieldProps={{ label: 'Error measure' }}
           controllerProps={{
@@ -147,7 +127,7 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
           )}
         </ControlledFormField>
       )}
-      {options.includes('seed') && (
+      {optionalFields.includes('seed') && (
         <ControlledFormField<AFDFormInputs, 'seed'>
           formFieldProps={{ label: 'Seed' }}
           controllerProps={{
@@ -164,7 +144,7 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
           )}
         </ControlledFormField>
       )}
-      {options.includes('threads') && (
+      {optionalFields.includes('threads') && (
         <ControlledFormField<AFDFormInputs, 'threads'>
           formFieldProps={{ label: 'Thread count' }}
           controllerProps={{
@@ -191,6 +171,7 @@ export const AFDForm: FormComponent<AFDFormInputs> = (
   );
 };
 
+AFDForm.presets = AFDPresets;
 AFDForm.onSubmit = (fieldValues) => {
   const algo_name = fieldValues.algo_name;
   const fields = [
@@ -199,7 +180,6 @@ AFDForm.onSubmit = (fieldValues) => {
   ];
   return _.pick(fieldValues, fields);
 };
-// использовать zod
 AFDForm.mutationFn = ({ datasets, data }) => {
   return datasets.length
     ? createMutationFn('/api/tasks')({

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { SchemaFdTaskConfig } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
@@ -10,46 +10,27 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import {
   FDAlgorithmOptions,
   FDAlgorithms,
   FDCommonFields,
-  FDOptionalFields,
   optionalFieldsByAlgorithm,
 } from './options/FDOptions';
 import { FDPresets } from './presets/FDPresets';
 
 export type FDFormInputs = SchemaFdTaskConfig['config'];
-const defaultValue = FDPresets.common.at(-1)
-  ?.preset as GetAllFieds<FDFormInputs>;
 
-export const FDForm: FormComponent<FDFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const FDForm: FormComponent<FDFormInputs> = () => {
   const methods = useFormContext<FDFormInputs>();
 
   const [algo_name] = useWatch<FDFormInputs>({
     name: ['algo_name'],
   });
 
-  const [options, setOptions] = useState<FDOptionalFields[]>([]);
   const optionalFields = useMemo(
     () => optionalFieldsByAlgorithm[algo_name as FDAlgorithms] ?? [],
     [algo_name],
   );
-
-  useEffect(() => {
-    if (!algo_name) {
-      return;
-    }
-
-    setOptions(optionalFields);
-    const fields = [...FDCommonFields, ...optionalFields];
-    fields.forEach((key) => methods.setValue(key, defaultValue[key]!));
-  }, [algo_name, methods, optionalFields]);
 
   return (
     <>
@@ -89,7 +70,7 @@ export const FDForm: FormComponent<FDFormInputs> = (
         )}
       </ControlledFormField>
 
-      {options.includes('seed') && (
+      {optionalFields.includes('seed') && (
         <ControlledFormField<FDFormInputs, 'seed'>
           formFieldProps={{ label: 'Seed' }}
           controllerProps={{
@@ -106,7 +87,7 @@ export const FDForm: FormComponent<FDFormInputs> = (
           )}
         </ControlledFormField>
       )}
-      {options.includes('seed') && (
+      {optionalFields.includes('seed') && (
         <ControlledFormField<FDFormInputs, 'custom_random_seed'>
           formFieldProps={{ label: 'Seed' }}
           controllerProps={{
@@ -123,7 +104,7 @@ export const FDForm: FormComponent<FDFormInputs> = (
           )}
         </ControlledFormField>
       )}
-      {options.includes('threads') && (
+      {optionalFields.includes('threads') && (
         <ControlledFormField<FDFormInputs, 'threads'>
           formFieldProps={{ label: 'Thread count' }}
           controllerProps={{
@@ -147,7 +128,7 @@ export const FDForm: FormComponent<FDFormInputs> = (
           )}
         </ControlledFormField>
       )}
-      {options.includes('is_null_equal_null') && (
+      {optionalFields.includes('is_null_equal_null') && (
         <ControlledFormField<FDFormInputs, 'is_null_equal_null'>
           formFieldProps={{ label: 'Is null equal null' }}
           controllerProps={{
@@ -168,6 +149,7 @@ export const FDForm: FormComponent<FDFormInputs> = (
   );
 };
 
+FDForm.presets = FDPresets;
 FDForm.onSubmit = (fieldValues) => {
   const algo_name = fieldValues.algo_name;
   const fields = [
@@ -176,7 +158,6 @@ FDForm.onSubmit = (fieldValues) => {
   ];
   return _.pick(fieldValues, fields);
 };
-// использовать zod
 FDForm.mutationFn = ({ datasets, data }) =>
   datasets && datasets.length
     ? createMutationFn('/api/tasks')({

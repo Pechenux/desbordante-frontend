@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -15,7 +14,6 @@ import {
 } from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import { ColumnMatchesInput } from '../MD/ColumnMatchesInput';
 import {
   levelDefenitionOptions,
@@ -25,22 +23,12 @@ import {
 import { MDPresets } from './presets/MDPresets';
 
 export type MDFormInputs = SchemaMdTaskConfigInput['config'];
-const defaultValue = MDPresets.common.at(-1)
-  ?.preset as GetAllFieds<MDFormInputs>;
 
-export const MDForm: FormComponent<MDFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const MDForm: FormComponent<MDFormInputs> = () => {
   const methods = useFormContext<MDFormInputs>();
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnMatches = fileIDs['1'] === ''; // left_table unselect
-
-  useEffect(() => {
-    MDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  }, [methods]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -194,10 +182,10 @@ export const MDForm: FormComponent<MDFormInputs> = (
   );
 };
 
+MDForm.presets = MDPresets;
 MDForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, MDFields);
 };
-// использовать zod
 MDForm.mutationFn = ({ datasets, data }) => {
   return datasets.length
     ? createMutationFn('/api/tasks')({

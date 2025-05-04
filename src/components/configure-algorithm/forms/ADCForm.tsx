@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaAdcTaskConfig } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -9,7 +8,6 @@ import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import {
   ADCAlgorithmOptions,
   ADCFields,
@@ -18,22 +16,12 @@ import {
 import { ADCPresets } from './presets/ADCPresets';
 
 export type ADCFormInputs = SchemaAdcTaskConfig['config'];
-const defaultValue = ADCPresets.common.at(-1)
-  ?.preset as GetAllFieds<ADCFormInputs>;
 
-export const ADCForm: FormComponent<ADCFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const ADCForm: FormComponent<ADCFormInputs> = () => {
   const methods = useFormContext<ADCFormInputs>();
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledInput = fileIDs['1'] === '';
-
-  useEffect(() => {
-    ADCFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  }, [methods]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -46,6 +34,7 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
   });
 
   const numRows = data && data[0]?.num_rows;
+
   return (
     <>
       <ControlledFormField<ADCFormInputs, 'algo_name'>
@@ -170,10 +159,10 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
   );
 };
 
+ADCForm.presets = ADCPresets;
 ADCForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, ADCFields);
 };
-// использовать zod
 ADCForm.mutationFn = ({ datasets, data }) =>
   datasets.length
     ? createMutationFn('/api/tasks')({

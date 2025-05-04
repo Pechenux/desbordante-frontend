@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaAfdVerificationTaskConfig } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -9,32 +8,22 @@ import { ControlledFormField } from '@/components/common/uikit';
 import { CheckboxGroup, Select } from '@/components/common/uikit/Inputs';
 import { fileIDsAtom } from '@/store/fileIDsAtom';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import {
   AFDVerificationAlgorithmOptions,
   AFDVerificationFields,
 } from './options/AFDVerificationOptions';
 import { AFDVerificationPresets } from './presets/AFDVerificationPresets';
+
 export type AFDVerificationFormInputs =
   SchemaAfdVerificationTaskConfig['config'];
-const defaultValue = AFDVerificationPresets.common.at(-1)
-  ?.preset as GetAllFieds<AFDVerificationFormInputs>;
 
-export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const AFDVerificationForm: FormComponent<
+  AFDVerificationFormInputs
+> = () => {
   const methods = useFormContext<AFDVerificationFormInputs>();
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnSelect = fileIDs['1'] === '';
-
-  useEffect(() => {
-    AFDVerificationFields.forEach((key) =>
-      methods.setValue(key, defaultValue[key]),
-    );
-  }, [methods]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -132,10 +121,10 @@ export const AFDVerificationForm: FormComponent<AFDVerificationFormInputs> = (
   );
 };
 
+AFDVerificationForm.presets = AFDVerificationPresets;
 AFDVerificationForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, AFDVerificationFields);
 };
-// использовать zod
 AFDVerificationForm.mutationFn = ({ datasets, data }) => {
   return datasets.length
     ? createMutationFn('/api/tasks')({

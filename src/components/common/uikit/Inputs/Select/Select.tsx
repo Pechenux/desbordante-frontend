@@ -3,11 +3,11 @@
 import cn from 'classnames';
 import { useCallback, useContext, useMemo } from 'react';
 import ReactSelect, {
+  OnChangeValue,
+  PropsValue,
   components as ReactSelectComponents,
   Props as ReactSelectProps,
-  PropsValue,
   SingleValue,
-  OnChangeValue,
 } from 'react-select';
 import { z } from 'zod';
 import { PortalRootContext } from '@/components/meta';
@@ -28,7 +28,7 @@ export type Badge = {
 /**
  * Select option type
  */
-export type Option<TValue = string> = {
+export type SelectOption<TValue = string> = {
   label: string;
   value: TValue;
   badges?: Badge[];
@@ -38,7 +38,7 @@ export type SelectProps<TValue = string, IsMulti extends boolean = false> = {
   value?: OnChangeValue<TValue, IsMulti>;
   onChange?: (newValue: OnChangeValue<TValue, IsMulti>) => void;
 } & Omit<
-  ReactSelectProps<Option<TValue>, IsMulti>,
+  ReactSelectProps<SelectOption<TValue>, IsMulti>,
   'styles' | 'components' | 'classNames' | 'value' | 'onChange'
 > &
   WithError;
@@ -52,15 +52,15 @@ const optionParser = z.object({
 });
 
 const isSingleOption = function <TValue = string>(
-  value: PropsValue<Option<TValue>>,
-): value is SingleValue<Option<TValue>> {
+  value: PropsValue<SelectOption<TValue>>,
+): value is SingleValue<SelectOption<TValue>> {
   return optionParser.safeParse(value).success;
 };
 
 /**
  * Custom select with brand styling
  */
-export const Select = function <
+export const SelectComponent = function <
   TValue = string,
   IsMulti extends boolean = false,
 >({
@@ -81,7 +81,9 @@ export const Select = function <
   );
 
   const getOption = useCallback(
-    (value?: PropsValue<TValue>): PropsValue<Option<TValue>> | undefined => {
+    (
+      value?: PropsValue<TValue>,
+    ): PropsValue<SelectOption<TValue>> | undefined => {
       if (Array.isArray(value)) {
         return flatOptions?.filter((option) => value.includes(option.value));
       } else {
@@ -93,7 +95,7 @@ export const Select = function <
 
   // Dirty hack to make things work
   const handleChange = useCallback(
-    (newOptionValue: OnChangeValue<Option<TValue>, IsMulti>) => {
+    (newOptionValue: OnChangeValue<SelectOption<TValue>, IsMulti>) => {
       if (!onChange) return;
 
       if (!props.isMulti && isSingleOption(newOptionValue)) {
@@ -208,3 +210,5 @@ export const Select = function <
     />
   );
 };
+
+export type SelectComponentType = typeof SelectComponent;

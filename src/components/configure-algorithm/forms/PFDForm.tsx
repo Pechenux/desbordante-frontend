@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaPfdTaskConfig } from '@/api/generated/schema';
 import { createMutationFn } from '@/api/services/server';
@@ -10,7 +9,6 @@ import {
   Select,
 } from '@/components/common/uikit/Inputs';
 import { FormComponent } from '@/types/form';
-import { GetAllFieds } from '@/types/getAllFields';
 import {
   PFDAlgorithmOptions,
   PFDErrorMeasuresOptions,
@@ -19,19 +17,9 @@ import {
 import { PFDPresets } from './presets/PFDPresets';
 
 export type PFDFormInputs = SchemaPfdTaskConfig['config'];
-const defaultValue = PFDPresets.common.at(-1)
-  ?.preset as GetAllFieds<PFDFormInputs>;
 
-export const PFDForm: FormComponent<PFDFormInputs> = (
-  {
-    /*setPresets*/
-  },
-) => {
+export const PFDForm: FormComponent<PFDFormInputs> = () => {
   const methods = useFormContext<PFDFormInputs>();
-
-  useEffect(() => {
-    PFDFields.forEach((key) => methods.setValue(key, defaultValue[key]));
-  }, [methods]);
 
   return (
     <>
@@ -126,10 +114,10 @@ export const PFDForm: FormComponent<PFDFormInputs> = (
   );
 };
 
+PFDForm.presets = PFDPresets;
 PFDForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, PFDFields);
 };
-// использовать zod
 PFDForm.mutationFn = ({ datasets, data }) => {
   return datasets.length
     ? createMutationFn('/api/tasks')({
