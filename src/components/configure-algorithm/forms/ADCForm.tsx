@@ -79,11 +79,10 @@ export const ADCForm: FormComponent<ADCFormInputs> = (
         )}
       </ControlledFormField>
       <ControlledFormField<ADCFormInputs, 'shard_length'>
-        formFieldProps={{ label: 'Shard length' }}
+        formFieldProps={{ label: 'Shard length', disabled: isDisabledInput }}
         controllerProps={{
           name: 'shard_length',
           control: methods.control,
-          disabled: isDisabledInput,
         }}
       >
         {({ field: { value, onChange } }) => (

@@ -118,7 +118,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
                   rowsCount: 10,
                   createdAt: '11.11.2011',
                   numberOfUses: 1,
-                  isBuiltIn: true,
+                  isBuiltIn: false,
                   supportedPrimitives: [PrimitiveType.NAR],
                 }}
                 primitive={PrimitiveType.NAR}
