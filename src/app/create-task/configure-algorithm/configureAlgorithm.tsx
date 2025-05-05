@@ -4,16 +4,17 @@ import { useRouter } from 'next/navigation';
 import { memo } from 'react';
 import { FormLayout } from '@/components/configure-algorithm/FormLayout';
 import {
-  FDForm,
-  PFDForm,
+  ACForm,
+  ADCForm,
+  AFDForm,
+  AFDVerificationForm,
   DDForm,
+  FDForm,
   MDForm,
   NARForm,
-  ADCForm,
-  ACForm,
-  AFDVerificationForm,
-  AFDForm,
+  PFDForm,
 } from '@/components/configure-algorithm/forms';
+import { MFDForm } from '@/components/configure-algorithm/forms/MFDForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -59,6 +60,10 @@ const forms: Partial<
       { label: 'Left table', inputId: '1', datasetId: '' },
       { label: 'Right table (optional)', inputId: '2', datasetId: '' },
     ],
+  },
+  MFD: {
+    formComponent: MFDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
   NAR: {
     formComponent: NARForm,
