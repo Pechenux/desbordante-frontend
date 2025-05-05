@@ -5,6 +5,7 @@ export * from './PFDResult';
 export * from './AFDResult';
 export * from './DDResult';
 export * from './MDResult';
+export * from './MFDResult';
 export * from './NARResult';
 export * from './ADC';
 export * from './AC';
