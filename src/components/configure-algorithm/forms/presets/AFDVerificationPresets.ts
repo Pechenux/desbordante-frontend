@@ -9,8 +9,8 @@ export const AFDVerificationPresets: Presets<AFDVerificationFormInputs> = {
       displayName: 'Default',
       preset: {
         algo_name: FDVerifierConfigAlgo_name.fdverifier,
-        lhs_indices: [0],
-        rhs_indices: [1],
+        lhs_indices: [],
+        rhs_indices: [],
         is_null_equal_null: false,
       },
     },
