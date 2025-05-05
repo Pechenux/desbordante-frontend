@@ -2,12 +2,12 @@ import {
   FDVerifierConfigAlgo_name,
   SchemaAfdVerificationTaskConfig,
 } from '@/api/generated/schema';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type AFDVerificationAlgorithms =
   SchemaAfdVerificationTaskConfig['config']['algo_name'];
 
-export const AFDVerificationAlgorithmOptions: Option<AFDVerificationAlgorithms>[] =
+export const AFDVerificationAlgorithmOptions: SelectOption<AFDVerificationAlgorithms>[] =
   [{ label: 'FDVerifier', value: FDVerifierConfigAlgo_name.fdverifier }];
 
 export const AFDVerificationFields = [

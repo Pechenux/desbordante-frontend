@@ -1,17 +1,13 @@
 import dynamic from 'next/dynamic';
 import { Text } from '@/components/common/uikit/Inputs/Text';
-import { SelectComponentType } from './Select';
+import type { SelectComponentType } from './Select';
 
 export const Select = dynamic(
-  () =>
-    import('./Select').then(
-      (module) =>
-        (module as { SelectComponent: SelectComponentType }).SelectComponent,
-    ),
+  async () => (await import('./Select')).SelectComponent,
   {
     loading: () => <Text placeholder="Loading..." disabled />,
     ssr: false,
   },
-);
+) as SelectComponentType;
 
 export type { SelectOption } from './Select';

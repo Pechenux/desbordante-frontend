@@ -18,7 +18,7 @@ import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import {
   FormField,
   NumberInput,
-  Option,
+  SelectOption,
   Select,
 } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
@@ -33,15 +33,15 @@ export type ConfigureColumnMatchesProps = {
     currentColumnMatch: ColumnMatchType,
     newColumnMatch: ColumnMatchType,
   ) => void;
-  leftTableOptions: Option<number>[] | undefined;
-  rightTableOptions: Option<number>[] | undefined;
+  leftTableOptions: SelectOption<number>[] | undefined;
+  rightTableOptions: SelectOption<number>[] | undefined;
 };
 type ConfigureColumnMatchesModalProps = ModalProps &
   ConfigureColumnMatchesProps;
 
 export type MetricsType = ColumnMatchType['metrics'];
 
-export const optionsMetrics: Option<MetricsType>[] = [
+export const optionsMetrics: SelectOption<MetricsType>[] = [
   { label: 'Equality', value: EqualityConfigMetrics.equality },
   { label: 'Jaccard', value: JaccardConfigMetrics.jaccard },
   {
