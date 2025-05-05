@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import { MultiValue } from 'react-select';
 import { ModalProps, PropertiesModal } from '@/components/common/layout';
 import { FormField, Select } from '@/components/common/uikit';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 import { PortalRootContext } from '@/components/meta';
 import { TagType } from '@/constants/primitivesInfo/primitivesTags';
 
@@ -12,10 +12,12 @@ type Props = ModalProps & {
   choosenTags: MultiValue<TagType>;
 };
 
-const options: Option<TagType>[] = Object.values(TagType).map((value) => ({
-  label: `# ${value}`,
-  value: value,
-}));
+const options: SelectOption<TagType>[] = Object.values(TagType).map(
+  (value) => ({
+    label: `# ${value}`,
+    value: value,
+  }),
+);
 
 export const FilteringPrimitivesModal: FC<Props> = ({
   onClose,

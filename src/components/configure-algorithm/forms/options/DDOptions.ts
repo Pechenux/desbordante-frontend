@@ -2,11 +2,11 @@ import {
   SchemaDdTaskConfig,
   SplitConfigAlgo_name,
 } from '@/api/generated/schema';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type DDAlgorithms = SchemaDdTaskConfig['config']['algo_name'];
 
-export const DDAlgorithmOptions: Option<DDAlgorithms>[] = [
+export const DDAlgorithmOptions: SelectOption<DDAlgorithms>[] = [
   { label: 'Split', value: SplitConfigAlgo_name.split },
 ];
 

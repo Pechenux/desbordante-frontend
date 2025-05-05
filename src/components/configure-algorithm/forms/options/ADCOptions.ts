@@ -2,15 +2,15 @@ import {
   FastADCConfigAlgo_name,
   SchemaAdcTaskConfig,
 } from '@/api/generated/schema';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type ADCAlgorithms = SchemaAdcTaskConfig['config']['algo_name'];
 
-export const ADCAlgorithmOptions: Option<ADCAlgorithms>[] = [
+export const ADCAlgorithmOptions: SelectOption<ADCAlgorithms>[] = [
   { label: 'FastADC', value: FastADCConfigAlgo_name.fastadc },
 ];
 
-export const allowCrossColumnsOptions: Option<boolean>[] = [
+export const allowCrossColumnsOptions: SelectOption<boolean>[] = [
   { label: 'True', value: true },
   { label: 'False', value: false },
 ];

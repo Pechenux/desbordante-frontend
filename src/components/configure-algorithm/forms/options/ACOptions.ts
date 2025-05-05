@@ -3,15 +3,15 @@ import {
   OperationType,
   SchemaAcTaskConfigInput,
 } from '@/api/generated/schema';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type ACAlgorithms = SchemaAcTaskConfigInput['config']['algo_name'];
 
-export const ACAlgorithmOptions: Option<ACAlgorithms>[] = [
+export const ACAlgorithmOptions: SelectOption<ACAlgorithms>[] = [
   { label: 'BHUNT', value: BHUNTConfigAlgo_name.bhunt },
 ];
 
-export const operationOptions: Option<OperationType>[] = [
+export const operationOptions: SelectOption<OperationType>[] = [
   { label: 'Addition (+)', value: OperationType['+'] },
   { label: 'Subtraction (-)', value: OperationType.ValueMinus },
   { label: 'Multiplication (*)', value: OperationType['*'] },

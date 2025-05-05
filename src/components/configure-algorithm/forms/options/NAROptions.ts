@@ -2,11 +2,11 @@ import {
   DESConfigAlgo_name,
   SchemaNarTaskConfig,
 } from '@/api/generated/schema';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type NARAlgorithms = SchemaNarTaskConfig['config']['algo_name'];
 
-export const NARAlgorithmOptions: Option<NARAlgorithms>[] = [
+export const NARAlgorithmOptions: SelectOption<NARAlgorithms>[] = [
   { label: 'DES', value: DESConfigAlgo_name.des },
 ];
 

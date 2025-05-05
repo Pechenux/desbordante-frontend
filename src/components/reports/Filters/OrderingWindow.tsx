@@ -15,7 +15,7 @@ import {
   SortOrder,
 } from '@/api/generated/schema';
 import { ModalProps, PropertiesModal } from '@/components/common/layout';
-import { Option, Select } from '@/components/common/uikit/Inputs';
+import { SelectOption, Select } from '@/components/common/uikit/Inputs';
 import { PortalRootContext } from '@/components/meta';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormField } from '../../common/uikit/FormField';
@@ -32,7 +32,7 @@ export type SortOptions =
   | AfdVerificationSortOptions;
 
 export const optionsByPrimitive: Partial<
-  Record<PrimitiveType, Option<SortOptions>[]>
+  Record<PrimitiveType, SelectOption<SortOptions>[]>
 > = {
   [PrimitiveType.FD]: [
     { label: 'LHS names', value: FdSortOptions.lhs },
@@ -83,7 +83,7 @@ export const optionsByPrimitive: Partial<
   ],
 };
 
-const directionOptions: Option<SortOrder>[] = [
+const directionOptions: SelectOption<SortOrder>[] = [
   { value: SortOrder.asc, label: 'Ascending' },
   { value: SortOrder.desc, label: 'Descending' },
 ];

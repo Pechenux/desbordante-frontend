@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 import { MultiValue } from 'react-select';
 import { ModalProps, PropertiesModal } from '@/components/common/layout';
 import { FormField, Select } from '@/components/common/uikit';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 import {
   MetricsType,
   optionsMetrics,
@@ -33,7 +33,7 @@ export const MDFilteringWindow: FC<MDFilteringProps> = ({
   const [selectedMetrics, setSelectedMetrics] =
     useState<MultiValue<MetricsType>>(filterMetrics);
 
-  const options: Option<string>[] = tableHeader.map((column) => ({
+  const options: SelectOption<string>[] = tableHeader.map((column) => ({
     label: column,
     value: column,
   }));

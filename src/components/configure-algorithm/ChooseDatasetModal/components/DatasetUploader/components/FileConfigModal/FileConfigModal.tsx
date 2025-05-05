@@ -5,12 +5,12 @@ import {
 } from '@/components/common/layout/ModalContainer';
 import { FormField, Icon } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
-import { Select, Option } from '@/components/common/uikit/Inputs';
+import { Select, SelectOption } from '@/components/common/uikit/Inputs';
 import styles from './FileConfigModal.module.scss';
 
 export type Separators = ',' | '|' | ';';
 
-const separatorOptions: Option<Separators>[] = [
+const separatorOptions: SelectOption<Separators>[] = [
   { label: 'Comma ","', value: ',' },
   { label: 'Pipe "|"', value: '|' },
   { label: 'Semicolon ";"', value: ';' },

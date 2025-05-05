@@ -12,11 +12,11 @@ import {
   SchemaFdTaskConfig,
   TaneConfigAlgo_name,
 } from '@/api/generated/schema';
-import { Option } from '@/components/common/uikit/Inputs';
+import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type FDAlgorithms = SchemaFdTaskConfig['config']['algo_name'];
 
-export const FDAlgorithmOptions: Option<FDAlgorithms>[] = [
+export const FDAlgorithmOptions: SelectOption<FDAlgorithms>[] = [
   { label: 'Pyro', value: PyroConfigAlgo_name.pyro },
   { label: 'Tane', value: TaneConfigAlgo_name.tane },
   { label: 'FastFDs', value: FastFDsConfigAlgo_name.fastfds },
