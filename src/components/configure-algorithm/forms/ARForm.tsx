@@ -1,61 +1,101 @@
-// import { ControlledNumberSlider } from '@components/common/uikit/Inputs/NumberSlider';
-// import { ControlledSelect } from '@components/common/uikit/Inputs/Select';
-// import { ARoptions } from '@constants/options';
-// import { ARPresets } from '@constants/presets/ARPresets';
-// import { useEffect } from 'react';
-// import { useFormContext } from 'react-hook-form';
-// import { ControlledFormField } from '@/components/common/uikit';
-// import { Select } from '@/components/common/uikit/Inputs';
-// import { FormComponent } from '@/types/form';
+import { useFormContext } from 'react-hook-form';
+import {
+  AprioriConfigAlgo_name,
+  SchemaArTaskConfig,
+} from '@/api/generated/schema';
+import { createMutationFn } from '@/api/services/server';
+import { ControlledFormField } from '@/components/common/uikit';
+import { NumberInput, Select } from '@/components/common/uikit/Inputs';
+import { FormComponent } from '@/types/form';
+import { ARInputFormatOptions } from './options/AROptions';
+import { ARPresets } from './presets/ARPresets';
 
-// export type ARFormInputs = {
-//   algorithmName: string;
-//   minConfidence: number;
-//   minSupportAR: number;
-// };
+export type ARFormInputs = SchemaArTaskConfig['config'];
 
-// export const ARForm: FormComponent<ARFormInputs> = ({ setPresets }) => {
-//   const methods = useFormContext<ARFormInputs>();
+export const ARForm: FormComponent<ARFormInputs> = () => {
+  const methods = useFormContext<ARFormInputs>();
 
-//   useEffect(() => {
-//     setPresets(ARPresets);
-//   }, [setPresets]);
-
-//   return (
-//     <>
-//       <ControlledFormField<ARFormInputs, 'algorithmName'>
-//         controllerProps={{
-//           name: 'algorithmName',
-//           control: methods.control,
-//         }}
-//         formFieldProps={{ label: 'Algorithm' }}
-//       >
-//         {({ field: { value, onChange } }) => (
-//           <Select isMulti={false} value={value} onChange={onChange} />
-//         )}
-//       </ControlledFormField>
-//       <ControlledSelect
-//         label="Algorithm"
-//         controlName="algorithmName"
-//         control={methods.control}
-//         options={ARoptions}
-//       />
-//       <ControlledNumberSlider
-//         label="Minimum confidence"
-//         controlName="minConfidence"
-//         control={methods.control}
-//         sliderProps={{ min: 0, max: 1, step: 1e-4 }}
-//         size={5}
-//       />
-//       <ControlledNumberSlider
-//         label="Minimum support"
-//         controlName="minSupportAR"
-//         control={methods.control}
-//         sliderProps={{ min: 0, max: 1, step: 1e-4 }}
-//         size={5}
-//       />
-//     </>
-//   );
-// };
-
-// ARForm.onSubmit = (fieldValues) => fieldValues;
+  return (
+    <>
+      <ControlledFormField<ARFormInputs, 'minconf'>
+        controllerProps={{
+          name: 'minconf',
+          control: methods.control,
+        }}
+        formFieldProps={{ label: 'Minimum confidence' }}
+      >
+        {({ field: { value, onChange } }) => (
+          <NumberInput
+            value={[value ?? 0]}
+            onChange={([newValue]) => onChange(newValue)}
+            boundaries={{
+              defaultNum: 0.0,
+              min: 0,
+              max: 1,
+              step: 1e-4,
+              digitsAfterDot: 4,
+              includingMin: true,
+              includingMax: true,
+            }}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<ARFormInputs, 'minsup'>
+        controllerProps={{
+          name: 'minsup',
+          control: methods.control,
+        }}
+        formFieldProps={{ label: 'Minimum support' }}
+      >
+        {({ field: { value, onChange } }) => (
+          <NumberInput
+            value={[value ?? 0]}
+            onChange={([newValue]) => onChange(newValue)}
+            boundaries={{
+              defaultNum: 0.0,
+              min: 0,
+              max: 1,
+              step: 1e-4,
+              digitsAfterDot: 4,
+              includingMin: true,
+              includingMax: true,
+            }}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<ARFormInputs, 'input_format'>
+        controllerProps={{
+          name: 'input_format',
+          control: methods.control,
+        }}
+        formFieldProps={{ label: 'Input format' }}
+      >
+        {({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            onChange={onChange}
+            options={ARInputFormatOptions}
+          />
+        )}
+      </ControlledFormField>
+    </>
+  );
+};
+ARForm.presets = ARPresets;
+ARForm.onSubmit = (fieldValues) => ({
+  ...fieldValues,
+  algo_name: AprioriConfigAlgo_name.assosiatiorulesapriori,
+});
+ARForm.mutationFn = ({ datasets, data }) => {
+  return datasets.length
+    ? createMutationFn('/api/tasks')({
+        body: {
+          files_ids: datasets,
+          config: {
+            primitive_name: 'ar',
+            config: data,
+          },
+        },
+      })
+    : Promise.reject('No datasets selected');
+};

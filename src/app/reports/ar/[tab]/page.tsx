@@ -1,18 +1,18 @@
 import { ReportsLayout } from '@/components/common/layout/ReportsLayout';
 import { Icon } from '@/components/common/uikit';
-import { MFDResult } from '@/components/reports';
+import { ARResult } from '@/components/reports';
 
-export default async function MFDVerificationReport({
+export default async function ARReport({
   params,
 }: {
   params: Promise<{ tab: string }>;
 }) {
   const tabs = [
     {
-      name: 'clusters',
-      label: 'Clustes',
-      icon: <Icon name="cluster" />,
-      content: <MFDResult />,
+      name: 'result',
+      label: 'Primitive list',
+      icon: <Icon name="listDropDown" />,
+      content: <ARResult />,
     },
   ];
 

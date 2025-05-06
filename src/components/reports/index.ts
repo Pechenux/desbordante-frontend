@@ -3,6 +3,7 @@ export * from './Filters';
 export * from './FDResult';
 export * from './PFDResult';
 export * from './AFDResult';
+export * from './ARResult';
 export * from './DDResult';
 export * from './MDResult';
 export * from './MFDResult';

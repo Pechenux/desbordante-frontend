@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { PrimitiveType } from './primitives';
 import { ACDescription } from './primitivesDescriptions/ACDescription';
 import { AFDDescription } from './primitivesDescriptions/AFDDescription';
+import { MFDDescription } from './primitivesDescriptions/MFDDescription';
 import { TagType } from './primitivesTags';
 
 type PrimitiveInfoType = {
@@ -45,8 +46,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.MFD]: {
       label: 'Metric Dependency Verification',
-      description:
-        'Metric verification is a process of checking whether a specific metric functional dependency (MFD) holds on data or not. MFD is a relaxed form of classic functional dependencies which allows small variations in the values of the right hand side of a dependency. It other words, for MFD X⟶Y we still expect two different tuples to agree on values of attributes in X, but their values on Y can differ no more than some threshold. MFD can be verified for numeric and string types using different metrics. Currently available are: Euclidean, Levenshtein and Cosine. Results of metric verification process are presented as clusters of records which share the same left hand side, but differ in the right one. If distance of records\' values too far from any points of the same cluster, they are tagged with an "X" mark. A check mark is used otherwise.',
+      description: MFDDescription,
       tags: [TagType.SingleSource, TagType.Table],
     },
     [PrimitiveType.ADC]: {
@@ -68,6 +68,11 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
       label: 'Approximate Functional Dependencies',
       description: AFDDescription,
       tags: [TagType.SingleSource, TagType.Table, TagType.ApproximatePattern],
+    },
+    [PrimitiveType.AR]: {
+      label: 'Association Rules',
+      description: ACDescription,
+      tags: [],
     },
     [PrimitiveType.PFD]: {
       label: 'Probability Functional Dependencies',
