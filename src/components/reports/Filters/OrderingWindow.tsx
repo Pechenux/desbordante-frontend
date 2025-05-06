@@ -10,6 +10,7 @@ import {
   DdSortOptions,
   FdSortOptions,
   MdSortOptions,
+  MfdVerificationSortOptions,
   NarSortOptions,
   PfdSortOptions,
   SortOrder,
@@ -25,6 +26,7 @@ export type SortOptions =
   | DdSortOptions
   | FdSortOptions
   | MdSortOptions
+  | MfdVerificationSortOptions
   | NarSortOptions
   | PfdSortOptions
   | AcSortOptions
@@ -53,6 +55,17 @@ export const optionsByPrimitive: Partial<
   [PrimitiveType.MD]: [
     { label: 'LHS names', value: MdSortOptions.lhs },
     { label: 'RHS names', value: MdSortOptions.rhs },
+  ],
+  [PrimitiveType.MFD]: [
+    { label: 'Point index', value: MfdVerificationSortOptions.data_index },
+    {
+      label: 'Furthest point index',
+      value: MfdVerificationSortOptions.furthest_data_index,
+    },
+    {
+      label: 'Maximum distance',
+      value: MfdVerificationSortOptions.maximum_distance,
+    },
   ],
   [PrimitiveType.NAR]: [
     { label: 'LHS names', value: NarSortOptions.lhs },

@@ -44,11 +44,13 @@ export const FormLayout: FC<FormLayoutProps> = ({
       ),
     [datasetInputs],
   );
-  const [fileIDs, setFileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
+  const [inputFileIDs, setInputFileIDs] =
+    useAtom<Record<string, string>>(fileIDsAtom);
+  const fileIDs = useMemo(() => Object.values(inputFileIDs), [inputFileIDs]);
 
   useEffect(
-    () => setFileIDs(startInputsValues),
-    [startInputsValues, setFileIDs],
+    () => setInputFileIDs(startInputsValues),
+    [startInputsValues, setInputFileIDs],
   );
 
   const defaultPreset = useMemo(
@@ -97,7 +99,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
     (data: FormData) => {
       mutator.mutate({
         datasets: datasetInputs.reduce((acc, { inputId }) => {
-          const inputData = fileIDs[inputId];
+          const inputData = inputFileIDs[inputId];
           if (inputData) {
             acc.push(inputData);
           }
@@ -106,7 +108,7 @@ export const FormLayout: FC<FormLayoutProps> = ({
         data: FormComponent.onSubmit(data),
       });
     },
-    [FormComponent, datasetInputs, fileIDs, mutator],
+    [FormComponent, datasetInputs, inputFileIDs, mutator],
   );
 
   const presets = useMemo(() => FormComponent.presets, [FormComponent]);
@@ -117,10 +119,10 @@ export const FormLayout: FC<FormLayoutProps> = ({
   }, []);
   return (
     <WizardLayout header={<FormHeader />} footer={<FormFooter />}>
-      <FilesSelector onChange={setFileIDs} datasetInputs={datasetInputs} />
+      <FilesSelector onChange={setInputFileIDs} datasetInputs={datasetInputs} />
       <div className={styles.presetSelectorContainer}>
         <PresetSelector
-          fileIDs={Object.values(fileIDs)}
+          fileIDs={fileIDs}
           defaultPreset={defaultPreset}
           isCustom={methods.formState.isDirty}
           formReset={methods.reset}

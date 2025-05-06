@@ -1,273 +1,348 @@
-// import { useQuery } from '@apollo/client';
-// import _ from 'lodash';
-// import { useEffect, useMemo, useState } from 'react';
-// import { useFormContext, useWatch } from 'react-hook-form';
-// import ControlledMultiSelect from '@components/common/uikit/Inputs/MultiSelect/ControlledMultiSelect';
-// import badgeStyles from '@components/common/uikit/Inputs/MultiSelect/OptionBadge/OptionBadge.module.scss';
-// import { ControlledNumberInput } from '@components/common/uikit/Inputs/NumberInput';
-// import { ControlledSelect } from '@components/common/uikit/Inputs/Select';
-// import {
-//   MFDAlgoOptions,
-//   MFDColumnType,
-//   MFDColumnTypeOptions,
-//   MFDDistancesOptions,
-//   MFDMetricOption,
-//   MFDMetricOptions,
-//   optionsByMetrics,
-// } from '@constants/options';
-// import { MFDPresets } from '@constants/presets/MFDPresets';
-// import {
-//   getCountOfColumns,
-//   getCountOfColumns_datasetInfo_statsInfo_stats,
-//   getCountOfColumnsVariables,
-// } from '@graphql/operations/queries/__generated__/getCountOfColumns';
-// import { GET_COUNT_OF_COLUMNS } from '@graphql/operations/queries/getDatasetColumnCount';
-// import { showError } from '@utils/toasts';
-// import { FormComponent } from 'types/form';
-// import { OptionWithBadges } from 'types/multiSelect';
+import { useQuery } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
+import _ from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import {
+  MFDVerificationCosineConfigMetric,
+  MFDVerificationEuclideanConfigMetric,
+  MFDVerificationMetricAlgorithm,
+  SchemaMfdVerificationTaskConfigInput,
+} from '@/api/generated/schema';
+import { createMutationFn, createQueryFn } from '@/api/services/server';
+import {
+  CheckboxGroup,
+  ControlledFormField,
+  NumberInput,
+  Select,
+  SelectOption,
+} from '@/components/common/uikit';
+import { fileIDsAtom } from '@/store/fileIDsAtom';
+import { FormComponent } from '@/types/form';
+import {
+  MFDAlgorithmOptions,
+  MFDColumnCategories,
+  MFDColumnCategoriesOptions,
+  MFDMetricOptions,
+} from './options/MFDOptions';
+import { MFDPresets } from './presets/MFDPresets';
 
-// export type MFDFormInputs = {
-//   lhsIndices: number[];
-//   rhsIndices: number[];
-//   rhsColumnType: MFDColumnType;
-//   metric: MFDMetricOption['value'];
-//   metricAlgorithm: 'BRUTE' | 'APPROX' | 'CALIPERS';
-//   parameter: number;
-//   q: number;
-//   distanceToNullIsInfinity: boolean;
-// };
+export type MFDFormInputs = SchemaMfdVerificationTaskConfigInput['config'] & {
+  rhsColumnType: MFDColumnCategories;
+};
 
-// const TypesCategories: Record<string, string> = {
-//   Int: 'Numeric',
-//   Double: 'Numeric',
-//   BigInt: 'Numeric',
-//   String: 'String',
-// };
+export const MFDForm: FormComponent<MFDFormInputs> = () => {
+  const methods = useFormContext<MFDFormInputs>();
 
-// const MFDForm: FormComponent<MFDFormInputs> = ({ fileID, setPresets }) => {
-//   const methods = useFormContext<MFDFormInputs>();
+  const [rhsColumnType] = useWatch({
+    name: ['rhsColumnType'],
+  });
+  const [metric, rhs_indices] = useWatch({
+    name: ['metric', 'rhs_indices'],
+  });
 
-//   const [rhsColumnType] = useWatch({
-//     name: ['rhsColumnType'],
-//   });
-//   const [metric, rhsIndices] = useWatch({
-//     name: ['metric', 'rhsIndices'],
-//   });
+  const [fileIDs] = useAtom(fileIDsAtom);
 
-//   useEffect(() => {
-//     methods.trigger(['metric']);
-//   }, [methods, rhsColumnType]);
-//   useEffect(() => {
-//     methods.trigger(['metricAlgorithm']);
-//   }, [methods, rhsIndices, rhsColumnType]);
+  const { data, isLoading } = useQuery({
+    queryKey: [`/api/files/ids`, fileIDs],
+    queryFn: createQueryFn('/api/files/ids', {
+      params: {
+        query: { ids: fileIDs['1'] ? [fileIDs['1']] : undefined },
+      },
+    }),
+    enabled: !!fileIDs['1'],
+  });
 
-//   const qDisabled = useMemo(
-//     () =>
-//       !optionsByMetrics[
-//         MFDMetricOptions.find((option) => option.value === metric)?.label ||
-//           'Euclidean'
-//       ].includes('qgram'),
-//     [metric],
-//   );
+  useEffect(() => {
+    methods.trigger(['metric']);
+  }, [methods, rhsColumnType]);
+  useEffect(() => {
+    methods.trigger(['metric_algorithm']);
+  }, [methods, rhs_indices, rhsColumnType]);
 
-//   useEffect(() => {
-//     setPresets(MFDPresets);
-//   }, [setPresets]);
+  const qDisabled = metric !== MFDVerificationCosineConfigMetric.cosine;
 
-//   const [columnMode, setColumnMode] = useState<
-//     'manual' | 'auto' | 'error' | 'errorMixTypes'
-//   >('manual');
+  const [columnMode, setColumnMode] = useState<
+    'manual' | 'auto' | 'error' | 'errorMixTypes'
+  >('manual');
 
-//   const { loading, data } = useQuery<
-//     getCountOfColumns,
-//     getCountOfColumnsVariables
-//   >(GET_COUNT_OF_COLUMNS, {
-//     variables: { fileID },
-//     onError: (error) => {
-//       showError(
-//         error.message,
-//         "Can't fetch columns information. Please try later.",
-//       );
-//     },
-//   });
+  const columnData: SelectOption<number>[] = useMemo(() => {
+    const dataset = data?.[0];
 
-//   const columnData = useMemo(() => {
-//     if (data) {
-//       const countOfColumns: number = data?.datasetInfo?.countOfColumns || 0;
-//       const statistics: getCountOfColumns_datasetInfo_statsInfo_stats[] =
-//         data?.datasetInfo?.statsInfo.stats || [];
-//       const hasHeader: boolean = data?.datasetInfo?.hasHeader || false;
-//       const headers: string[] = data?.datasetInfo?.header || [];
+    if (dataset) {
+      const countOfColumns: number = dataset.num_columns;
+      const hasHeader: boolean = dataset.with_header;
+      const headers: string[] = dataset.header || [];
 
-//       return [...Array(countOfColumns)].map((_, i) => ({
-//         label: hasHeader ? `${i + 1}: ${headers[i]}` : `Column ${i + 1}`,
-//         value: i,
-//         badges: statistics
-//           .filter((elem) => elem.column.index == i)
-//           .map((elem) => ({ label: elem.type, style: badgeStyles.primary })),
-//       })) as OptionWithBadges[];
-//     }
-//     return [] as OptionWithBadges[];
-//   }, [data]);
+      return [...Array(countOfColumns)].map((_, i) => ({
+        label: hasHeader ? `${i + 1}: ${headers[i]}` : `Column ${i + 1}`,
+        value: i,
+      }));
+    }
 
-//   useEffect(() => {
-//     methods.trigger(['rhsIndices']);
-//   }, [columnMode, methods, rhsColumnType]);
+    return [];
+  }, [data]);
 
-//   useEffect(() => {
-//     if (
-//       !Array.isArray(rhsIndices) ||
-//       columnData.length === 0 ||
-//       columnData.some((elem) => (elem.badges ?? []).length == 0)
-//     ) {
-//       setColumnMode('manual');
-//       return;
-//     }
+  useEffect(() => {
+    methods.trigger(['rhs_indices']);
+  }, [columnMode, methods, rhsColumnType]);
 
-//     const types = Array.from(
-//       new Set<string>(
-//         rhsIndices.map(
-//           (elem) =>
-//             TypesCategories[columnData[elem].badges?.[0].label || 'NotValid'] ||
-//             'Undefined',
-//         ),
-//       ),
-//     );
+  useEffect(() => {
+    if (
+      !Array.isArray(rhs_indices) ||
+      columnData.length === 0 ||
+      columnData.some((elem) => (elem.badges ?? []).length == 0)
+    ) {
+      setColumnMode('manual');
+      return;
+    }
 
-//     if (types.length === 0) {
-//       setColumnMode('manual');
-//     } else if (types.length === 1) {
-//       const columnType = types[0];
-//       if ('Numeric' === columnType || 'String' === columnType) {
-//         setColumnMode('auto');
-//         methods.setValue('rhsColumnType', columnType);
-//       } else {
-//         setColumnMode('error');
-//       }
-//     } else {
-//       setColumnMode('errorMixTypes');
-//     }
-//   }, [columnData, methods, rhsIndices]);
+    const types: MFDColumnCategories[] = [];
 
-//   return (
-//     <>
-//       <ControlledMultiSelect
-//         label="LHS Columns"
-//         controlName="lhsIndices"
-//         control={methods.control}
-//         rules={{
-//           validate: (value) => {
-//             if (Array.isArray(value))
-//               return value.length > 0 ? undefined : 'Cannot be empty';
-//             return undefined;
-//           },
-//         }}
-//         isLoading={loading}
-//         options={columnData}
-//       />
-//       <ControlledMultiSelect
-//         label="RHS Columns"
-//         controlName="rhsIndices"
-//         control={methods.control}
-//         rules={{
-//           validate: (value, formState) => {
-//             if (Array.isArray(value) && value.length === 0)
-//               return 'Cannot be empty';
+    if (types.length === 0) {
+      setColumnMode('manual');
+    } else if (types.length === 1) {
+      const columnType = types[0];
+      if (
+        MFDColumnCategories.Numeric === columnType ||
+        MFDColumnCategories.String === columnType
+      ) {
+        setColumnMode('auto');
+        methods.setValue('rhsColumnType', columnType);
+      } else {
+        setColumnMode('error');
+      }
+    } else {
+      setColumnMode('errorMixTypes');
+    }
+  }, [columnData, methods, rhs_indices]);
 
-//             if (columnMode === 'error') return 'Choose different columns';
+  return (
+    <>
+      <ControlledFormField<MFDFormInputs, 'lhs_indices'>
+        formFieldProps={{ label: 'LHS Columns' }}
+        controllerProps={{
+          name: 'lhs_indices',
+          control: methods.control,
+          rules: {
+            validate: (value) => {
+              if (Array.isArray(value))
+                return value.length > 0 ? undefined : 'Cannot be empty';
+              return undefined;
+            },
+          },
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            onChange={onChange}
+            options={columnData}
+            isLoading={isLoading}
+            isMulti
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'rhs_indices'>
+        formFieldProps={{ label: 'RHS Columns' }}
+        controllerProps={{
+          name: 'rhs_indices',
+          control: methods.control,
+          rules: {
+            validate: (value, formState) => {
+              if (Array.isArray(value) && value.length === 0)
+                return 'Cannot be empty';
 
-//             if (columnMode === 'errorMixTypes')
-//               return 'Columns must have one type';
+              if (columnMode === 'error') return 'Choose different columns';
 
-//             if (
-//               Array.isArray(value) &&
-//               formState.rhsColumnType === 'String' &&
-//               value.length > 1
-//             )
-//               return 'Must contain only one column of type "String"';
-//             return undefined;
-//           },
-//         }}
-//         isLoading={loading}
-//         options={columnData}
-//       />
-//       <ControlledSelect
-//         label="RHS column type"
-//         controlName="rhsColumnType"
-//         control={methods.control}
-//         isDisabled={columnMode === 'auto'}
-//         options={MFDColumnTypeOptions}
-//       />
-//       <ControlledSelect
-//         label="Metric"
-//         controlName="metric"
-//         control={methods.control}
-//         options={MFDMetricOptions}
-//         rules={{
-//           validate: (value, formState) => {
-//             return formState.rhsColumnType == 'Numeric' && value != 'EUCLIDEAN'
-//               ? 'Must be Euclidean if column type is numeric'
-//               : formState.rhsColumnType != 'Numeric' && value == 'EUCLIDEAN'
-//                 ? "Can't be Euclidean if column type is not numeric"
-//                 : undefined;
-//           },
-//         }}
-//       />
-//       <ControlledSelect
-//         label="Algorithm"
-//         controlName="metricAlgorithm"
-//         control={methods.control}
-//         options={MFDAlgoOptions}
-//         rules={{
-//           validate: (value, formState) => {
-//             if (Array.isArray(formState.rhsIndices))
-//               return value == 'CALIPERS' &&
-//                 (formState.rhsColumnType != 'Numeric' ||
-//                   formState.rhsIndices.length !== 2)
-//                 ? 'Count of RHS Columns must be 2'
-//                 : undefined;
-//             return undefined;
-//           },
-//         }}
-//       />
-//       <ControlledNumberInput
-//         label="Tolerance parameter"
-//         controlName="parameter"
-//         control={methods.control}
-//         numberProps={{
-//           defaultNum: 1.0,
-//           min: 0,
-//         }}
-//       />
-//       <ControlledNumberInput
-//         label="Q-gram length"
-//         controlName="q"
-//         control={methods.control}
-//         disabled={qDisabled}
-//         numberProps={{
-//           defaultNum: 1.0,
-//           min: 1,
-//           includingMin: true,
-//           numbersAfterDot: 0,
-//         }}
-//       />
-//       <ControlledSelect
-//         label="Distance to null"
-//         controlName="distanceToNullIsInfinity"
-//         control={methods.control}
-//         options={MFDDistancesOptions}
-//       />
-//     </>
-//   );
-// };
+              if (columnMode === 'errorMixTypes')
+                return 'Columns must have one type';
 
-// MFDForm.onSubmit = (fieldValues) =>
-//   _.omit(
-//     {
-//       ...fieldValues,
-//       algorithmName: 'MetricVerification',
-//     },
-//     ['rhsColumnType'],
-//   );
+              if (
+                Array.isArray(value) &&
+                formState.rhsColumnType === 'String' &&
+                value.length > 1
+              )
+                return 'Must contain only one column of type "String"';
+              return undefined;
+            },
+          },
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            onChange={onChange}
+            options={columnData}
+            isLoading={isLoading}
+            isMulti
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'rhsColumnType'>
+        formFieldProps={{
+          label: 'RHS column type',
+          disabled: columnMode === 'auto',
+        }}
+        controllerProps={{
+          name: 'rhsColumnType',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            onChange={onChange}
+            options={MFDColumnCategoriesOptions}
+            isLoading={isLoading}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'metric'>
+        formFieldProps={{
+          label: 'Metric',
+        }}
+        controllerProps={{
+          name: 'metric',
+          control: methods.control,
+          rules: {
+            validate: (value, formState) => {
+              return formState.rhsColumnType == MFDColumnCategories.Numeric &&
+                value !== MFDVerificationEuclideanConfigMetric.euclidean
+                ? 'Must be Euclidean if column type is numeric'
+                : formState.rhsColumnType != MFDColumnCategories.Numeric &&
+                    value === MFDVerificationEuclideanConfigMetric.euclidean
+                  ? "Can't be Euclidean if column type is not numeric"
+                  : undefined;
+            },
+          },
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            onChange={onChange}
+            options={MFDMetricOptions}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'metric_algorithm'>
+        formFieldProps={{
+          label: 'Algorithm',
+        }}
+        controllerProps={{
+          name: 'metric_algorithm',
+          control: methods.control,
+          rules: {
+            validate: (value, formState) => {
+              if (Array.isArray(formState.rhs_indices))
+                return value === MFDVerificationMetricAlgorithm.calipers &&
+                  (formState.rhsColumnType != MFDColumnCategories.Numeric ||
+                    formState.rhs_indices.length !== 2)
+                  ? 'Count of RHS Columns must be 2'
+                  : undefined;
+              return undefined;
+            },
+          },
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <Select
+            value={value}
+            onChange={onChange}
+            options={MFDAlgorithmOptions}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'parameter'>
+        formFieldProps={{ label: 'Tolerance parameter' }}
+        controllerProps={{
+          name: 'parameter',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <NumberInput
+            value={[value ?? 1]}
+            onChange={([newValue]) => onChange(newValue)}
+            boundaries={{
+              defaultNum: 1.0,
+              min: 0,
+            }}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'q'>
+        formFieldProps={{ label: 'Q-gram length', disabled: qDisabled }}
+        controllerProps={{
+          name: 'q',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <NumberInput
+            value={[value ?? 1]}
+            onChange={([newValue]) => onChange(newValue)}
+            boundaries={{
+              defaultNum: 1.0,
+              min: 1,
+              includingMin: true,
+              step: 1,
+              digitsAfterDot: 0,
+            }}
+            disabled={qDisabled}
+          />
+        )}
+      </ControlledFormField>
+      <ControlledFormField<MFDFormInputs, 'dist_from_null_is_infinity'>
+        formFieldProps={{
+          label: 'Distance to null',
+          tooltip: 'True is infinity, false is zero',
+        }}
+        controllerProps={{
+          name: 'dist_from_null_is_infinity',
+          control: methods.control,
+        }}
+      >
+        {({ field: { value, onChange } }) => (
+          <CheckboxGroup
+            values={value ? ['isInfinity'] : []}
+            onChange={(newValue) => {
+              onChange(newValue.length > 0);
+            }}
+            options={[{ label: 'Infinity', value: 'isInfinity' }]}
+          />
+        )}
+      </ControlledFormField>
+    </>
+  );
+};
 
-// export default MFDForm;
+MFDForm.presets = MFDPresets;
+MFDForm.onSubmit = (fieldValues) =>
+  _.omit(
+    {
+      ...fieldValues,
+      algo_name: 'metricverification',
+      is_null_equal_null: true,
+    },
+    [
+      'rhsColumnType',
+      ...(fieldValues.metric === MFDVerificationCosineConfigMetric.cosine
+        ? []
+        : ['q']),
+    ],
+  );
+MFDForm.mutationFn = ({ datasets, data }) => {
+  return datasets.length
+    ? createMutationFn('/api/tasks')({
+        body: {
+          files_ids: datasets,
+          config: {
+            primitive_name: 'mfd_verification',
+            config: data,
+          },
+        },
+      })
+    : Promise.reject('No datasets selected');
+};
