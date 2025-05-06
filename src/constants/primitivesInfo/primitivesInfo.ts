@@ -1,8 +1,15 @@
 import { ReactNode } from 'react';
 import { PrimitiveType } from './primitives';
 import { ACDescription } from './primitivesDescriptions/ACDescription';
+import { ADCDescription } from './primitivesDescriptions/ADCDescription';
 import { AFDDescription } from './primitivesDescriptions/AFDDescription';
 import { MFDDescription } from './primitivesDescriptions/MFDDescription';
+import { AFDVerificationDescription } from './primitivesDescriptions/AFDVerificationDescription';
+import { DDDescription } from './primitivesDescriptions/DDescription';
+import { FDDescription } from './primitivesDescriptions/FDDescription';
+import { MDDescription } from './primitivesDescriptions/MDDescription';
+import { NARDescription } from './primitivesDescriptions/NARDescription';
+import { PFDDescription } from './primitivesDescriptions/PFDDescription';
 import { TagType } from './primitivesTags';
 
 type PrimitiveInfoType = {
@@ -15,8 +22,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
   {
     [PrimitiveType.FD]: {
       label: 'Functional Dependencies',
-      description:
-        'Functional dependencies are crucial metadata for performing schema normalization, data cleaning and various data profiling tasks. A single FD represents a relationship between two disjoint sets of attributes, which states that the values from one set uniquely determine the values of another. Such hidden patterns provide a great start to get to know your data.',
+      description: FDDescription,
       tags: [
         TagType.ExactPattern,
         TagType.ApproximateAlgorithm,
@@ -27,7 +33,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.NAR]: {
       label: 'Numerical Association Rules',
-      description: 'pupupu',
+      description: NARDescription,
       tags: [
         TagType.ExactPattern,
         TagType.ApproximateAlgorithm,
@@ -37,12 +43,12 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.DD]: {
       label: 'Differential Dependencies',
-      description: 'lorem ipsum',
+      description: DDDescription,
       tags: [TagType.ExactPattern, TagType.Table, TagType.SingleSource],
     },
     [PrimitiveType.MD]: {
       label: 'Matching Dependencies',
-      description: 'lorem ipsum',
+      description: MDDescription,
       tags: [
         TagType.ExactPattern,
         TagType.Table,
@@ -57,7 +63,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.ADC]: {
       label: 'Approximate Denial Constraints',
-      description: 'lorem ipsum',
+      description: ADCDescription,
       tags: [TagType.ApproximatePattern, TagType.Table, TagType.SingleSource],
     },
     [PrimitiveType.AC]: {
@@ -67,7 +73,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.AFDVerification]: {
       label: 'Approximate Functional Dependencies Verification',
-      description: 'lorem ipsum',
+      description: AFDVerificationDescription,
       tags: [TagType.SingleSource, TagType.Table],
     },
     [PrimitiveType.AFD]: {
@@ -82,7 +88,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.PFD]: {
       label: 'Probability Functional Dependencies',
-      description: 'lorem ipsum',
+      description: PFDDescription,
       tags: [TagType.ApproximatePattern, TagType.Table, TagType.SingleSource],
     },
   } as const;

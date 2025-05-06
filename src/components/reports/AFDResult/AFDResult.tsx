@@ -91,7 +91,6 @@ export const AFDResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  //const shownData = extractShownDeps(deps, pageIndex, countOnPage);
   const shownData = deps;
   return (
     <>

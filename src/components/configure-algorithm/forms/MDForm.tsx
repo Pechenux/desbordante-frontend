@@ -187,7 +187,6 @@ MDForm.onSubmit = (fieldValues) => {
   return _.pick(fieldValues, MDFields);
 };
 MDForm.mutationFn = ({ datasets, data }) => {
-  console.log(222, data);
   return datasets.length
     ? createMutationFn('/api/tasks')({
         body: {

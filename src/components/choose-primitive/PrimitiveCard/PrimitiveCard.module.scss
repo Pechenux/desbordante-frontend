@@ -54,6 +54,10 @@
   @include paragraph;
   color: $black;
   ol {
+    list-style: decimal;
+    margin-left: 24px;
+  }
+  ul {
     list-style: disc;
     margin-left: 24px;
   }
