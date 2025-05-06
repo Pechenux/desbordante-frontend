@@ -93,7 +93,7 @@ export const ACResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
+
   return (
     <>
       {isOrderingShown && (
@@ -138,8 +138,8 @@ export const ACResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {shownData &&
-          shownData.map((value) => {
+        {deps &&
+          deps.map((value) => {
             const id = `${value.left_column} ${value.right_column}`;
             const isSelected = id === selectedInstance;
             return (

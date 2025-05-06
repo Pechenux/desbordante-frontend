@@ -13,7 +13,6 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { extractShownDeps } from '@/utils/extractShownDeps';
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './ARResult.module.scss';
 
@@ -73,7 +72,7 @@ export const ARResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
+  const shownData = deps;
 
   return (
     <>

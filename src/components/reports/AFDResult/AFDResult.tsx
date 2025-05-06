@@ -18,7 +18,6 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-// import { extractShownDeps } from '@/utils/extractShownDeps';
 
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './AFDResult.module.scss';
@@ -91,7 +90,7 @@ export const AFDResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
+
   return (
     <>
       {isOrderingShown && (
@@ -136,7 +135,7 @@ export const AFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} />
+        <DependencyList deps={deps} />
       </div>
 
       <div className={styles.pagination}>

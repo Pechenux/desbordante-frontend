@@ -18,7 +18,6 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-// import { extractShownDeps } from '@/utils/extractShownDeps';
 
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './ADCResult.module.scss';
@@ -94,7 +93,7 @@ export const ADCResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
+
   return (
     <>
       {isOrderingShown && (
@@ -138,8 +137,8 @@ export const ADCResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {shownData &&
-          shownData.map((d, i) => {
+        {deps &&
+          deps.map((d, i) => {
             const fullDependency = JSON.stringify(d);
 
             return (

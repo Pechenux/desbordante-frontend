@@ -1,7 +1,6 @@
 import {
   AFDPyroConfigAlgo_name,
   AFDTaneConfigAfd_error_measure,
-  AFDTaneConfigAlgo_name,
 } from '@/api/generated/schema';
 import { Presets } from '@/types/form';
 import { AFDFormInputs } from '../AFDForm';
@@ -13,13 +12,6 @@ export const AFDPresets: Presets<AFDFormInputs> = {
       displayName: 'Strict preset',
       preset: {
         error: 0,
-      },
-    },
-    {
-      name: 'tane-default',
-      displayName: 'Tane Default',
-      preset: {
-        algo_name: AFDTaneConfigAlgo_name.tane,
       },
     },
     {

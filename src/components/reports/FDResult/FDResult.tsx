@@ -18,7 +18,7 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-// import { extractShownDeps } from '@/utils/extractShownDeps';
+
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './FDResult.module.scss';
 
@@ -90,7 +90,6 @@ export const FDResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
 
   return (
     <>
@@ -136,7 +135,7 @@ export const FDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} />
+        <DependencyList deps={deps} />
       </div>
 
       <div className={styles.pagination}>

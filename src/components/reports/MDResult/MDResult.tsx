@@ -21,7 +21,6 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-// import { extractShownDeps } from '@/utils/extractShownDeps';
 
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './MDResult.module.scss';
@@ -120,7 +119,7 @@ export const MDResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
+
   return (
     <>
       {isOrderingShown && (
@@ -166,7 +165,7 @@ export const MDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} formatter={formatter} />
+        <DependencyList deps={deps} formatter={formatter} />
       </div>
 
       <div className={styles.pagination}>

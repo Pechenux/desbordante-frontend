@@ -19,7 +19,6 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-// import { extractShownDeps } from '@/utils/extractShownDeps';
 
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './DDResult.module.scss';
@@ -95,7 +94,7 @@ export const DDResult = () => {
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
+
   return (
     <>
       {isOrderingShown && (
@@ -140,7 +139,7 @@ export const DDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} formatter={formatter} />
+        <DependencyList deps={deps} formatter={formatter} />
       </div>
 
       <div className={styles.pagination}>
