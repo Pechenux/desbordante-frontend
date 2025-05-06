@@ -4,6 +4,7 @@ import { ACDescription } from './primitivesDescriptions/ACDescription';
 import { ADCDescription } from './primitivesDescriptions/ADCDescription';
 import { AFDDescription } from './primitivesDescriptions/AFDDescription';
 import { AFDVerificationDescription } from './primitivesDescriptions/AFDVerificationDescription';
+import { ARDescription } from './primitivesDescriptions/ARDescription';
 import { DDDescription } from './primitivesDescriptions/DDescription';
 import { FDDescription } from './primitivesDescriptions/FDDescription';
 import { MDDescription } from './primitivesDescriptions/MDDescription';
@@ -83,7 +84,7 @@ export const primitiveInfo: Partial<Record<PrimitiveType, PrimitiveInfoType>> =
     },
     [PrimitiveType.AR]: {
       label: 'Association Rules',
-      description: ACDescription,
+      description: ARDescription,
       tags: [],
     },
     [PrimitiveType.PFD]: {
