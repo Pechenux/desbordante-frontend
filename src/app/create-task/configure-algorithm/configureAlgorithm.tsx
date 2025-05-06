@@ -8,13 +8,14 @@ import {
   ADCForm,
   AFDForm,
   AFDVerificationForm,
+  ARForm,
   DDForm,
   FDForm,
   MDForm,
   NARForm,
   PFDForm,
+  MFDForm,
 } from '@/components/configure-algorithm/forms';
-import { MFDForm } from '@/components/configure-algorithm/forms/MFDForm';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormComponent } from '@/types/form';
 import { useQueryParams } from '@/utils/useQueryParams';
@@ -83,6 +84,10 @@ const forms: Partial<
   },
   AFD: {
     formComponent: AFDForm,
+    datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
+  },
+  AR: {
+    formComponent: ARForm,
     datasetInputs: [{ label: 'Dataset', inputId: '1', datasetId: '' }],
   },
 };

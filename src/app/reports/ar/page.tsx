@@ -3,13 +3,13 @@
 import { useEffect } from 'react';
 import { useQueryParams } from '@/utils/useQueryParams';
 
-export default function MFDVerification() {
+export default function AR() {
   const { setQueryParams } = useQueryParams<{ taskID: string }>();
 
   useEffect(
     () =>
       setQueryParams({
-        newPathname: '/reports/mfd_verification/clusters',
+        newPathname: '/reports/ar/result',
         erase: false,
         params: {},
       }),

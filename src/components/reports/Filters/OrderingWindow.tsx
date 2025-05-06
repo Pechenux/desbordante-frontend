@@ -7,6 +7,7 @@ import {
   AdcSortOptions,
   AfdSortOptions,
   AfdVerificationSortOptions,
+  ARSortOptions,
   DdSortOptions,
   FdSortOptions,
   MdSortOptions,
@@ -22,6 +23,7 @@ import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormField } from '../../common/uikit/FormField';
 
 export type SortOptions =
+  | ARSortOptions
   | AfdSortOptions
   | DdSortOptions
   | FdSortOptions
@@ -70,6 +72,11 @@ export const optionsByPrimitive: Partial<
   [PrimitiveType.NAR]: [
     { label: 'LHS names', value: NarSortOptions.lhs },
     { label: 'RHS names', value: NarSortOptions.rhs },
+  ],
+  [PrimitiveType.AR]: [
+    { label: 'Confidence', value: ARSortOptions.confidence },
+    { label: 'LHS Name', value: ARSortOptions.lhs_name },
+    { label: 'RHS Name', value: ARSortOptions.rhs_name },
   ],
   [PrimitiveType.AC]: [
     { label: 'Attributes names', value: AcSortOptions.attrubites_names },
