@@ -37,7 +37,7 @@ export const ACInstance: FC<ACInstanceType> = ({
   const OperationIcon = operationIcons[operation];
   const outliersString = outliers.join(' ');
   const intervalsString = intervals.reduce(
-    (acc, range) => acc + `[${range[0]}, ${range[1]}] `,
+    (acc, range) => acc + `[${range[0]},\u00A0${range[1]}] `,
     '',
   );
 

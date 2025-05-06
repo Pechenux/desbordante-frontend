@@ -21,7 +21,8 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { extractShownDeps } from '@/utils/extractShownDeps';
+// import { extractShownDeps } from '@/utils/extractShownDeps';
+
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './MDResult.module.scss';
 
@@ -55,10 +56,11 @@ export const MDResult = () => {
   ) => {
     setColumns(newColumns);
     setMetrics(newMetrics);
-
+    setPageIndex(1);
     setIsFilteringShown(false);
   };
 
+  const countOnPage = 8;
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,
@@ -66,6 +68,7 @@ export const MDResult = () => {
       metrics,
       orderBy,
       orderDirection,
+      pageIndex,
     ],
     queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
@@ -80,6 +83,8 @@ export const MDResult = () => {
           }),
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as MdSortOptions,
+          pagination_limit: countOnPage,
+          pagination_offset: (pageIndex - 1) * countOnPage,
         },
         path: { id: queryParams.taskID! },
       },
@@ -107,16 +112,16 @@ export const MDResult = () => {
   };
 
   const deps = data?.result?.primitive_name === 'md' && data?.result?.result;
+  if (!deps) return;
   const tableHeader =
     (data?.result?.primitive_name === 'md' && data?.result?.table_header) || [];
-  if (!deps) return;
-  const recordsCount = deps.length;
-  const countOnPage = 8;
+  const recordsCount =
+    data?.result?.primitive_name === 'md' && data?.result?.count_results;
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
-
+  //const shownData = extractShownDeps(deps, pageIndex, countOnPage);
+  const shownData = deps;
   return (
     <>
       {isOrderingShown && (
