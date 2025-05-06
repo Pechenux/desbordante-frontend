@@ -38,13 +38,21 @@ export const ARResult = () => {
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
 
+  const countOnPage = 10;
   const { data, isFetching, error } = useQuery({
-    queryKey: [`/api/tasks/${queryParams.taskID}`, orderBy, orderDirection],
+    queryKey: [
+      `/api/tasks/${queryParams.taskID}`,
+      orderBy,
+      orderDirection,
+      pageIndex,
+    ],
     queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
         query: {
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as ARSortOptions,
+          pagination_limit: countOnPage,
+          pagination_offset: (pageIndex - 1) * countOnPage,
         },
         path: { id: queryParams.taskID! },
       },
@@ -67,12 +75,11 @@ export const ARResult = () => {
 
   if (isFetching || error || !deps) return;
 
-  const recordsCount = deps.length;
-  const countOnPage = 10;
+  const recordsCount =
+    data?.result?.primitive_name === 'ar' && data?.result?.count_results;
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = deps;
 
   return (
     <>
@@ -101,7 +108,7 @@ export const ARResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} />
+        <DependencyList deps={deps} />
       </div>
 
       <div className={styles.pagination}>
