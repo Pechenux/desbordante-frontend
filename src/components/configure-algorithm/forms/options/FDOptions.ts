@@ -39,7 +39,6 @@ export type FDOptionalFields =
   | 'is_null_equal_null'
   | 'custom_random_seed';
 
-// FIXME
 export const optionalFieldsByAlgorithm: Record<
   FDAlgorithms,
   FDOptionalFields[]

@@ -17,7 +17,6 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { extractShownDeps } from '@/utils/extractShownDeps';
 import { useQueryParams } from '@/utils/useQueryParams';
 import { ACInstance } from '../ACInstance';
 import styles from './ACResult.module.scss';
@@ -51,14 +50,17 @@ export const ACResult = () => {
   const handleApplyFiltering = (newVal: MultiValue<string>) => {
     setColumns(newVal);
     setIsFilteringShown(false);
+    setPageIndex(1);
   };
 
+  const countOnPage = 6;
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,
       columns,
       orderBy,
       orderDirection,
+      pageIndex,
     ],
     queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
@@ -69,6 +71,8 @@ export const ACResult = () => {
           }),
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as AcSortOptions,
+          pagination_limit: countOnPage,
+          pagination_offset: (pageIndex - 1) * countOnPage,
         },
         path: { id: queryParams.taskID! },
       },
@@ -79,17 +83,16 @@ export const ACResult = () => {
   if (isFetching || error) return;
 
   const deps = data?.result?.primitive_name === 'ac' && data?.result?.result;
+  if (!deps) return;
   const tableHeader =
     (data?.result?.primitive_name === 'ac' && data?.result?.table_header) || [];
   const operation =
     data?.config.primitive_name === 'ac' && data.config.config.bin_operation;
-  if (!deps) return;
-  const recordsCount = deps.length;
-  const countOnPage = 6;
+  const recordsCount =
+    data?.result?.primitive_name === 'ac' && data?.result?.count_results;
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
 
   return (
     <>
@@ -135,8 +138,8 @@ export const ACResult = () => {
       </div>
 
       <div className={styles.rows}>
-        {shownData &&
-          shownData.map((value) => {
+        {deps &&
+          deps.map((value) => {
             const id = `${value.left_column} ${value.right_column}`;
             const isSelected = id === selectedInstance;
             return (

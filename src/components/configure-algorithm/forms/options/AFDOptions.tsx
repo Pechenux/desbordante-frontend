@@ -1,3 +1,5 @@
+import { InlineMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 import {
   AFDPyroConfigAlgo_name,
   AFDTaneConfigAlgo_name,
@@ -32,9 +34,24 @@ export const optionalFieldsByAlgorithm: Record<
 
 export const ErrorMeasuresOptions: SelectOption<AFDTaneConfigAfd_error_measure>[] =
   [
-    { label: 'g1', value: AFDTaneConfigAfd_error_measure.g1 },
-    { label: 'mu+', value: AFDTaneConfigAfd_error_measure.mu_plus },
-    { label: 'pdep', value: AFDTaneConfigAfd_error_measure.pdep },
-    { label: 'rho', value: AFDTaneConfigAfd_error_measure.rho },
-    { label: 'tau', value: AFDTaneConfigAfd_error_measure.tau },
+    {
+      label: <InlineMath math="g_1" />,
+      value: AFDTaneConfigAfd_error_measure.g1,
+    },
+    {
+      label: <InlineMath math="\mu^+" />,
+      value: AFDTaneConfigAfd_error_measure.mu_plus,
+    },
+    {
+      label: <InlineMath math="\text{pdep}" />,
+      value: AFDTaneConfigAfd_error_measure.pdep,
+    },
+    {
+      label: <InlineMath math="\rho" />,
+      value: AFDTaneConfigAfd_error_measure.rho,
+    },
+    {
+      label: <InlineMath math="\tau" />,
+      value: AFDTaneConfigAfd_error_measure.tau,
+    },
   ];

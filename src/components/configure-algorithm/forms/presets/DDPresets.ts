@@ -9,8 +9,8 @@ export const DDPresets: Presets<DDFormInputs> = {
       displayName: 'Default',
       preset: {
         algo_name: SplitConfigAlgo_name.split,
-        num_rows: 10,
-        num_columns: 6,
+        num_rows: 0,
+        num_columns: 0,
       },
     },
   ],

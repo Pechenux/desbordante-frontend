@@ -72,6 +72,7 @@ export const optionsByPrimitive: Partial<
   [PrimitiveType.NAR]: [
     { label: 'LHS names', value: NarSortOptions.lhs },
     { label: 'RHS names', value: NarSortOptions.rhs },
+    { label: 'Confidence', value: NarSortOptions.confidence },
   ],
   [PrimitiveType.AR]: [
     { label: 'Confidence', value: ARSortOptions.confidence },

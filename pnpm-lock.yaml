@@ -86,6 +86,9 @@ importers:
       react-i18next:
         specifier: ^15.0.2
         version: 15.0.2(i18next@23.15.2)(react-dom@18.3.1(react@18.3.1))(react-native@0.76.5(@babel/core@7.25.7)(@babel/preset-env@7.25.8(@babel/core@7.25.7))(@types/react@18.3.11)(react@18.3.1))(react@18.3.1)
+      react-katex:
+        specifier: ^3.0.1
+        version: 3.0.1(prop-types@15.8.1)(react@18.3.1)
       react-paginate:
         specifier: ^8.2.0
         version: 8.2.0(react@18.3.1)
@@ -165,6 +168,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
+      '@types/react-katex':
+        specifier: ^3.0.4
+        version: 3.0.4
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -2065,6 +2071,9 @@ packages:
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
 
+  '@types/react-katex@3.0.4':
+    resolution: {integrity: sha512-aLkykKzSKLpXI6REJ3uClao6P47HAFfR1gcHOZwDeTuALsyjgMhz+oynLV4gX0kiJVnvHrBKF/TLXqyNTpHDUg==}
+
   '@types/react-reconciler@0.26.7':
     resolution: {integrity: sha512-mBDYl8x+oyPX/VBb3E638N0B7xG+SPk/EAMcVPeexqus/5aTpTphQi0curhhshOqRrc9t6OPoJfEUkbymse/lQ==}
 
@@ -2650,6 +2659,10 @@ packages:
   commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
+
+  commander@8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
 
   commondir@1.0.1:
     resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
@@ -4163,6 +4176,10 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
+  katex@0.16.22:
+    resolution: {integrity: sha512-XCHRdUw4lf3SKBaJe4EvgqIuWwkPSo9XoeO8GjQW94Bp7TWv9hNhzZjZ+OH9yf1UmLygb7DIT5GSFQiyt16zYg==}
+    hasBin: true
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -4916,6 +4933,12 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  react-katex@3.0.1:
+    resolution: {integrity: sha512-wIUW1fU5dHlkKvq4POfDkHruQsYp3fM8xNb/jnc8dnQ+nNCnaj0sx5pw7E6UyuEdLRyFKK0HZjmXBo+AtXXy0A==}
+    peerDependencies:
+      prop-types: ^15.8.1
+      react: '>=15.3.2 <=18'
 
   react-konva@18.2.10:
     resolution: {integrity: sha512-ohcX1BJINL43m4ynjZ24MxFI1syjBdrXhqVxYVDw2rKgr3yuS0x/6m1Y2Z4sl4T/gKhfreBx8KHisd0XC6OT1g==}
@@ -8179,6 +8202,10 @@ snapshots:
     dependencies:
       '@types/react': 18.3.11
 
+  '@types/react-katex@3.0.4':
+    dependencies:
+      '@types/react': 18.3.11
+
   '@types/react-reconciler@0.26.7':
     dependencies:
       '@types/react': 18.3.11
@@ -8870,6 +8897,8 @@ snapshots:
   commander@2.20.3: {}
 
   commander@7.2.0: {}
+
+  commander@8.3.0: {}
 
   commondir@1.0.1: {}
 
@@ -10743,6 +10772,10 @@ snapshots:
       object.assign: 4.1.5
       object.values: 1.2.0
 
+  katex@0.16.22:
+    dependencies:
+      commander: 8.3.0
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -11552,6 +11585,12 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
+
+  react-katex@3.0.1(prop-types@15.8.1)(react@18.3.1):
+    dependencies:
+      katex: 0.16.22
+      prop-types: 15.8.1
+      react: 18.3.1
 
   react-konva@18.2.10(@types/react@18.3.11)(konva@9.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

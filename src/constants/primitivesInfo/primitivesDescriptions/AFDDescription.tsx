@@ -1,20 +1,18 @@
+import { InlineMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
+
 export const AFDDescription = (
-  <>
-    This task checks whether a single FD holds over a provided table. In case if
-    exact FD does not hold, then:
-    <ol>
-      <li>
-        the approximate FD is checked and the error threshold is returned,
-      </li>
-      <li>
-        the data that violates the FD is shown in the form of clusters — all
-        different RHS values for a fixed LHS one.
-      </li>
-    </ol>
-    For the notion of the approximate FD and the error threshold, check{' '}
-    <a href="https://www.vldb.org/pvldb/vol11/p759-kruse.pdf">
-      “Efficient discovery of approximate dependencies”
-    </a>{' '}
-    by S. Kruse and F. Naumann.
-  </>
+  <div>
+    Approximate functional dependency is a relaxed form of functional dependency
+    that allows for some degree of violation. Essentially, it states that the
+    values from one set of attributes uniquely determine the values of another
+    set of attributes for almost all tuples. The number of admissible violations
+    is controlled by a user-specified threshold value in the range of{' '}
+    <InlineMath math="[0, 1]" />. For each candidate AFD, a (fixed) metric is
+    calculated, and if the value is less than this threshold, the AFD is
+    considered to hold. Several metrics exist for this purpose, such as{' '}
+    <InlineMath math="g_1" />, <InlineMath math="\mu^+" />,{' '}
+    <InlineMath math="\tau" />, <InlineMath math="\text{pdep}" />,{' '}
+    <InlineMath math="\rho" />.
+  </div>
 );

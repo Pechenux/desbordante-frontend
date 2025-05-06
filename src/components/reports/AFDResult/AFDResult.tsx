@@ -18,7 +18,7 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { extractShownDeps } from '@/utils/extractShownDeps';
+
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './AFDResult.module.scss';
 
@@ -47,16 +47,18 @@ export const AFDResult = () => {
   const handleApplyFiltering = (newVal: MultiValue<string>) => {
     setColumns(newVal);
     setIsFilteringShown(false);
+    setPageIndex(1);
   };
 
   const { queryParams } = useQueryParams<{ taskID: string }>();
-
+  const countOnPage = 10;
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,
       columns,
       orderBy,
       orderDirection,
+      pageIndex,
     ],
     queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
@@ -67,6 +69,8 @@ export const AFDResult = () => {
           }),
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as AfdSortOptions,
+          pagination_limit: countOnPage,
+          pagination_offset: (pageIndex - 1) * countOnPage,
         },
         path: { id: queryParams.taskID! },
       },
@@ -77,16 +81,15 @@ export const AFDResult = () => {
   if (isFetching || error) return;
 
   const deps = data?.result?.primitive_name === 'afd' && data?.result?.result;
+  if (!deps) return;
   const tableHeader =
     (data?.result?.primitive_name === 'afd' && data?.result?.table_header) ||
     [];
-  if (!deps) return;
-  const recordsCount = deps.length;
-  const countOnPage = 10;
+  const recordsCount =
+    data?.result?.primitive_name === 'afd' && data?.result?.count_results;
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
 
   return (
     <>
@@ -132,7 +135,7 @@ export const AFDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} />
+        <DependencyList deps={deps} />
       </div>
 
       <div className={styles.pagination}>

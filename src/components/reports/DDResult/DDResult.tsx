@@ -19,7 +19,7 @@ import {
   SortOptions,
 } from '@/components/reports';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
-import { extractShownDeps } from '@/utils/extractShownDeps';
+
 import { useQueryParams } from '@/utils/useQueryParams';
 import styles from './DDResult.module.scss';
 
@@ -49,14 +49,17 @@ export const DDResult = () => {
   const handleApplyFiltering = (newVal: MultiValue<string>) => {
     setColumns(newVal);
     setIsFilteringShown(false);
+    setPageIndex(1);
   };
 
+  const countOnPage = 10;
   const { data, isFetching, error } = useQuery({
     queryKey: [
       `/api/tasks/${queryParams.taskID}`,
       columns,
       orderBy,
       orderDirection,
+      pageIndex,
     ],
     queryFn: createQueryFn('/api/tasks/{id}', {
       params: {
@@ -67,6 +70,8 @@ export const DDResult = () => {
           }),
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as DdSortOptions,
+          pagination_limit: countOnPage,
+          pagination_offset: (pageIndex - 1) * countOnPage,
         },
         path: { id: queryParams.taskID! },
       },
@@ -81,15 +86,14 @@ export const DDResult = () => {
   };
 
   const deps = data?.result?.primitive_name === 'dd' && data?.result?.result;
+  if (!deps) return;
   const tableHeader =
     (data?.result?.primitive_name === 'dd' && data?.result?.table_header) || [];
-  if (!deps) return;
-  const recordsCount = deps.length;
-  const countOnPage = 10;
+  const recordsCount =
+    data?.result?.primitive_name === 'dd' && data?.result?.count_results;
   const countPaginationPages = Math.ceil(
     (recordsCount || countOnPage) / countOnPage,
   );
-  const shownData = extractShownDeps(deps, pageIndex, countOnPage);
 
   return (
     <>
@@ -135,7 +139,7 @@ export const DDResult = () => {
       </div>
 
       <div className={styles.rows}>
-        <DependencyList deps={shownData} formatter={formatter} />
+        <DependencyList deps={deps} formatter={formatter} />
       </div>
 
       <div className={styles.pagination}>
