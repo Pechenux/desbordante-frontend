@@ -120,7 +120,7 @@ export const AFDForm: FormComponent<AFDFormInputs> = () => {
           {({ field: { value, onChange } }) => (
             <Select
               value={value}
-              defaultValue={ErrorMeasuresOptions[0]}
+              //defaultValue={ErrorMeasuresOptions[0]}
               onChange={onChange}
               options={ErrorMeasuresOptions}
             />

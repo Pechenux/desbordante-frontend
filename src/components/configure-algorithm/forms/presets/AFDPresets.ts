@@ -9,6 +9,13 @@ import { AFDFormInputs } from '../AFDForm';
 export const AFDPresets: Presets<AFDFormInputs> = {
   common: [
     {
+      name: 'strict',
+      displayName: 'Strict preset',
+      preset: {
+        error: 0,
+      },
+    },
+    {
       name: 'tane-default',
       displayName: 'Tane Default',
       preset: {

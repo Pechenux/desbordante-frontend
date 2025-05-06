@@ -1,7 +1,7 @@
 'use client';
 
 import cn from 'classnames';
-import { useCallback, useContext, useMemo } from 'react';
+import { ReactNode, useCallback, useContext, useMemo } from 'react';
 import ReactSelect, {
   OnChangeValue,
   PropsValue,
@@ -29,7 +29,7 @@ export type Badge = {
  * Select option type
  */
 export type SelectOption<TValue = string> = {
-  label: string;
+  label: ReactNode;
   value: TValue;
   badges?: Badge[];
 };
@@ -44,7 +44,7 @@ export type SelectProps<TValue = string, IsMulti extends boolean = false> = {
   WithError;
 
 const optionParser = z.object({
-  label: z.string(),
+  label: z.any(),
   value: z.any(),
   badges: z.optional(
     z.object({ label: z.string(), style: z.optional(z.string()) }).array(),
