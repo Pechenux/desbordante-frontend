@@ -1,3 +1,10 @@
-pnpm lint:typescript --quiet $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
-pnpm lint:styles --allow-empty-input --quiet $(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g')
-pnpm dlx commitlint --edit 
+changes=$(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g');
+
+if [[ ! -z $changes ]]; then
+  echo "Running linters on staged files...";
+  pnpm lint:typescript --quiet $changes;
+  pnpm lint:styles --allow-empty-input --quiet $changes;
+else
+  echo "No changes in src/ to lint.";
+fi
+pnpm dlx commitlint --edit;
