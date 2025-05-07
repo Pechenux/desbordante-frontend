@@ -12,7 +12,7 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    environment: Production build
+    environment: "Production build"
     permissions:
       contents: read
       packages: write
