@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import fs from 'node:fs';
+import path from 'node:path';
 import { merge, isErrorResult, MergeInput } from 'openapi-merge';
 import openapiTS, { astToString } from 'openapi-typescript';
 import ts from 'typescript';
@@ -99,4 +100,4 @@ const ast = await openapiTS(JSON.stringify(mergeResult.output), {
 const disableESLint = '/* eslint-disable -- GENERATED FILE, DO NOT EDIT */\n';
 const contents = disableESLint + astToString(ast);
 
-fs.writeFileSync('./src/api/generated/schema.ts', contents);
+fs.writeFileSync(path.resolve('./src/api/generated/schema.ts'), contents);
