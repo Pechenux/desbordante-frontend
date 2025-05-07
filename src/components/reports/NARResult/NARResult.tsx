@@ -71,7 +71,7 @@ export const NARResult = () => {
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as NarSortOptions,
           pagination_limit: countOnPage,
-          pagination_offset: pageIndex * countOnPage,
+          pagination_offset: (pageIndex - 1) * countOnPage,
         },
         path: { id: queryParams.taskID! },
       },

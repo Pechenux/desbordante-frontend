@@ -87,7 +87,7 @@ export const FDForm: FormComponent<FDFormInputs> = () => {
           )}
         </ControlledFormField>
       )}
-      {optionalFields.includes('seed') && (
+      {optionalFields.includes('custom_random_seed') && (
         <ControlledFormField<FDFormInputs, 'custom_random_seed'>
           formFieldProps={{ label: 'Seed' }}
           controllerProps={{
