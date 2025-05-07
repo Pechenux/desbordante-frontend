@@ -12,7 +12,16 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    environment: "Production build"
+    environment: production
+    env:
+      SERVER_PROTOCOL: ${{ vars.SERVER_PROTOCOL }}
+      SERVER_IP: ${{ vars.SERVER_IP }}
+      SERVER_PORT: ${{ vars.SERVER_PORT }}
+      CMS_PROTOCOL: ${{ vars.CMS_PROTOCOL }}
+      CMS_IP: ${{ vars.CMS_IP }}
+      CMS_PORT: ${{ vars.CMS_PORT }}
+      CMS_VERSvION: ${{ vars.CMS_VERSvION }}
+      CMS_TOKEN: ${{ secrets.CMS_TOKEN }}
     permissions:
       contents: read
       packages: write
