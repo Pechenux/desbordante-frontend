@@ -20,7 +20,7 @@ jobs:
       CMS_PROTOCOL: ${{ vars.CMS_PROTOCOL }}
       CMS_IP: ${{ vars.CMS_IP }}
       CMS_PORT: ${{ vars.CMS_PORT }}
-      CMS_VERSvION: ${{ vars.CMS_VERSvION }}
+      CMS_VERSION: ${{ vars.CMS_VERSION }}
       CMS_TOKEN: ${{ secrets.CMS_TOKEN }}
     permissions:
       contents: read
