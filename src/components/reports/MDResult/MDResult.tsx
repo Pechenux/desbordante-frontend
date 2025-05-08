@@ -17,7 +17,6 @@ import { MetricsType } from '@/components/configure-algorithm/MD/ConfigureColumn
 import {
   DependencyList,
   MDFilteringWindow,
-  MDVisibilityWindow,
   OrderingWindow,
   SortOptions,
 } from '@/components/reports';
@@ -30,7 +29,6 @@ export const MDResult = () => {
   const { queryParams } = useQueryParams<{ taskID: string }>();
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isFilteringShown, setIsFilteringShown] = useState(false);
-  const [isVisibilityShown, setIsVisibilityShown] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const [columns, setColumns] = useState<MultiValue<string>>([]);
   const [metrics, setMetrics] = useState<MultiValue<MetricsType>>([]);
@@ -60,11 +58,6 @@ export const MDResult = () => {
     setMetrics(newMetrics);
     setPageIndex(1);
     setIsFilteringShown(false);
-  };
-
-  const handleApplyVisibility = (newValue: boolean) => {
-    setIsShowZeroes(newValue);
-    setIsVisibilityShown(false);
   };
 
   const countOnPage = 8;
@@ -153,14 +146,6 @@ export const MDResult = () => {
           filterMetrics={metrics}
         />
       )}
-      {isVisibilityShown && (
-        <MDVisibilityWindow
-          isOpen={isVisibilityShown}
-          curIsShow={isShowZeroes}
-          onClose={() => setIsVisibilityShown(false)}
-          onApply={handleApplyVisibility}
-        />
-      )}
 
       <h5>Primitive List</h5>
 
@@ -185,9 +170,9 @@ export const MDResult = () => {
           variant="secondary"
           size="md"
           icon={<Icon name="eye" />}
-          onClick={() => setIsVisibilityShown(true)}
+          onClick={() => setIsShowZeroes(!isShowZeroes)}
         >
-          Visibility
+          {(isShowZeroes ? 'Hide' : 'Show') + ' zero boundaries'}
         </Button>
       </div>
 
