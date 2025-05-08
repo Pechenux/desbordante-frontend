@@ -45,7 +45,7 @@ export const MDFilteringWindow: FC<MDFilteringProps> = ({
       onClose={onClose}
       onApply={() => onApply(selectedColumns, selectedMetrics)}
     >
-      <FormField label="By columns">
+      <FormField label="By RHS columns">
         <Select
           isMulti
           value={selectedColumns}
@@ -53,7 +53,7 @@ export const MDFilteringWindow: FC<MDFilteringProps> = ({
           options={options}
         />
       </FormField>
-      <FormField label="By metrics">
+      <FormField label="By RHS metrics">
         <Select
           isMulti
           value={selectedMetrics}

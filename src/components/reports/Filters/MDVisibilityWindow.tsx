@@ -6,16 +6,16 @@ import { CheckboxGroup, FormField } from '@/components/common/uikit';
 
 type FilteringProps = ModalProps & {
   onApply: (newValue: boolean) => void;
-  curIsShowOnly: boolean;
+  curIsShow: boolean;
 };
 
-export const AFDVerificationVisibilityWindow: FC<FilteringProps> = ({
+export const MDVisibilityWindow: FC<FilteringProps> = ({
   isOpen,
   onClose,
   onApply,
-  curIsShowOnly,
+  curIsShow,
 }) => {
-  const [checkboxValue, setCheckboxValue] = useState<boolean>(curIsShowOnly);
+  const [checkboxValue, setCheckboxValue] = useState<boolean>(curIsShow);
 
   return (
     <PropertiesModal
@@ -28,7 +28,7 @@ export const AFDVerificationVisibilityWindow: FC<FilteringProps> = ({
         <CheckboxGroup
           values={checkboxValue ? ['isShown'] : []}
           onChange={(newValue) => setCheckboxValue(newValue.length > 0)}
-          options={[{ label: 'Show LHS and RHS only', value: 'isShown' }]}
+          options={[{ label: 'Show zero boundaris in LHS', value: 'isShown' }]}
         />
       </FormField>
     </PropertiesModal>

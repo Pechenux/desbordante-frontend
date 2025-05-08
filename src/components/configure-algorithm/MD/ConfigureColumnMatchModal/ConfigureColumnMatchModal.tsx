@@ -44,15 +44,15 @@ export const optionsMetrics: SelectOption<MetricsType>[] = [
   { label: 'Jaccard', value: JaccardConfigMetrics.jaccard },
   {
     label: 'LVNormDateDistance',
-    value: LVNormDateDistanceConfigMetrics.lvnormdatedistance,
+    value: LVNormDateDistanceConfigMetrics.date_difference,
   },
   {
     label: 'LVNormNumberDistance',
-    value: LVNormNumberDistanceConfigMetrics.lvnormnumberdistance,
+    value: LVNormNumberDistanceConfigMetrics.number_difference,
   },
   { label: 'LCS', value: LcsConfigMetrics.lcs },
   { label: 'Levenstain', value: LevenshteinConfigMetrics.levenshtein },
-  { label: 'Monge-Elkan', value: MongeElkanConfigMetrics.mongeelkan },
+  { label: 'Monge-Elkan', value: MongeElkanConfigMetrics.monge_elkan },
 ];
 
 export const ConfigureColumnMatchModal: FC<
