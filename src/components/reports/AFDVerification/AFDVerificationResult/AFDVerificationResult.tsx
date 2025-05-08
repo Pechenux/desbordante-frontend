@@ -12,11 +12,7 @@ import { createQueryFn } from '@/api/services/server';
 import { Button, Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { useQueryParams } from '@/utils/useQueryParams';
-import {
-  AFDVerificationVisibilityWindow,
-  OrderingWindow,
-  SortOptions,
-} from '../../Filters';
+import { OrderingWindow, SortOptions } from '../../Filters';
 import { ReportFiller } from '../../ReportFiller';
 import { AFDCluster } from '../AFDCluster/AFDCluster';
 import styles from './AFDVerificationResult.module.scss';
@@ -26,7 +22,6 @@ export const AFDVerificationResult = () => {
   const [clusterIndex, setClusterIndex] = useState(0);
   const [isOrderingShown, setIsOrderingShown] = useState(false);
   const [isLhsRhsOnlyShown, setIsLhsRhsOnlyShown] = useState(false);
-  const [isVisibilityShown, setIsVisibilityShown] = useState(false);
   const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
     SortOrder.asc,
   );
@@ -42,10 +37,6 @@ export const AFDVerificationResult = () => {
     setOrderDirection(newDirection);
 
     setIsOrderingShown(false);
-  };
-  const handleApplyVisibility = (newValue: boolean) => {
-    setIsLhsRhsOnlyShown(newValue);
-    setIsVisibilityShown(false);
   };
 
   const { data, isFetching, error } = useQuery({
@@ -102,16 +93,6 @@ export const AFDVerificationResult = () => {
           onApply={handleApplyOrdering}
         />
       )}
-
-      {isVisibilityShown && (
-        <AFDVerificationVisibilityWindow
-          isOpen={isVisibilityShown}
-          curIsShowOnly={isLhsRhsOnlyShown}
-          onClose={() => setIsVisibilityShown(false)}
-          onApply={handleApplyVisibility}
-        />
-      )}
-
       {data && !data.result && <ReportFiller title={'Loading'} />}
       {data && data.result && data.result.result && (
         <>
@@ -153,9 +134,9 @@ export const AFDVerificationResult = () => {
                     variant="secondary"
                     size="md"
                     icon={<Icon name="eye" />}
-                    onClick={() => setIsVisibilityShown(true)}
+                    onClick={() => setIsLhsRhsOnlyShown(!isLhsRhsOnlyShown)}
                   >
-                    Visibility
+                    {(isLhsRhsOnlyShown ? 'Hide' : 'Show') + ' LHS/RHS only'}
                   </Button>
                 </div>
               </div>

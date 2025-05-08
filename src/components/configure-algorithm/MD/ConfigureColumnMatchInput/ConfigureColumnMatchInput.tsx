@@ -32,12 +32,11 @@ type ConfigureColumnMatchInputProps = {
 export const displayedMetricsName = {
   [EqualityConfigMetrics.equality]: 'Equality',
   [JaccardConfigMetrics.jaccard]: 'Jaccard',
-  [LVNormDateDistanceConfigMetrics.lvnormdatedistance]: 'LVNormDateDistance',
-  [LVNormNumberDistanceConfigMetrics.lvnormnumberdistance]:
-    'LVNormNumberDistance',
+  [LVNormDateDistanceConfigMetrics.date_difference]: 'LVNormDateDistance',
+  [LVNormNumberDistanceConfigMetrics.number_difference]: 'LVNormNumberDistance',
   [LcsConfigMetrics.lcs]: 'LCS',
   [LevenshteinConfigMetrics.levenshtein]: 'Levenstain',
-  [MongeElkanConfigMetrics.mongeelkan]: 'Monge-Elkan',
+  [MongeElkanConfigMetrics.monge_elkan]: 'Monge-Elkan',
 };
 
 export const ConfigureColumnMatchInput: FC<ConfigureColumnMatchInputProps> = ({

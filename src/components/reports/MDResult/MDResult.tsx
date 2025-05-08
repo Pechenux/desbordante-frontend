@@ -32,6 +32,7 @@ export const MDResult = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [columns, setColumns] = useState<MultiValue<string>>([]);
   const [metrics, setMetrics] = useState<MultiValue<MetricsType>>([]);
+  const [isShowZeroes, setIsShowZeroes] = useState<boolean>(true);
   const [orderDirection, setOrderDirection] = useState<SingleValue<SortOrder>>(
     SortOrder.asc,
   );
@@ -65,6 +66,7 @@ export const MDResult = () => {
       `/api/tasks/${queryParams.taskID}`,
       columns,
       metrics,
+      isShowZeroes,
       orderBy,
       orderDirection,
       pageIndex,
@@ -75,10 +77,12 @@ export const MDResult = () => {
           filter_options: [
             MdFilterOptions.attribute_name,
             MdFilterOptions.metrics,
+            MdFilterOptions.show_zeroes,
           ],
           filter_params: JSON.stringify({
             attribute_name: columns,
             metrics: metrics,
+            show_zeroes: isShowZeroes,
           }),
           sort_direction: orderDirection as SortOrder,
           sort_option: orderBy as MdSortOptions,
@@ -161,6 +165,14 @@ export const MDResult = () => {
           onClick={() => setIsOrderingShown(true)}
         >
           Ordering
+        </Button>
+        <Button
+          variant="secondary"
+          size="md"
+          icon={<Icon name="eye" />}
+          onClick={() => setIsShowZeroes(!isShowZeroes)}
+        >
+          {(isShowZeroes ? 'Hide' : 'Show') + ' zero boundaries'}
         </Button>
       </div>
 
