@@ -15,7 +15,7 @@ const palanquin = Palanquin({
 });
 const roboto = Roboto({
   weight: ['400', '500', '700'],
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   display: 'swap',
   variable: '--font-roboto',
 });
