@@ -10,7 +10,7 @@ export default async function MFDVerificationReport({
   const tabs = [
     {
       name: 'clusters',
-      label: 'Clustes',
+      label: 'Clusters',
       icon: <Icon name="cluster" />,
       content: <MFDResult />,
     },
