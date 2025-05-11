@@ -35,6 +35,7 @@ export const PrPublicationCard = ({ data }: PrPublicationCardProps) => {
           alt=""
           className={styles.thumbnail}
           title={platform?.title}
+          unoptimized
         />
       )}
 

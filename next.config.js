@@ -10,9 +10,6 @@ const rewrites = require('./proxy.config.js');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    dangerouslyAllowSVG: true,
-  },
   output: 'standalone',
   // TODELETE
   experimental: {
