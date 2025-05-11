@@ -12,7 +12,9 @@ export const authFetchClient = createClient<paths>({
 });
 
 export type ErrorResponse = {
-  error: string;
+  detail: {
+    msg: string;
+  }[];
 };
 
 export type LoginResponse = SchemaRegisterResponse | ErrorResponse;
@@ -33,9 +35,7 @@ async function login(data: LoginFormData): Promise<LoginResponse> {
     };
   }
 
-  return {
-    error: response.error as string,
-  };
+  return response.error as ErrorResponse;
 }
 
 // to the hooks.ts
@@ -66,9 +66,7 @@ async function register(data: RegisterFormData): Promise<LoginResponse> {
     };
   }
 
-  return {
-    error: response.error as string,
-  };
+  return response.error as ErrorResponse;
 }
 
 export const useRegister = () => {
@@ -119,12 +117,19 @@ async function refresh(): Promise<LoginResponse> {
     removeFromStorage();
 
     return {
-      error: 'Token is invalid',
+      detail: [
+        {
+          msg: 'Token is invalid',
+        },
+      ],
     };
   }
-
   return {
-    error: 'Something went wrong',
+    detail: [
+      {
+        msg: 'Something went wrong',
+      },
+    ],
   };
 }
 

@@ -8,6 +8,7 @@ import {
 } from '@/components/common/layout/ModalContainer';
 import { ControlledFormField, Text } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
+import { showError } from '@/utils/toasts';
 import styles from './LoginModal.module.scss';
 
 type LoginModalProps = ModalProps & {
@@ -45,8 +46,9 @@ export const LoginModal: FC<LoginModalProps> = ({
           },
           {
             onSuccess: (response) => {
-              if ('error' in response) {
-                console.error(response.error);
+              if ('detail' in response) {
+                showError(response.detail[0]?.msg);
+                console.error(response.detail[0]?.msg);
               } else {
                 onLogin();
               }
@@ -56,8 +58,9 @@ export const LoginModal: FC<LoginModalProps> = ({
       } else {
         await register.mutate(formData, {
           onSuccess: (response) => {
-            if ('error' in response) {
-              console.error(response.error);
+            if ('detail' in response) {
+              showError(response.detail[0]?.msg);
+              console.error(response.detail[0]?.msg);
             } else {
               onLogin();
             }
