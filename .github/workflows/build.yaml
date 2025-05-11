@@ -48,6 +48,9 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
+          envkey_BACKEND_PROTOCOL: ${{ vars.BACKEND_PROTOCOL }}
+          envkey_BACKEND_IP: ${{ vars.BACKEND_IP }}
+          envkey_BACKEND_PORT: ${{ vars.BACKEND_PORT }}
           envkey_SERVER_PROTOCOL: ${{ vars.SERVER_PROTOCOL }}
           envkey_SERVER_IP: ${{ vars.SERVER_IP }}
           envkey_SERVER_PORT: ${{ vars.SERVER_PORT }}

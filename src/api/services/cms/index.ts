@@ -2,7 +2,7 @@ import createClient, { Middleware } from 'openapi-fetch';
 import type { paths } from '@/api/generated/schema.ts';
 
 export const cmsFetchClient = createClient<paths>({
-  baseUrl: `${process.env.CMS_PROTOCOL}://${process.env.CMS_IP}:${process.env.CMS_PORT}/`,
+  baseUrl: `${process.env.BACKEND_PROTOCOL}://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/`,
 });
 
 const useAccessToken: Middleware = {
