@@ -8,6 +8,7 @@ interface Props extends PropsWithChildren {
   footer: ReactElement;
   className?: string;
   hasBackground?: boolean;
+  stickyFooter?: boolean;
 }
 
 export const WizardLayout: FC<Props> = ({
@@ -16,6 +17,7 @@ export const WizardLayout: FC<Props> = ({
   className,
   children,
   hasBackground = true,
+  stickyFooter = false,
 }) => {
   return (
     <div className={styles.page}>
@@ -24,7 +26,9 @@ export const WizardLayout: FC<Props> = ({
       )}
       <div className={styles.sectionText}>{header}</div>
       <div className={cn(className, styles.content)}>{children}</div>
-      <div className={styles.footer}>{footer}</div>
+      <div className={cn(styles.footer, { [styles.sticky!]: stickyFooter })}>
+        {footer}
+      </div>
     </div>
   );
 };

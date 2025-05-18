@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { createQueryFn } from '@/api/services/server';
+import { useUser } from '@/api/services/server/hooks';
 import { Collapse } from '@/components/common/layout/Collapse';
 import {
   ModalContainer,
@@ -16,19 +17,36 @@ import styles from './ChooseDatasetModal.module.scss';
 
 export type ChooseDatasetModalProps = ModalProps & {
   choosedDataset: ChoosedDatasetInfo | null;
-  onClick: (newValue: ChoosedDatasetInfo) => void;
-  onApply: () => void;
-  onCancel: () => void;
+  onApply: (selectedDataset: ChoosedDatasetInfo | null) => void;
 };
 
 export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
   choosedDataset,
-  onClick,
-  onCancel,
   isOpen,
   onClose,
   onApply,
 }) => {
+  const user = useUser();
+  const [currentDataset, setCurrentDataset] =
+    useState<ChoosedDatasetInfo | null>(choosedDataset);
+  useEffect(() => {
+    setCurrentDataset(choosedDataset);
+  }, [choosedDataset]);
+
+  const handleApply = useCallback(() => {
+    onApply(currentDataset);
+    onClose();
+  }, [currentDataset, onApply, onClose]);
+
+  const handleUnselect = useCallback(() => {
+    setCurrentDataset(null);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    onClose();
+    setCurrentDataset(choosedDataset);
+  }, [choosedDataset, onClose]);
+
   const header = useMemo(
     () => (
       <>
@@ -47,7 +65,7 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
           disabled={false}
           variant="secondary"
           icon={<Icon name="cross" />}
-          onClick={onCancel}
+          onClick={handleUnselect}
         >
           Unselect
         </Button>
@@ -55,13 +73,13 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
           disabled={false}
           variant="primary"
           icon={<Icon name="file" />}
-          onClick={onApply}
+          onClick={handleApply}
         >
           Confirm
         </Button>
       </>
     ),
-    [onCancel, onApply],
+    [handleUnselect, handleApply],
   );
 
   const { data } = useQuery({
@@ -95,18 +113,18 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
                   supportedPrimitives: [PrimitiveType.NAR],
                 }}
                 primitive={PrimitiveType.NAR}
-                isSelected={choosedDataset?.fileId === dts.id}
-                onClick={onClick}
+                isSelected={currentDataset?.fileId === dts.id}
+                onClick={setCurrentDataset}
               />
             ),
         )}
       </div>
     </Collapse>
   );
-  const userFiles = (
+  const userFiles = user ? (
     <Collapse title="My Files">
       <div className={styles.files}>
-        <DatasetUploader onUpload={onClick} />
+        <DatasetUploader onUpload={setCurrentDataset} />
         {data?.map(
           (dts) =>
             dts.owner_id && (
@@ -122,19 +140,19 @@ export const ChooseDatasetModal: FC<ChooseDatasetModalProps> = ({
                   supportedPrimitives: [PrimitiveType.NAR],
                 }}
                 primitive={PrimitiveType.NAR}
-                isSelected={choosedDataset?.fileId === dts.id}
-                onClick={onClick}
+                isSelected={currentDataset?.fileId === dts.id}
+                onClick={setCurrentDataset}
               />
             ),
         )}
       </div>
     </Collapse>
-  );
+  ) : null;
   return (
     <>
       <ModalContainer
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
         className={styles.modal}
       >
         <WizardLayout

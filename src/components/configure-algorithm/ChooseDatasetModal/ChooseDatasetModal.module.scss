@@ -24,10 +24,10 @@
 }
 
 .content {
-  align-items: stretch;
-  width: 100%;
+  align-items: stretch !important;
+  width: 100% !important;
 
   &.reversed {
-    flex-direction: column-reverse;
+    flex-direction: column-reverse !important;
   }
 }

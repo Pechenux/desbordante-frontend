@@ -102,7 +102,7 @@ const ChoosePrimitive = () => {
 
   return (
     <div>
-      <WizardLayout footer={footer} header={header}>
+      <WizardLayout footer={footer} header={header} stickyFooter>
         <div className={styles.search}>
           <Search
             label="Search"
