@@ -57,7 +57,9 @@ export const PresetSelector = ({
     }
 
     const fileNames = files.map(
-      (fileId) => data?.find((file) => file.id === fileId)?.name ?? fileId,
+      (fileId) =>
+        data?.find((file) => !file.owner_id && file.id === fileId)?.name ??
+        fileId,
     );
 
     const fileSpecificPresets = presets.fileSpecific
@@ -81,17 +83,6 @@ export const PresetSelector = ({
     [fromPresets],
   );
 
-  useEffect(() => {
-    if (!isLoading) {
-      if (presetOptions.length > 1) {
-        // set default preset to first one
-        setPresetIndex(0);
-      } else {
-        setPresetIndex(CUSTOM_PRESET_INDEX);
-      }
-    }
-  }, [isLoading, presetOptions]);
-
   const [needTrigger, setNeedTrigger] = useState(false);
 
   useEffect(() => {
@@ -114,6 +105,17 @@ export const PresetSelector = ({
     },
     [defaultPreset, formReset, fromPresets],
   );
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (presetOptions.length > 1) {
+        // set default preset to first one
+        changePreset(0);
+      } else {
+        setPresetIndex(CUSTOM_PRESET_INDEX);
+      }
+    }
+  }, [changePreset, isLoading, presetOptions]);
 
   useEffect(() => {
     if (isCustom) {

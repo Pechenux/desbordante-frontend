@@ -31,6 +31,11 @@
   gap: 16px;
   justify-content: center;
   display: flex;
+
+  &.sticky {
+    bottom: 16px;
+    position: sticky;
+  }
 }
 
 .content {

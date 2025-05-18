@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import createClient from 'openapi-fetch';
 import { paths, SchemaRegisterResponse } from '@/api/generated/schema';
-import { getQueryClient } from '@/api/queryClient';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { baseUrl } from '../definitions';
 import { removeFromStorage } from './helpers';
@@ -40,10 +39,15 @@ async function login(data: LoginFormData): Promise<LoginResponse> {
 
 // to the hooks.ts
 export const useLogin = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      if ('user' in data) getQueryClient().setQueryData(['user'], data.user);
+      if ('user' in data) {
+        queryClient.setQueryData(['user'], data.user);
+        queryClient.invalidateQueries({ queryKey: ['/api/files'] });
+      }
     },
   });
 };
@@ -75,7 +79,10 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: register,
     onSuccess: (data) => {
-      if ('user' in data) queryClient.setQueryData(['user'], data.user);
+      if ('user' in data) {
+        queryClient.setQueryData(['user'], data.user);
+        queryClient.invalidateQueries({ queryKey: ['/api/files'] });
+      }
     },
   });
 };
@@ -98,6 +105,7 @@ export const useLogout = () => {
     onSuccess: (data) => {
       if (data.response.status === 204) {
         queryClient.removeQueries({ queryKey: ['user'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/files'] });
       }
     },
   });
@@ -134,10 +142,15 @@ async function refresh(): Promise<LoginResponse> {
 }
 
 export const useRefresh = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: refresh,
     onSuccess: (data) => {
-      if ('user' in data) getQueryClient().setQueryData(['user'], data.user);
+      if ('user' in data) {
+        queryClient.setQueryData(['user'], data.user);
+        queryClient.invalidateQueries({ queryKey: ['/api/files'] });
+      }
     },
   });
 };
