@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaAfdVerificationTaskConfig } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -24,6 +25,10 @@ export const AFDVerificationForm: FormComponent<
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnSelect = fileIDs['1'] === '';
+  useEffect(() => {
+    methods.setValue('lhs_indices', []);
+    methods.setValue('rhs_indices', []);
+  }, [fileIDs]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -46,7 +51,7 @@ export const AFDVerificationForm: FormComponent<
             value: i,
           }))
         : [...Array(fileInfo.num_columns).keys()].map((i) => ({
-            label: `Column ${i + 1}`,
+            label: `Column ${i}`,
             value: i,
           })))) ||
     undefined;

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaAdcTaskConfig } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -22,6 +23,9 @@ export const ADCForm: FormComponent<ADCFormInputs> = () => {
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledInput = fileIDs['1'] === '';
+  useEffect(() => {
+    methods.setValue('shard_length', 0);
+  }, [fileIDs]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -77,11 +81,11 @@ export const ADCForm: FormComponent<ADCFormInputs> = () => {
         {({ field: { value, onChange } }) => (
           <NumberInput
             disabled={isDisabledInput}
-            value={[value ?? 1]}
+            value={[value ?? 0]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
-              defaultNum: 1,
-              min: 1,
+              defaultNum: 0,
+              min: 0,
               max: numRows,
               step: 1,
               digitsAfterDot: 0,
