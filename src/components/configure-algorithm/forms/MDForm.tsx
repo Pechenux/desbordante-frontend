@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -29,12 +30,17 @@ export const MDForm: FormComponent<MDFormInputs> = () => {
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledColumnMatches = fileIDs['1'] === ''; // left_table unselect
+  useEffect(() => {
+    methods.setValue('min_support', 1);
+  }, [fileIDs]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
     queryFn: createQueryFn('/api/files/ids', {
       params: {
-        query: { ids: fileIDs['1'] ? [fileIDs['1']] : undefined },
+        query: {
+          ids: fileIDs['2'] ? [fileIDs['1']!, fileIDs['2']] : [fileIDs['1']!],
+        },
       },
     }),
     enabled: !!fileIDs['1'],
@@ -96,7 +102,7 @@ export const MDForm: FormComponent<MDFormInputs> = () => {
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
               defaultNum: 1,
-              min: 0,
+              min: 1,
               max: (numRowsLeft ?? 1) * (numRowsRight ?? 1),
               step: 1,
               digitsAfterDot: 0,

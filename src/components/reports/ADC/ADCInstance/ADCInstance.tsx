@@ -33,7 +33,7 @@ const makeSide: (data: SchemaAdcItemModel[]) => ReactElement = (data) => {
             {e.right_item}
           </span>
           {i < data.length - 1 && (
-            <Icon name="greater" orientation="left" size={20} />
+            <Icon name="greater" orientation="right" size={20} />
           )}
         </span>
       ))}

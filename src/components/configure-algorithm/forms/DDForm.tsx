@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SchemaDdTaskConfig } from '@/api/generated/schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
@@ -18,6 +19,10 @@ export const DDForm: FormComponent<DDFormInputs> = () => {
 
   const [fileIDs] = useAtom<Record<string, string>>(fileIDsAtom);
   const isDisabledInputs = !fileIDs['1'] || !fileIDs['2'];
+  useEffect(() => {
+    methods.setValue('num_columns', 0);
+    methods.setValue('num_rows', 0);
+  }, [fileIDs]);
 
   const { data } = useQuery({
     queryKey: [`/api/files/ids`, fileIDs],
@@ -59,7 +64,7 @@ export const DDForm: FormComponent<DDFormInputs> = () => {
         {({ field: { value, onChange } }) => (
           <NumberInput
             disabled={isDisabledInputs}
-            value={[value ?? 1]}
+            value={[value ?? 0]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
               defaultNum: 0,
@@ -84,10 +89,10 @@ export const DDForm: FormComponent<DDFormInputs> = () => {
         {({ field: { value, onChange } }) => (
           <NumberInput
             disabled={isDisabledInputs}
-            value={[value ?? 1]}
+            value={[value ?? 0]}
             onChange={([newValue]) => onChange(newValue)}
             boundaries={{
-              defaultNum: 1,
+              defaultNum: 0,
               min: 0,
               max: numColumns,
               step: 1,
