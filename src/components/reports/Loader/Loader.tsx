@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 // import getTaskStatusData from '@utils/getTaskStatusData';
 import cn from 'classnames';
 import { FC, useEffect } from 'react';
-import { TaskStatus } from '@/api/generated/schema';
+import { TaskStatus } from '@/api/generated/old_schema';
 import { createQueryFn } from '@/api/services/server';
 import { showError } from '@/utils/toasts';
 import { useQueryParams } from '@/utils/useQueryParams';

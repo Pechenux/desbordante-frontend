@@ -2,7 +2,7 @@ import {
   HyMDConfigAlgo_name,
   HyMDConfigLevel_definition,
   SchemaMdTaskConfigInput,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type MDAlgorithms = SchemaMdTaskConfigInput['config']['algo_name'];

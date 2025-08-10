@@ -1,7 +1,7 @@
 import {
   AprioriConfigAlgo_name,
   AprioriConfigInput_format,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { ARFormInputs } from '@/components/configure-algorithm/forms/ARForm';
 import { Presets } from '@/types/form';
 

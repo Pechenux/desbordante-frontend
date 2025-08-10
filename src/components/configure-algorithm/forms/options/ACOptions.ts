@@ -2,7 +2,7 @@ import {
   BHUNTConfigAlgo_name,
   OperationType,
   SchemaAcTaskConfigInput,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type ACAlgorithms = SchemaAcTaskConfigInput['config']['algo_name'];

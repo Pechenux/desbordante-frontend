@@ -9,7 +9,7 @@ import {
   LVNormDateDistanceConfigMetrics,
   LVNormNumberDistanceConfigMetrics,
   MongeElkanConfigMetrics,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import {
   ModalContainer,
   ModalProps,
@@ -18,8 +18,8 @@ import { WizardLayout } from '@/components/common/layout/WizardLayout';
 import {
   FormField,
   NumberInput,
-  SelectOption,
   Select,
+  SelectOption,
 } from '@/components/common/uikit';
 import { Button } from '@/components/common/uikit/Button';
 

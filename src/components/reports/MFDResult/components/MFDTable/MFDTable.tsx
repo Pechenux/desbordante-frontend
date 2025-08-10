@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 
-import { SchemaHighlight } from '@/api/generated/schema';
+import { SchemaHighlight } from '@/api/generated/old_schema';
 import { Icon } from '@/components/common/uikit';
 import { Row, Table, TableProps } from '../../../ScrollableNodeTable';
 import styles from './MFDTable.module.scss';

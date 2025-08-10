@@ -7,7 +7,7 @@ import {
   PfdFilterOptions,
   PfdSortOptions,
   SortOrder,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { createQueryFn } from '@/api/services/server';
 import { Button, Icon, Pagination } from '@/components/common/uikit';
 

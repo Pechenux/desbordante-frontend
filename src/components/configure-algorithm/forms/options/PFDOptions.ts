@@ -2,7 +2,7 @@ import {
   PFDTaneConfigAlgo_name,
   PFDTaneConfigPfd_error_measure,
   SchemaPfdTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type PFDAlgorithms = SchemaPfdTaskConfig['config']['algo_name'];

@@ -1,5 +1,5 @@
 import createClient, { Middleware } from 'openapi-fetch';
-import type { paths } from '@/api/generated/schema.ts';
+import type { paths } from '@/api/generated/old_schema';
 
 export const cmsFetchClient = createClient<paths>({
   baseUrl: `${process.env.BACKEND_PROTOCOL}://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/`,

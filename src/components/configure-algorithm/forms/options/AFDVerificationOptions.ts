@@ -1,7 +1,7 @@
 import {
   FDVerifierConfigAlgo_name,
   SchemaAfdVerificationTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type AFDVerificationAlgorithms =

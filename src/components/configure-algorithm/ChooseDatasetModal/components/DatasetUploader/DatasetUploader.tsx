@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { SchemaFilePublic } from '@/api/generated/schema';
+import { SchemaFilePublic } from '@/api/generated/old_schema';
 import { createMutationFn } from '@/api/services/server';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { ChoosedDatasetInfo, Icon } from '@/components/common/uikit';

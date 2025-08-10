@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
-import { SchemaNarTaskConfig } from '@/api/generated/schema';
+import { SchemaNarTaskConfig } from '@/api/generated/old_schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';

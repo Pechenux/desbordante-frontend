@@ -1,7 +1,7 @@
 import {
   PFDTaneConfigAlgo_name,
   PFDTaneConfigPfd_error_measure,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { PFDFormInputs } from '@/components/configure-algorithm/forms/PFDForm';
 import { Presets } from '@/types/form';
 

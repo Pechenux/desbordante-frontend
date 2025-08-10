@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { SingleValue } from 'react-select';
-import { ARSortOptions, SortOrder } from '@/api/generated/schema';
+import { ARSortOptions, SortOrder } from '@/api/generated/old_schema';
 import { createQueryFn } from '@/api/services/server';
 import { Button, Icon, Pagination } from '@/components/common/uikit';
 

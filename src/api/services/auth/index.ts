@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import createClient from 'openapi-fetch';
-import { paths, SchemaRegisterResponse } from '@/api/generated/schema';
+import { paths, SchemaRegisterResponse } from '@/api/generated/old_schema';
 import { getQueryClient } from '@/api/queryClient';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { baseUrl } from '../definitions';

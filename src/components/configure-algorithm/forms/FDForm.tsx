@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { SchemaFdTaskConfig } from '@/api/generated/schema';
+import { SchemaFdTaskConfig } from '@/api/generated/old_schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {

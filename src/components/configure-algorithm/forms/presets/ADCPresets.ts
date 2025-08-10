@@ -1,4 +1,4 @@
-import { FastADCConfigAlgo_name } from '@/api/generated/schema';
+import { FastADCConfigAlgo_name } from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { ADCFormInputs } from '../ADCForm';
 

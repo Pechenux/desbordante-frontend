@@ -1,7 +1,7 @@
 import {
   SchemaDdTaskConfig,
   SplitConfigAlgo_name,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type DDAlgorithms = SchemaDdTaskConfig['config']['algo_name'];

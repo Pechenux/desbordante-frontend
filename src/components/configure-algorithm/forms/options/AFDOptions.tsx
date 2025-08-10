@@ -1,12 +1,12 @@
 import { InlineMath } from 'react-katex';
-import 'katex/dist/katex.min.css';
 import {
   AFDPyroConfigAlgo_name,
-  AFDTaneConfigAlgo_name,
   AFDTaneConfigAfd_error_measure,
+  AFDTaneConfigAlgo_name,
   SchemaAfdTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
+import 'katex/dist/katex.min.css';
 
 export type AFDAlgorithms = SchemaAfdTaskConfig['config']['algo_name'];
 

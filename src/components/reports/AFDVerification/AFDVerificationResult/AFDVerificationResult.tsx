@@ -1,13 +1,13 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SingleValue } from 'react-select';
 import {
-  SortOrder,
-  AfdVerificationSortOptions,
   AfdVerificationFilterOptions,
-} from '@/api/generated/schema';
+  AfdVerificationSortOptions,
+  SortOrder,
+} from '@/api/generated/old_schema';
 import { createQueryFn } from '@/api/services/server';
 import { Button, Icon, Pagination } from '@/components/common/uikit';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';

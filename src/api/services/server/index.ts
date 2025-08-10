@@ -1,5 +1,5 @@
 import createClient from 'openapi-fetch';
-import type { paths } from '@/api/generated/schema.ts';
+import type { paths } from '@/api/generated/old_schema';
 import { ServiceParams, ServicePaths } from '@/api/utils/pathsTypes';
 import { baseUrl } from '../definitions';
 
