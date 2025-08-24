@@ -1,5 +1,5 @@
-@import "common";
-@import "reset";
+@use "styles/common" as *;
+@use "reset";
 
 html,
 body,

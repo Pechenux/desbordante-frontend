@@ -26,7 +26,6 @@ const UserLoginComponent = () => {
   const user = useUser();
   const logout = useLogout();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleLogout = useCallback(() => {
     logout.mutate();
   }, [logout]);

@@ -1,9 +1,9 @@
-changes=$(git diff --cached --name-only --diff-filter=ACMR src/ | sed 's| |\\ |g');
+changes=$(git diff --name-only HEAD);
 
 if [[ ! -z $changes ]]; then
-  echo "Running linters on staged files...";
-  pnpm lint:typescript --quiet $changes;
-  pnpm lint:styles --allow-empty-input --quiet $changes;
+  echo "Running linters on all files...";
+  pnpm lint:typescript;
+  pnpm lint:styles;
 else
   echo "No changes in src/ to lint.";
 fi

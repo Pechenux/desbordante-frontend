@@ -5,10 +5,10 @@ import { fileURLToPath } from 'node:url';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import pluginQuery from '@tanstack/eslint-plugin-query';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-plugin-prettier';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,17 +20,17 @@ const compat = new FlatCompat({
 
 export default [
   ...compat.extends(
-    'plugin:@typescript-eslint/recommended',
     'next',
     'next/core-web-vitals',
     'next/typescript',
     'plugin:prettier/recommended',
   ),
   {
+    ignores: ['/src/api/generated/*'],
     plugins: {
-      '@typescript-eslint': typescriptEslint,
       prettier,
       '@tanstack/query': pluginQuery,
+      tseslint,
     },
     languageOptions: {
       globals: {
