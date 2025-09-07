@@ -1,72 +1,63 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import createClient from 'openapi-fetch';
 import {
   paths,
-  SchemaApiErrorSchema,
-  SchemaAuthResponseSchema,
-  SchemaHttpValidationError,
+  SchemaAuthenticateUserSchema,
+  SchemaBodySendResetEmail,
+  SchemaChangePasswordSchema,
+  SchemaRegisterUserSchema,
+  SchemaResetPasswordSchema,
 } from '@/api/generated/schema';
 import { getQueryClient } from '@/api/queryClient';
 import { bodyToFormData } from '@/api/utils/bodyToFormData';
 import { baseUrl } from '../definitions';
-import { removeFromStorage } from './helpers';
 import {
-  LoginFormData,
-  RegisterFormData,
-  ResetEmailRequest,
-  ResetPasswordRequest,
-  ChangePasswordRequest,
-  ConfirmEmailRequest,
-  SuccessResponse,
-  EmailConfirmationResponse,
-} from './types';
+  getAccessToken,
+  handleNonOkResponse,
+  isSchemaApiErrorSchema,
+  isSchemaAuthResponseSchema,
+  isSchemaHttpValidationError,
+  removeFromStorage,
+} from './helpers';
+import { SuccessResponse, AuthResponce, NonOkResonse } from './types';
 
 export const authFetchClient = createClient<paths>({
   baseUrl: baseUrl,
 });
 
-export type ErrorResponse = {
-  detail: {
-    msg: string;
-  }[];
+async function getUser(): Promise<AuthResponce> {
+  const response = await authFetchClient.GET('/api/v1/account/');
+
+  if (isSchemaAuthResponseSchema(response.data)) {
+    return response.data;
+  }
+
+  if (
+    isSchemaApiErrorSchema(response.error) ||
+    isSchemaHttpValidationError(response.error)
+  ) {
+    return response.error;
+  }
+}
+
+export const useUser = () => {
+  return useQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
+    enabled: Boolean(getAccessToken()),
+  });
 };
 
-export type NonOkResonce =
-  | SchemaApiErrorSchema
-  | SchemaHttpValidationError
-  | undefined;
-
-export type AuthResponce = NonOkResonce | SchemaAuthResponseSchema;
-
-function isSchemaApiErrorSchema(
-  data: AuthResponce,
-): data is SchemaApiErrorSchema {
-  return typeof (data as SchemaApiErrorSchema)?.detail === 'string';
-}
-
-function isSchemaHttpValidationError(
-  data: AuthResponce,
-): data is SchemaHttpValidationError {
-  return typeof (data as SchemaHttpValidationError)?.detail === 'object';
-}
-
-function isSchemaAuthResponseSchema(
-  data: AuthResponce,
-): data is SchemaAuthResponseSchema {
-  return Boolean((data as SchemaAuthResponseSchema)?.access_token);
-}
-
-async function login(data: LoginFormData): Promise<AuthResponce> {
-  const response = await authFetchClient.POST('/api/auth/login/', {
+async function login(
+  data: SchemaAuthenticateUserSchema,
+): Promise<AuthResponce> {
+  const response = await authFetchClient.POST('/api/v1/auth/login/', {
     body: data,
     bodySerializer: bodyToFormData,
   });
 
-  if (isSchemaAuthResponseSchema(response.data)) {
-    return {
-      access_token: response.data.access_token,
-      user: response.data.user,
-    };
+  if (isSchemaAuthResponseSchema(response.data?.user)) {
+    return response.data.user;
   }
 
   if (
@@ -82,23 +73,23 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      if (isSchemaAuthResponseSchema(data))
-        getQueryClient().setQueryData(['user'], data.user);
+      if (isSchemaAuthResponseSchema(data)) {
+        getQueryClient().setQueryData(['user'], data);
+      } else {
+        handleNonOkResponse(data);
+      }
     },
   });
 };
 
-async function register(data: RegisterFormData): Promise<AuthResponce> {
-  const response = await authFetchClient.POST('/api/auth/register/', {
+async function register(data: SchemaRegisterUserSchema): Promise<AuthResponce> {
+  const response = await authFetchClient.POST('/api/v1/auth/register/', {
     body: data,
     bodySerializer: bodyToFormData,
   });
 
-  if (isSchemaAuthResponseSchema(response.data)) {
-    return {
-      access_token: response.data.access_token,
-      user: response.data.user,
-    };
+  if (isSchemaAuthResponseSchema(response.data?.user)) {
+    return response.data.user;
   }
 
   if (
@@ -116,13 +107,13 @@ export const useRegister = () => {
     mutationFn: register,
     onSuccess: (data) => {
       if (isSchemaAuthResponseSchema(data))
-        queryClient.setQueryData(['user'], data.user);
+        queryClient.setQueryData(['user'], data);
     },
   });
 };
 
 async function logout() {
-  const response = await authFetchClient.POST('/api/auth/logout/');
+  const response = await authFetchClient.POST('/api/v1/auth/logout/');
 
   if (response.response.status === 204) {
     removeFromStorage();
@@ -145,13 +136,10 @@ export const useLogout = () => {
 };
 
 async function refresh(): Promise<AuthResponce> {
-  const response = await authFetchClient.POST('/api/auth/refresh/');
+  const response = await authFetchClient.POST('/api/v1/auth/refresh/');
 
-  if (isSchemaAuthResponseSchema(response.data)) {
-    return {
-      access_token: response.data.access_token,
-      user: response.data.user,
-    };
+  if (isSchemaAuthResponseSchema(response.data?.user)) {
+    return response.data.user;
   }
 
   if (
@@ -167,7 +155,7 @@ export const useRefresh = () => {
     mutationFn: refresh,
     onSuccess: (data) => {
       if (isSchemaAuthResponseSchema(data))
-        getQueryClient().setQueryData(['user'], data.user);
+        getQueryClient().setQueryData(['user'], data);
     },
   });
 };
@@ -180,9 +168,9 @@ export const useRefresh = () => {
  * @returns Success response or error
  */
 async function sendResetEmail(
-  data: ResetEmailRequest,
-): Promise<SuccessResponse | NonOkResonce> {
-  const response = await authFetchClient.POST('/api/auth/password-reset/', {
+  data: SchemaBodySendResetEmail,
+): Promise<SuccessResponse | NonOkResonse> {
+  const response = await authFetchClient.POST('/api/v1/auth/password-reset/', {
     body: data,
   });
 
@@ -199,11 +187,6 @@ async function sendResetEmail(
   ) {
     return response.error;
   }
-
-  return {
-    success: false,
-    message: 'Failed to send password reset email',
-  };
 }
 
 /**
@@ -220,18 +203,22 @@ export const useSendResetEmail = () => {
  * @param data Object containing the token, new password, and password confirmation
  * @returns Success response or error
  */
-async function resetPassword(
-  data: ResetPasswordRequest,
-): Promise<SuccessResponse | NonOkResonce> {
-  const response = await authFetchClient.POST('/api/auth/password-reset/', {
+async function resetPassword({
+  token,
+  data,
+}: {
+  token: string;
+  data: SchemaResetPasswordSchema;
+}): Promise<AuthResponce> {
+  const response = await authFetchClient.PUT('/api/v1/auth/password-reset/', {
+    params: {
+      query: { token },
+    },
     body: data,
   });
 
-  if (response.response.ok) {
-    return {
-      success: true,
-      message: 'Password reset successfully',
-    };
+  if (isSchemaAuthResponseSchema(response.data?.user)) {
+    return response.data.user;
   }
 
   if (
@@ -240,11 +227,6 @@ async function resetPassword(
   ) {
     return response.error;
   }
-
-  return {
-    success: false,
-    message: 'Failed to reset password',
-  };
 }
 
 /**
@@ -253,6 +235,10 @@ async function resetPassword(
 export const useResetPassword = () => {
   return useMutation({
     mutationFn: resetPassword,
+    onSuccess: (data) => {
+      if (isSchemaAuthResponseSchema(data))
+        getQueryClient().setQueryData(['user'], data);
+    },
   });
 };
 
@@ -264,17 +250,14 @@ export const useResetPassword = () => {
  * @returns Success response or error
  */
 async function changePassword(
-  data: ChangePasswordRequest,
-): Promise<SuccessResponse | NonOkResonce> {
-  const response = await authFetchClient.PUT('/api/account/password/', {
+  data: SchemaChangePasswordSchema,
+): Promise<AuthResponce> {
+  const response = await authFetchClient.PUT('/api/v1/account/password/', {
     body: data,
   });
 
-  if (response.response.ok) {
-    return {
-      success: true,
-      message: 'Password changed successfully',
-    };
+  if (isSchemaAuthResponseSchema(response.data)) {
+    return response.data;
   }
 
   if (
@@ -283,11 +266,6 @@ async function changePassword(
   ) {
     return response.error;
   }
-
-  return {
-    success: false,
-    message: 'Failed to change password',
-  };
 }
 
 /**
@@ -296,6 +274,10 @@ async function changePassword(
 export const useChangePassword = () => {
   return useMutation({
     mutationFn: changePassword,
+    onSuccess: (data) => {
+      if (isSchemaAuthResponseSchema(data))
+        getQueryClient().setQueryData(['user'], data);
+    },
   });
 };
 
@@ -307,9 +289,9 @@ export const useChangePassword = () => {
  * @returns Success response or error
  */
 async function sendConfirmationEmail(): Promise<
-  SuccessResponse | NonOkResonce
+  SuccessResponse | NonOkResonse
 > {
-  const response = await authFetchClient.POST('/api/account/email/verify/');
+  const response = await authFetchClient.POST('/api/v1/account/email/verify/');
 
   if (response.response.ok) {
     return {
@@ -345,21 +327,15 @@ export const useSendConfirmationEmail = () => {
  * @param data Object containing the email and verification code
  * @returns Email confirmation response or error
  */
-async function confirmEmail(
-  data: ConfirmEmailRequest,
-): Promise<EmailConfirmationResponse | NonOkResonce> {
-  const response = await authFetchClient.PUT('/api/account/email/verify/', {
+async function confirmEmail(token: string): Promise<AuthResponce> {
+  const response = await authFetchClient.PUT('/api/v1/account/email/verify/', {
     params: {
-      query: data,
+      query: { token },
     },
   });
 
-  if (response.response.ok) {
-    return {
-      success: true,
-      verified: true,
-      message: 'Email verified successfully',
-    };
+  if (isSchemaAuthResponseSchema(response.data)) {
+    return response.data;
   }
 
   if (
@@ -368,12 +344,6 @@ async function confirmEmail(
   ) {
     return response.error;
   }
-
-  return {
-    success: false,
-    verified: false,
-    message: 'Failed to verify email',
-  };
 }
 
 /**

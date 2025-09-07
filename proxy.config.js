@@ -13,7 +13,7 @@ module.exports = async () => {
 
     proxies.push({
       source: `${serverProxyURL}/:path*`,
-      destination: `${serverRESTAPIEndpoint}/:path*`,
+      destination: `${serverRESTAPIEndpoint}/:path*/`,
     });
   } else {
     disabledProxies.push('server');

@@ -1,25 +1,20 @@
 import Link from 'next/link';
 import { memo, useCallback, useState } from 'react';
-import { useLogout } from '@/api/services/auth';
-import { useUser } from '@/api/services/server/hooks';
+import { useLogout, useUser } from '@/api/services/auth';
+import { isSchemaAuthResponseSchema } from '@/api/services/auth/helpers';
 import { Button } from '@/components/common/uikit';
 import { LoginModal } from './components/LoginModal';
+import { LoginModalState } from './components/LoginModal/types';
 import styles from './UserLogin.module.scss';
 
-enum ModalType {
-  LOGIN = 'login',
-  SIGN_UP = 'signUp',
-  VERIFY = 'verify',
-}
-
 type ModalState = {
-  type: ModalType;
+  type: LoginModalState;
   isOpen: boolean;
 };
 
 const UserLoginComponent = () => {
   const [modalState, setModalState] = useState<ModalState>({
-    type: ModalType.LOGIN,
+    type: LoginModalState.LOGIN,
     isOpen: false,
   });
 
@@ -33,8 +28,10 @@ const UserLoginComponent = () => {
   return (
     <>
       <LoginModal
-        isOpen={modalState.isOpen && modalState.type !== ModalType.VERIFY}
-        isLogin={modalState.type === ModalType.LOGIN}
+        isOpen={
+          modalState.isOpen && modalState.type !== LoginModalState.EMAIL_VERIFY
+        }
+        initialState={modalState.type}
         onClose={() =>
           setModalState((currentState) => ({ ...currentState, isOpen: false }))
         }
@@ -43,19 +40,28 @@ const UserLoginComponent = () => {
         }
       />
       <div className={styles.authContainer}>
-        {user ? (
+        {isSchemaAuthResponseSchema(user.data) ? (
           <>
             <p>
               Welcome,{' '}
               <Link className={styles.userCabinetLink} href="/me">
-                {user.first_name} {user.last_name}
+                {user.data.full_name}
               </Link>
             </p>
-            {/* {!user.isVerified && (
-              <Button variant="secondary" size="sm" onClick={noop}>
+            {!user.data.is_verified && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() =>
+                  setModalState({
+                    type: LoginModalState.LOGIN,
+                    isOpen: true,
+                  })
+                }
+              >
                 Verify Email
               </Button>
-            )} */}
+            )}
             <Button variant="secondary-danger" size="sm" onClick={handleLogout}>
               Log Out
             </Button>
@@ -67,7 +73,7 @@ const UserLoginComponent = () => {
               size="sm"
               onClick={() =>
                 setModalState({
-                  type: ModalType.LOGIN,
+                  type: LoginModalState.LOGIN,
                   isOpen: true,
                 })
               }
@@ -79,7 +85,7 @@ const UserLoginComponent = () => {
               size="sm"
               onClick={() =>
                 setModalState({
-                  type: ModalType.SIGN_UP,
+                  type: LoginModalState.REGISTER,
                   isOpen: true,
                 })
               }
