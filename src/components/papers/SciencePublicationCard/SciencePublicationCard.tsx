@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { SchemaSciencePublication } from '@/api/generated/schema';
+import { SchemaSciencePublication } from '@/api/generated/old_schema';
 import { Button } from '@/components/common/uikit';
 import { showError, showSuccess } from '@/utils/toasts';
 import styles from './SciencePublicationCard.module.scss';

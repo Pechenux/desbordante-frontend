@@ -1,7 +1,7 @@
 import {
   HyMDConfigAlgo_name,
   HyMDConfigLevel_definition,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { MDFormInputs } from '../MDForm';
 

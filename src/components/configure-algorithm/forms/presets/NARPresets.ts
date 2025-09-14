@@ -1,4 +1,4 @@
-import { DESConfigAlgo_name } from '@/api/generated/schema';
+import { DESConfigAlgo_name } from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { NARFormInputs } from '../NARForm';
 

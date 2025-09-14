@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { FC } from 'react';
-import { OperationType, SchemaAcModel } from '@/api/generated/schema';
+import { OperationType, SchemaAcModel } from '@/api/generated/old_schema';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
 import { CollapsableView } from '../CollapsableView';

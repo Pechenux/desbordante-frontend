@@ -1,131 +1,146 @@
-import { FC, useCallback } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useLogin, useRegister } from '@/api/services/auth';
-import { RegisterFormData } from '@/api/services/auth/types';
+import { FC, useCallback, useEffect, useState } from 'react';
 import {
   ModalContainer,
   ModalProps,
 } from '@/components/common/layout/ModalContainer';
-import { ControlledFormField, Text } from '@/components/common/uikit';
-import { Button } from '@/components/common/uikit/Button';
-import { showError } from '@/utils/toasts';
+import { EmailVerifyState } from './states/EmailVerifyState';
+import { LoginState } from './states/LoginState';
+import { PasswordResetEmailState } from './states/PasswordResetEmailState';
+import { PasswordResetFormState } from './states/PasswordResetFormState';
+import { RegisterState } from './states/RegisterState';
+import { LoginModalState } from './types';
 import styles from './LoginModal.module.scss';
 
 type LoginModalProps = ModalProps & {
-  isLogin: boolean;
+  initialState?: LoginModalState;
   onLogin: () => void;
+  onEmailVerified?: () => void;
 };
 
 export const LoginModal: FC<LoginModalProps> = ({
   isOpen,
   onClose,
-  isLogin,
+  initialState = LoginModalState.LOGIN,
   onLogin,
+  onEmailVerified,
 }) => {
-  const methods = useForm<RegisterFormData>({
-    mode: 'all',
-    reValidateMode: 'onChange',
-    defaultValues: {
-      login: '',
-      password: '',
-      first_name: '',
-      last_name: '',
-    },
-  });
+  // State to track the current modal state
+  const [currentState, setCurrentState] =
+    useState<LoginModalState>(initialState);
 
-  const login = useLogin();
-  const register = useRegister();
+  useEffect(() => setCurrentState(initialState), [initialState]);
 
-  const onSubmit = useCallback(
-    async (formData: RegisterFormData) => {
-      if (isLogin) {
-        await login.mutate(
-          {
-            login: formData.login,
-            password: formData.password,
-          },
-          {
-            onSuccess: (response) => {
-              if ('detail' in response) {
-                showError(response.detail[0]?.msg);
-                console.error(response.detail[0]?.msg);
-              } else {
-                onLogin();
-              }
-            },
-          },
+  // State to track if we're in the process of submitting
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Handle state transitions
+  const handleSwitchToLogin = useCallback(() => {
+    setCurrentState(LoginModalState.LOGIN);
+  }, []);
+
+  const handleSwitchToRegister = useCallback(() => {
+    setCurrentState(LoginModalState.REGISTER);
+  }, []);
+
+  const handleSwitchToPasswordReset = useCallback(() => {
+    setCurrentState(LoginModalState.PASSWORD_RESET_EMAIL);
+  }, []);
+
+  // Handle password reset email sent
+  const handleResetEmailSent = useCallback(() => {
+    setCurrentState(LoginModalState.PASSWORD_RESET_FORM);
+  }, []);
+
+  // Handle password reset completion
+  const handlePasswordReset = useCallback(() => {
+    setCurrentState(LoginModalState.LOGIN);
+  }, []);
+
+  // Handle registration success
+  const handleRegisterSuccess = useCallback(() => {
+    setCurrentState(LoginModalState.EMAIL_VERIFY);
+  }, []);
+
+  // Render the appropriate title based on current state
+  const renderTitle = () => {
+    switch (currentState) {
+      case LoginModalState.LOGIN:
+        return 'Log in';
+      case LoginModalState.REGISTER:
+        return 'Sign up';
+      case LoginModalState.EMAIL_VERIFY:
+        return 'Verify Your Email';
+      case LoginModalState.PASSWORD_RESET_EMAIL:
+        return 'Reset Password';
+      case LoginModalState.PASSWORD_RESET_FORM:
+        return 'Reset Password';
+      default:
+        return 'Log in';
+    }
+  };
+
+  // Render the appropriate state component based on current state
+  const renderState = () => {
+    switch (currentState) {
+      case LoginModalState.LOGIN:
+        return (
+          <LoginState
+            onLogin={onLogin}
+            onSwitchToRegister={handleSwitchToRegister}
+            onSwitchToPasswordReset={handleSwitchToPasswordReset}
+            isSubmitting={isSubmitting}
+            setIsSubmitting={setIsSubmitting}
+          />
         );
-      } else {
-        await register.mutate(formData, {
-          onSuccess: (response) => {
-            if ('detail' in response) {
-              showError(response.detail[0]?.msg);
-              console.error(response.detail[0]?.msg);
-            } else {
-              onLogin();
-            }
-          },
-        });
-      }
-    },
-    [isLogin, login, onLogin, register],
-  );
+
+      case LoginModalState.REGISTER:
+        return (
+          <RegisterState
+            onRegisterSuccess={handleRegisterSuccess}
+            onSwitchToLogin={handleSwitchToLogin}
+            isSubmitting={isSubmitting}
+            setIsSubmitting={setIsSubmitting}
+          />
+        );
+
+      case LoginModalState.EMAIL_VERIFY:
+        return (
+          <EmailVerifyState
+            onEmailVerified={onEmailVerified || onClose}
+            isSubmitting={isSubmitting}
+            setIsSubmitting={setIsSubmitting}
+          />
+        );
+
+      case LoginModalState.PASSWORD_RESET_EMAIL:
+        return (
+          <PasswordResetEmailState
+            onSwitchToLogin={handleSwitchToLogin}
+            onResetEmailSent={handleResetEmailSent}
+            isSubmitting={isSubmitting}
+            setIsSubmitting={setIsSubmitting}
+          />
+        );
+
+      case LoginModalState.PASSWORD_RESET_FORM:
+        return (
+          <PasswordResetFormState
+            onSwitchToLogin={handleSwitchToLogin}
+            onPasswordReset={handlePasswordReset}
+            isSubmitting={isSubmitting}
+            setIsSubmitting={setIsSubmitting}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
-      <h4 className={styles.title}>{isLogin ? 'Log in' : 'Sign up'}</h4>
-      <FormProvider {...methods}>
-        <form id="loginform" onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className={styles.inputs}>
-            {!isLogin ? (
-              <ControlledFormField
-                controllerProps={{ name: 'first_name' }}
-                formFieldProps={{ label: 'First name' }}
-              >
-                {({ field: { value, onChange } }) => (
-                  <Text value={value} onChange={onChange} />
-                )}
-              </ControlledFormField>
-            ) : null}
-            {!isLogin ? (
-              <ControlledFormField
-                controllerProps={{ name: 'last_name' }}
-                formFieldProps={{ label: 'Last name' }}
-              >
-                {({ field: { value, onChange } }) => (
-                  <Text value={value} onChange={onChange} />
-                )}
-              </ControlledFormField>
-            ) : null}
-            <ControlledFormField
-              controllerProps={{ name: 'login' }}
-              formFieldProps={{ label: 'Email' }}
-            >
-              {({ field: { value, onChange } }) => (
-                <Text type="email" value={value} onChange={onChange} />
-              )}
-            </ControlledFormField>
-            <ControlledFormField
-              controllerProps={{ name: 'password' }}
-              formFieldProps={{ label: 'Password' }}
-            >
-              {({ field: { value, onChange } }) => (
-                <Text type="password" value={value} onChange={onChange} />
-              )}
-            </ControlledFormField>
-          </div>
-        </form>
-      </FormProvider>
-      <div className={styles.buttons}>
-        {isLogin ? (
-          <Button variant="secondary" onClick={onClose}>
-            Restore password
-          </Button>
-        ) : null}
-        <Button type="submit" form="loginform">
-          {isLogin ? 'Log in' : 'Sign up'}
-        </Button>
-      </div>
+      <h4 className={styles.title}>{renderTitle()}</h4>
+      {renderState()}
     </ModalContainer>
   );
 };

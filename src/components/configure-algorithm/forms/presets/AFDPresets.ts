@@ -1,7 +1,7 @@
 import {
   AFDPyroConfigAlgo_name,
   AFDTaneConfigAfd_error_measure,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { AFDFormInputs } from '../AFDForm';
 

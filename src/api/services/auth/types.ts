@@ -1,12 +1,21 @@
-export type LoginFormData = {
-  login: string;
-  password: string;
+import {
+  SchemaApiErrorSchema,
+  SchemaHttpValidationError,
+  SchemaUserSchema,
+} from '@/api/generated/schema';
+
+export type ErrorResponse = {
+  detail: {
+    msg: string;
+  }[];
 };
 
-export type RegisterFormData = LoginFormData & {
-  first_name: string;
-  last_name: string;
-};
+export type NonOkResonse =
+  | SchemaApiErrorSchema
+  | SchemaHttpValidationError
+  | undefined;
+
+export type AuthResponce = NonOkResonse | SchemaUserSchema;
 
 export enum EnumTokens {
   'ACCESS_TOKEN' = 'accessToken',
@@ -26,3 +35,9 @@ export interface ITokenInside {
 }
 
 export type TProtectUserData = Omit<ITokenInside, 'iat' | 'exp'>;
+
+// Response types
+export interface SuccessResponse {
+  success: boolean;
+  message?: string;
+}

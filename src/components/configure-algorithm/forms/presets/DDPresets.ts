@@ -1,4 +1,4 @@
-import { SplitConfigAlgo_name } from '@/api/generated/schema';
+import { SplitConfigAlgo_name } from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { DDFormInputs } from '../DDForm';
 

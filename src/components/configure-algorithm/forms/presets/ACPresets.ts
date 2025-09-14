@@ -1,4 +1,7 @@
-import { BHUNTConfigAlgo_name, OperationType } from '@/api/generated/schema';
+import {
+  BHUNTConfigAlgo_name,
+  OperationType,
+} from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { ACFormInputs } from '../ACForm';
 

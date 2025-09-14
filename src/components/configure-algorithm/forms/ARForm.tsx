@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import {
   AprioriConfigAlgo_name,
   SchemaArTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';

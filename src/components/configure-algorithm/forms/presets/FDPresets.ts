@@ -1,4 +1,4 @@
-import { PyroConfigAlgo_name } from '@/api/generated/schema';
+import { PyroConfigAlgo_name } from '@/api/generated/old_schema';
 import { FDFormInputs } from '@/components/configure-algorithm/forms/FDForm';
 import { Presets } from '@/types/form';
 

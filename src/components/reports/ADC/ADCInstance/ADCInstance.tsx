@@ -2,7 +2,10 @@
 
 import classNames from 'classnames';
 import { FC, ReactElement } from 'react';
-import { AdcItemModelSign, SchemaAdcItemModel } from '@/api/generated/schema';
+import {
+  AdcItemModelSign,
+  SchemaAdcItemModel,
+} from '@/api/generated/old_schema';
 import { Icon } from '@/components/common/uikit';
 import styles from './ADCInstance.module.scss';
 

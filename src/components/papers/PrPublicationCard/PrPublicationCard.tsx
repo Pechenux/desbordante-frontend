@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { SchemaPrPublication } from '@/api/generated/schema';
+import { SchemaPrPublication } from '@/api/generated/old_schema';
 import { cmsUrlWrapper } from '@/utils/cmsUrlWrapper';
 import { Badge } from './components/Badge';
 import styles from './PrPublicationCard.module.scss';

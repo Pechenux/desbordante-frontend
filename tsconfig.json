@@ -41,7 +41,7 @@
     "src/app/create-task/page.tsx",
     "scripts/tsconfig.json",
     "scripts/generateApiTypes.mts"
-  ],
+, "src/components/common/layout/Header/components/UserLogin/components/LoginModal/LoginModal.tsx.backup"  ],
   "exclude": [
     "node_modules",
     "scripts",

@@ -1,7 +1,7 @@
 import { MutationFunction } from '@tanstack/react-query';
 import { FC } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { SchemaTaskPublic } from '@/api/generated/schema';
+import { SchemaTaskPublic } from '@/api/generated/old_schema';
 import { GetAllFieds } from './getAllFields';
 
 export type FormData = FieldValues;

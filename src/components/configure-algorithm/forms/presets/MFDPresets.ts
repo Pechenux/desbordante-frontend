@@ -3,7 +3,7 @@ import {
   MFDVerificationEuclideanConfigMetric,
   MFDVerificationMetricAlgorithm,
   MFDVerificationLevenshteinConfigMetric,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { MFDFormInputs } from '../MFDForm';
 import { MFDColumnCategories } from '../options/MFDOptions';

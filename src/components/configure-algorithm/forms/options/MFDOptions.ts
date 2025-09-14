@@ -4,7 +4,7 @@ import {
   MFDVerificationLevenshteinConfigMetric,
   MFDVerificationMetricAlgorithm,
   SchemaMfdVerificationTaskConfigInput,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit';
 
 export type MFDColumnTypes = 'Int' | 'Double' | 'BigInt' | 'String';

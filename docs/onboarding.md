@@ -30,9 +30,10 @@ NB! Я разрабатываю в VSCode, так что тут будет ин�
 #### Установка зависимостей
 1. Установите [nvm](https://github.com/nvm-sh/nvm) или [nvm-windows](https://github.com/coreybutler/nvm-windows)
 2. `nvm install && nvm use`
-3. `corepack enable && corepack install`
-4. `pnpm -v` -- нажми Y, если есть промт на установку pnpm
-5. `pnpm install`
+3. `npm install -g corepack@latest`
+4. `corepack enable && corepack install`
+5. `pnpm -v` -- нажми Y, если есть промт на установку pnpm
+6. `pnpm install`
 
 #### Настройка конфигов сервера для фронтенда
 0. Запустить сервер

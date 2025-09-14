@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
-import { SchemaAfdVerificationTaskConfig } from '@/api/generated/schema';
+import { SchemaAfdVerificationTaskConfig } from '@/api/generated/old_schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { CheckboxGroup, Select } from '@/components/common/uikit/Inputs';

@@ -8,7 +8,7 @@ import {
   MFDVerificationEuclideanConfigMetric,
   MFDVerificationMetricAlgorithm,
   SchemaMfdVerificationTaskConfigInput,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
 import {
   CheckboxGroup,

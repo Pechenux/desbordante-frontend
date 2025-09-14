@@ -1,4 +1,4 @@
-@import "common";
+@use "styles/common" as *;
 
 .badge {
   @include paragraph-small;

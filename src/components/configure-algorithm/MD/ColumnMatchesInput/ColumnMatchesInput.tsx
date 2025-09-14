@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from 'react';
 import {
   EqualityConfigMetrics,
   SchemaHyMdConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';
 import { fileIDsAtom } from '@/store/fileIDsAtom';

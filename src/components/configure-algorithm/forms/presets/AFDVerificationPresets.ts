@@ -1,4 +1,4 @@
-import { FDVerifierConfigAlgo_name } from '@/api/generated/schema';
+import { FDVerifierConfigAlgo_name } from '@/api/generated/old_schema';
 import { Presets } from '@/types/form';
 import { AFDVerificationFormInputs } from '../AFDVerificationForm';
 

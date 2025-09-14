@@ -11,7 +11,7 @@ import {
   LVNormDateDistanceConfigMetrics,
   LVNormNumberDistanceConfigMetrics,
   MongeElkanConfigMetrics,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { createQueryFn } from '@/api/services/server';
 import { Icon } from '@/components/common/uikit';
 import colors from '@/constants/colors';

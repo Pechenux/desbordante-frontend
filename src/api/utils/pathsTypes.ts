@@ -1,6 +1,6 @@
 import { FetchOptions } from 'openapi-fetch';
 import { HttpMethod, PathsWithMethod } from 'openapi-typescript-helpers';
-import { paths } from '@/api/generated/schema';
+import { paths } from '@/api/generated/old_schema';
 
 type PathsWithPrefix<Prefix extends string> = {
   [K in keyof paths as K extends `${Prefix}${string}` ? K : never]: paths[K];

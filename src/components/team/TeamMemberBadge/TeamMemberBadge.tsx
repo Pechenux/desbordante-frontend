@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { FC } from 'react';
-import { SchemaTeamMember } from '@/api/generated/schema';
+import { SchemaTeamMember } from '@/api/generated/old_schema';
 import { Icon } from '@/components/common/uikit/Icon';
 import { cmsUrlWrapper } from '@/utils/cmsUrlWrapper';
 import styles from './TeamMemberBadge.module.scss';

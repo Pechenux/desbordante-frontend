@@ -1,7 +1,7 @@
 import {
   FastADCConfigAlgo_name,
   SchemaAdcTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type ADCAlgorithms = SchemaAdcTaskConfig['config']['algo_name'];

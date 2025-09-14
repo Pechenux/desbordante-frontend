@@ -4,10 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
 import {
-  SortOrder,
-  AdcSortOptions,
   AdcFilterOptions,
-} from '@/api/generated/schema';
+  AdcSortOptions,
+  SortOrder,
+} from '@/api/generated/old_schema';
 import { createQueryFn } from '@/api/services/server';
 import { Button, Icon, Pagination } from '@/components/common/uikit';
 

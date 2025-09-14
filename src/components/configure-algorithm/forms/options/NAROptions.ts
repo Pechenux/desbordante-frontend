@@ -1,7 +1,7 @@
 import {
   DESConfigAlgo_name,
   SchemaNarTaskConfig,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { SelectOption } from '@/components/common/uikit/Inputs';
 
 export type NARAlgorithms = SchemaNarTaskConfig['config']['algo_name'];

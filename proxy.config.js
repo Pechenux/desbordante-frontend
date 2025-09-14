@@ -13,10 +13,6 @@ module.exports = async () => {
 
     proxies.push({
       source: `${serverProxyURL}/:path*`,
-      destination: `${serverRESTAPIEndpoint}/:path*`,
-    });
-    proxies.push({
-      source: `${serverProxyURL}/:path*/`,
       destination: `${serverRESTAPIEndpoint}/:path*/`,
     });
   } else {
@@ -50,5 +46,5 @@ module.exports = async () => {
     console.warn('Disabled proxies:', disabledProxies.join(', '));
   }
 
-  return proxies;
+  return { beforeFiles: proxies };
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { SingleValue } from 'react-select';
 import {
   AcSortOptions,
@@ -15,9 +15,9 @@ import {
   NarSortOptions,
   PfdSortOptions,
   SortOrder,
-} from '@/api/generated/schema';
+} from '@/api/generated/old_schema';
 import { ModalProps, PropertiesModal } from '@/components/common/layout';
-import { SelectOption, Select } from '@/components/common/uikit/Inputs';
+import { Select, SelectOption } from '@/components/common/uikit/Inputs';
 import { PortalRootContext } from '@/components/meta';
 import { PrimitiveType } from '@/constants/primitivesInfo/primitives';
 import { FormField } from '../../common/uikit/FormField';

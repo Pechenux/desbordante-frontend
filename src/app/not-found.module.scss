@@ -1,4 +1,4 @@
-@import "common";
+@use "styles/common" as *;
 
 .wrapper {
   display: flex;

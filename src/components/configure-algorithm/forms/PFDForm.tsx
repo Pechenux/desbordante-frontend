@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
-import { SchemaPfdTaskConfig } from '@/api/generated/schema';
+import { SchemaPfdTaskConfig } from '@/api/generated/old_schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
-import { SchemaAcTaskConfigInput } from '@/api/generated/schema';
+import { SchemaAcTaskConfigInput } from '@/api/generated/old_schema';
 import { createMutationFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import { NumberInput, Select } from '@/components/common/uikit/Inputs';

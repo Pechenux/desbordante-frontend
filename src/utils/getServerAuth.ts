@@ -10,8 +10,8 @@ import { EnumTokens, ITokenInside } from '@/api/services/auth/types';
 
 export async function getServerAuth(): Promise<void> {
   const JWT_SECRET = process.env.JWT_SECRET;
-  const accessToken = cookies().get(EnumTokens.ACCESS_TOKEN)?.value;
-  const refreshToken = cookies().get(EnumTokens.REFRESH_TOKEN)?.value;
+  const accessToken = (await cookies()).get(EnumTokens.ACCESS_TOKEN)?.value;
+  const refreshToken = (await cookies()).get(EnumTokens.REFRESH_TOKEN)?.value;
 
   if (!refreshToken) return;
 

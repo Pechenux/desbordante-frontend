@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import _ from 'lodash';
 import { useFormContext } from 'react-hook-form';
-import { SchemaMdTaskConfigInput } from '@/api/generated/schema';
+import { SchemaMdTaskConfigInput } from '@/api/generated/old_schema';
 import { createMutationFn, createQueryFn } from '@/api/services/server';
 import { ControlledFormField } from '@/components/common/uikit';
 import {
